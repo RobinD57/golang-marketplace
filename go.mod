@@ -3,5 +3,7 @@ module github.com/RobinD57/golang-marketplace
 go 1.14
 
 require (
-	go.mongodb.org/mongo-driver v1.3.4 // indirect
+	github.com/go-delve/delve v1.4.1 // indirect
+	github.com/joho/godotenv v1.3.0
+	go.mongodb.org/mongo-driver v1.3.4
 )

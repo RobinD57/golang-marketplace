@@ -21,8 +21,7 @@ import (
 var tpl = template.Must(template.ParseFiles("static/index.html"))
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-	listing :=
-	tpl.Execute(w, &Listing{})
+	tpl.Execute(w, nil)
 }
 
 type Listing struct {
@@ -32,10 +31,6 @@ type Listing struct {
 	Description string `bson:"description,omitempty"`
 	Price float64 `bson:"price,omitempty"`
 	Photo string `bson:"photo,omitempty"` // url?? hosted somewhere? Cloudinary?
-}
-
-func (l *Listing) returnFirst() Listing {
-
 }
 
 type Purchase struct {
@@ -76,14 +71,15 @@ func main() {
 	listingsCollection := marketplaceDatabase.Collection("listings")
 	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
 
+	document := Listing {
+		Name: "Guuuuccciii Gang",
+		User: "Nic Raboy",
+		Description: "Super cool Gucci tshirt with a fucking space eagle",
+		Price: 150,
+		Photo: "photoURL",
+	}
 
-	listingResult, err := listingsCollection.InsertOne(ctx, bson.D{
-		{"Name", "Guuuuccciii Gang"},
-		{"User", "Nic Raboy"},
-		{"Description", "Super cool Gucci tshirt with a fucking space eagle"},
-		{"Price", 150},
-		{"Photo", "photoURL"},
-	})
+	listingResult, err := listingsCollection.InsertOne(ctx, document)
 
 	fmt.Printf("%v\n", listingResult)
 
