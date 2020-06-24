@@ -38,7 +38,7 @@ type Listing struct {
 
 type Purchase struct {
 	ID primitive.ObjectID `bson:"_id,omitempty"`
-	Listing Listing `bson:"listing,omitempty"`
+	Listing primitive.ObjectID `bson:"listing,omitempty"`
 	Buyer string `bson:"buyer,omitempty"`
 	Seller string `bson:"seller,omitempty"` // crypto address?
 }
@@ -49,7 +49,7 @@ type Connection struct {
 }
 
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) {		// no proper validations for now
-	r.Header().Set("content-type", "application/json")
+	w.Header().Set("content-type", "application/json")
 	var listing Listing
 	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil  {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -65,6 +65,26 @@ func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *htt
 	}
 	json.NewEncoder(w).Encode(result)
 }
+
+func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	var listings []Listing
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	cursor, err := connection.Listings.Find(ctx, bson.M{})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err = cursor.All(ctx, &listings); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(listings)
+}
+
+
 
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
@@ -129,17 +149,20 @@ func main() {
 		log.Fatal(err)
 	}
 
+	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection}
+
 	//port := os.Getenv("PORT")
 	//if port == "" {
 	//	port = "8080"
 	//}
 
+	// connection variable that has both collections in it
+
 	router := mux.NewRouter()
 	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
 	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET")
-	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
-	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
-	http.Handle("/", router)
+	// router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
+	// router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
 	http.ListenAndServe(":8080", router)
 
 	//mux := http.NewServeMux()
