@@ -11,7 +11,11 @@
     <main>
         <section class="container">
             <div class="listing-count">
-                {{ .Name }}
+                {{ range .Listings }}
+                <li class="listings">
+                    <h3>{{ .Name }}</h3>
+                </li>
+                {{ end }}
             </div>
         </section>
     </main>

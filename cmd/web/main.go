@@ -2,27 +2,30 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
+	"github.com/gorilla/mux"
+	"html/template"
 	"log"
 	"net/http"
 	// "net/url"
 	"os"
 	"time"
-	"html/template"
 
 	"github.com/joho/godotenv"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
+// var Listings map[string]interface{}
 var tpl = template.Must(template.ParseFiles("static/index.html"))
 
-func indexHandler(w http.ResponseWriter, r *http.Request) {
-	tpl.Execute(w, nil)
-}
+//func indexHandler(w http.ResponseWriter, r *http.Request) {
+//	tpl.Execute(w, Listings)
+//}
 
 type Listing struct {
 	ID primitive.ObjectID	`bson:"_id,omitempty"`
@@ -40,15 +43,34 @@ type Purchase struct {
 	Seller string `bson:"seller,omitempty"` // crypto address?
 }
 
+type Connection struct {
+	Listings *mongo.Collection
+	Purchases *mongo.Collection
+}
+
+func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) {		// no proper validations for now
+	r.Header().Set("content-type", "application/json")
+	var listing Listing
+	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil  {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	result, err := connection.Listings.InsertOne(ctx, listing)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
+
 func goDotEnvVariable(key string) string {
-
-	// load .env file
 	err := godotenv.Load(".env")
-
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
-
 	return os.Getenv(key)
 }
 
@@ -68,8 +90,8 @@ func main() {
 	defer client.Disconnect(ctx)
 
 	marketplaceDatabase := client.Database("marketplace")
-	listingsCollection := marketplaceDatabase.Collection("listings")
-	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
+	listingsCollection := marketplaceDatabase.Collection("Listings")
+	purchasesCollection := marketplaceDatabase.Collection("Purchases") // nest reviews in here
 
 	document := Listing {
 		Name: "Guuuuccciii Gang",
@@ -80,8 +102,6 @@ func main() {
 	}
 
 	listingResult, err := listingsCollection.InsertOne(ctx, document)
-
-	fmt.Printf("%v\n", listingResult)
 
 	purchasesResult, err := purchasesCollection.InsertOne(ctx, bson.D{
 		{"Listing", listingResult.InsertedID},
@@ -95,19 +115,37 @@ func main() {
 
 	fmt.Printf("%v\n", purchasesResult)
 
-	// create services
+	cur, err := listingsCollection.Find(ctx, bson.D{})
+	if err != nil { log.Fatal(err) }
+	defer cur.Close(ctx)
 
-
-	// attach to HTTP handler
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
+	for cur.Next(ctx) {
+		var result bson.M
+		err := cur.Decode(&result)
+		if err != nil { log.Fatal(err) }
+		fmt.Println(result)
+	}
+	if err := cur.Err(); err != nil {
+		log.Fatal(err)
 	}
 
-	mux := http.NewServeMux()
-	fs := http.FileServer(http.Dir("static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	//port := os.Getenv("PORT")
+	//if port == "" {
+	//	port = "8080"
+	//}
 
-	mux.HandleFunc("/", indexHandler)
-	http.ListenAndServe(":"+port, mux)
+	router := mux.NewRouter()
+	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
+	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET")
+	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
+	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
+	http.Handle("/", router)
+	http.ListenAndServe(":8080", router)
+
+	//mux := http.NewServeMux()
+	//fs := http.FileServer(http.Dir("static"))
+	//mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	//
+	//mux.HandleFunc("/", indexHandler)
+	//http.ListenAndServe(":"+port, mux)
 }
