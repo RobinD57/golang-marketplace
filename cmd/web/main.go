@@ -84,7 +84,41 @@ func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.
 	json.NewEncoder(w).Encode(listings)
 }
 
+func (connection Connection) UpdateListingEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+	var listing Listing
+	json.NewDecoder(r.Body).Decode(&listing)
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	result, err := connection.Listings.UpdateOne(
+			ctx,
+			bson.M{"_id": id},
+			bson.D{
+				{"$set", listing},
+			},
+		)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
 
+func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	result, err := connection.Listings.DeleteOne(ctx, bson.M{"_id": id})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
 
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
@@ -154,7 +188,7 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
 	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET")
-	// router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
-	// router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
+	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
+	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
 	http.ListenAndServe(":8080", router)
 }
