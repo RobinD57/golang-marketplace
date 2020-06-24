@@ -20,38 +20,35 @@ import (
 	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-// var Listings map[string]interface{}
 var tpl = template.Must(template.ParseFiles("static/index.html"))
 
-//func indexHandler(w http.ResponseWriter, r *http.Request) {
-//	tpl.Execute(w, Listings)
-//}
+// NEED TO ADD JSON
 
 type Listing struct {
-	ID primitive.ObjectID	`bson:"_id,omitempty"`
-	Name string	`bson:"name,omitempty"`
-	User string `bson:"user,omitempty"` // crypto address?
-	Description string `bson:"description,omitempty"`
-	Price float64 `bson:"price,omitempty"`
-	Photo string `bson:"photo,omitempty"` // url?? hosted somewhere? Cloudinary?
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,string,omitempty"`
+	Name        string             `bson:"name,omitempty" json:"name,omitempty"`
+	User        string             `bson:"user,omitempty" json:"user,omitempty"` // crypto address?
+	Description string             `bson:"description,omitempty" json:"description,omitempty"`
+	Price       float64            `bson:"price,omitempty" json:"price, string, omitempty"`
+	Photo       string             `bson:"photo,omitempty" json:"photo,omitempty"` // url?? hosted somewhere? Cloudinary?
 }
 
 type Purchase struct {
-	ID primitive.ObjectID `bson:"_id,omitempty"`
+	ID      primitive.ObjectID `bson:"_id,omitempty"`
 	Listing primitive.ObjectID `bson:"listing,omitempty"`
-	Buyer string `bson:"buyer,omitempty"`
-	Seller string `bson:"seller,omitempty"` // crypto address?
+	Buyer   string             `bson:"buyer,omitempty"`
+	Seller  string             `bson:"seller,omitempty"` // crypto address?
 }
 
 type Connection struct {
-	Listings *mongo.Collection
+	Listings  *mongo.Collection
 	Purchases *mongo.Collection
 }
 
-func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) {		// no proper validations for now
+func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
 	w.Header().Set("content-type", "application/json")
 	var listing Listing
-	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil  {
+	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 		return
@@ -92,12 +89,12 @@ func (connection Connection) UpdateListingEndpoint(w http.ResponseWriter, r *htt
 	json.NewDecoder(r.Body).Decode(&listing)
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	result, err := connection.Listings.UpdateOne(
-			ctx,
-			bson.M{"_id": id},
-			bson.D{
-				{"$set", listing},
-			},
-		)
+		ctx,
+		bson.M{"_id": id},
+		bson.D{
+			{"$set", listing},
+		},
+	)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
@@ -144,15 +141,15 @@ func main() {
 	defer client.Disconnect(ctx)
 
 	marketplaceDatabase := client.Database("marketplace")
-	listingsCollection := marketplaceDatabase.Collection("Listings")
-	purchasesCollection := marketplaceDatabase.Collection("Purchases") // nest reviews in here
+	listingsCollection := marketplaceDatabase.Collection("listings")
+	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
 
-	document := Listing {
-		Name: "Guuuuccciii Gang",
-		User: "Nic Raboy",
+	document := Listing{
+		Name:        "Guuuuccciii Gang",
+		User:        "Nic Raboy",
 		Description: "Super cool Gucci tshirt with a fucking space eagle",
-		Price: 150,
-		Photo: "photoURL",
+		Price:       150,
+		Photo:       "photoURL",
 	}
 
 	listingResult, err := listingsCollection.InsertOne(ctx, document)
@@ -170,13 +167,17 @@ func main() {
 	fmt.Printf("%v\n", purchasesResult)
 
 	cur, err := listingsCollection.Find(ctx, bson.D{})
-	if err != nil { log.Fatal(err) }
+	if err != nil {
+		log.Fatal(err)
+	}
 	defer cur.Close(ctx)
 
 	for cur.Next(ctx) {
 		var result bson.M
 		err := cur.Decode(&result)
-		if err != nil { log.Fatal(err) }
+		if err != nil {
+			log.Fatal(err)
+		}
 		fmt.Println(result)
 	}
 	if err := cur.Err(); err != nil {
