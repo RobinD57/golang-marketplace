@@ -151,24 +151,10 @@ func main() {
 
 	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection}
 
-	//port := os.Getenv("PORT")
-	//if port == "" {
-	//	port = "8080"
-	//}
-
-	// connection variable that has both collections in it
-
 	router := mux.NewRouter()
 	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
 	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET")
 	// router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
 	// router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
 	http.ListenAndServe(":8080", router)
-
-	//mux := http.NewServeMux()
-	//fs := http.FileServer(http.Dir("static"))
-	//mux.Handle("/static/", http.StripPrefix("/static/", fs))
-	//
-	//mux.HandleFunc("/", indexHandler)
-	//http.ListenAndServe(":"+port, mux)
 }
