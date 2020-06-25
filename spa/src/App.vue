@@ -22,10 +22,36 @@
 
 <script>
 export default {
-  name: 'App',
-  components: {
+  props: ['id'],
+  data() {
+    return {
+      listings: [],
+      endpoint: 'http://localhost:8080/listings',
+    };
+  },
+
+  created() {
+    this.fetchListings();
+  },
+
+  methods: {
+    async fetchListings() {
+      let res = await fetch(this.endpoint, {
+        "headers": {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods": "POST GET OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type"
+        },
+      })
+      let data = await res.json()
+      return this.setResults(data);
+    }
+  },
+  setResults (results) {
+    this.listings = results;
   }
 }
+
 </script>
 
 <style>
