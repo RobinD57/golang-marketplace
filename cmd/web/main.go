@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"html/template"
 	"log"
@@ -233,11 +234,14 @@ func main() {
 	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection}
 
 	router := mux.NewRouter()
+	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
+	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})
+	origins := handlers.AllowedOrigins([]string{"*"})
 	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
 	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE")
-	http.ListenAndServe(":8080", router)
+	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
