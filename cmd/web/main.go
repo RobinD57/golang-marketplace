@@ -34,10 +34,10 @@ type Listing struct {
 }
 
 type Purchase struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty"`
-	Listing primitive.ObjectID `bson:"listing,omitempty"`
-	Buyer   string             `bson:"buyer,omitempty"`
-	Seller  string             `bson:"seller,omitempty"` // crypto address?
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string,omitempty"`
+	Listing primitive.ObjectID `bson:"listing,omitempty" json:"listing,string"`
+	Buyer   string             `bson:"buyer,omitempty" json:"buyer,omitempty"`
+	Seller  string             `bson:"seller,omitempty" json:"seller,omitempty"` // crypto address?
 }
 
 type Connection struct {
@@ -117,6 +117,38 @@ func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *htt
 	json.NewEncoder(w).Encode(result)
 }
 
+func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	var purchase Purchase
+	if err := json.NewDecoder(r.Body).Decode(&purchase); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	result, err := connection.Purchases.InsertOne(ctx, purchase)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
+
+func (connection Connection) DeletePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("content-type", "application/json")
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	result, err := connection.Listings.DeleteOne(ctx, bson.M{"_id": id})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
+
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -144,27 +176,27 @@ func main() {
 	listingsCollection := marketplaceDatabase.Collection("listings")
 	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
 
-	document := Listing{
-		Name:        "Guuuuccciii Gang",
-		User:        "Nic Raboy",
-		Description: "Super cool Gucci tshirt with a fucking space eagle",
-		Price:       150,
-		Photo:       "photoURL",
-	}
+	//document := Listing{
+	//	Name:        "Guuuuccciii Gang",
+	//	User:        "Nic Raboy",
+	//	Description: "Super cool Gucci tshirt with a fucking space eagle",
+	//	Price:       150,
+	//	Photo:       "photoURL",
+	//}
 
-	listingResult, err := listingsCollection.InsertOne(ctx, document)
+	//listingResult, err := listingsCollection.InsertOne(ctx, document)
 
-	purchasesResult, err := purchasesCollection.InsertOne(ctx, bson.D{
-		{"Listing", listingResult.InsertedID},
-		{"Buyer", "Rich boy"},
-		{"Seller", "Nic Raboy"},
-	})
+	//purchasesResult, err := purchasesCollection.InsertOne(ctx, bson.D{
+	//	{"Listing", listingResult.InsertedID},
+	//	{"Buyer", "Rich boy"},
+	//	{"Seller", "Nic Raboy"},
+	//})
 
-	if err != nil {
-		log.Fatal(err)
-	}
+	//if err != nil {
+	//	log.Fatal(err)
+	//}
 
-	fmt.Printf("%v\n", purchasesResult)
+	// fmt.Printf("%v\n", purchasesResult)
 
 	cur, err := listingsCollection.Find(ctx, bson.D{})
 	if err != nil {
@@ -191,5 +223,7 @@ func main() {
 	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET")
 	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
+	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST")
+	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE")
 	http.ListenAndServe(":8080", router)
 }
