@@ -41,7 +41,7 @@ export default {
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "POST GET OPTIONS",
           "Access-Control-Allow-Headers": "Content-Type"
-        },
+        }
       })
       let data = await res.json()
       return this.setResults(data);
