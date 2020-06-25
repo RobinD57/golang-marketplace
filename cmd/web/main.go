@@ -81,6 +81,7 @@ func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *htt
 
 func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	enableCors(&w) // ONLY FOR PRIVATE TESTING
 	var listings []Listing
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
