@@ -1,8 +1,29 @@
-import Vue from 'vue'
-import App from './App.vue'
+import Vue from 'vue';
+import Router from 'vue-router';
+import App from './App.vue';
+import Listings from './components/Listing.vue';
+import Hello from './components/Hello.vue';
 
-Vue.config.productionTip = false
+Vue.use(Router);
+
+const router = new Router({
+  routes: [
+    {
+      path: '/',
+      name: 'home',
+      component: Hello,
+    },
+    {
+      path: '/listing/:id',
+      name: 'listing',
+      component: Listing,
+      props: true,
+    },
+  ],
+});
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  el: '#app',
+  render: (h) => h(App),
+  router,
+});
