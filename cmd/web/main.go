@@ -8,7 +8,6 @@ import (
 	"html/template"
 	"log"
 	"net/http"
-	// "net/url"
 	"os"
 	"time"
 
@@ -22,10 +21,23 @@ import (
 
 var tpl = template.Must(template.ParseFiles("static/index.html"))
 
-// NEED TO ADD JSON
+// need to add validations to structs!!
+
+type User struct {
+	ID            primitive.ObjectID `bson:"_id" json:"id,string"`
+	PublicAddress string             `bson:"name,omitempty" json:"name,omitempty"`
+	Nonce         string             `bson:"name,omitempty" json:"name,omitempty"` // keep it as string, could be big rnd int
+	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
+}
+
+type Review struct {
+	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
+	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty"` // range missing
+	Content string             `bson:"content,omitempty" json:"content,omitempty"`
+}
 
 type Listing struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,string,omitempty"`
+	ID          primitive.ObjectID `bson:"_id" json:"id,string"`
 	Name        string             `bson:"name,omitempty" json:"name,omitempty"`
 	User        string             `bson:"user,omitempty" json:"user,omitempty"` // crypto address?
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
@@ -34,7 +46,7 @@ type Listing struct {
 }
 
 type Purchase struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string,omitempty"`
+	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
 	Listing primitive.ObjectID `bson:"listing,omitempty" json:"listing,string"`
 	Buyer   string             `bson:"buyer,omitempty" json:"buyer,omitempty"`
 	Seller  string             `bson:"seller,omitempty" json:"seller,omitempty"` // crypto address?
@@ -140,7 +152,7 @@ func (connection Connection) DeletePurchaseEndpoint(w http.ResponseWriter, r *ht
 	params := mux.Vars(r)
 	id, _ := primitive.ObjectIDFromHex(params["id"])
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	result, err := connection.Listings.DeleteOne(ctx, bson.M{"_id": id})
+	result, err := connection.Purchases.DeleteOne(ctx, bson.M{"_id": id})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
