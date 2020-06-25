@@ -39,17 +39,17 @@ type Review struct {
 type Listing struct {
 	ID          primitive.ObjectID `bson:"_id" json:"id,string"`
 	Name        string             `bson:"name,omitempty" json:"name,omitempty"`
-	User        string             `bson:"user,omitempty" json:"user,omitempty"` // crypto address?
+	Seller      primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Price       float64            `bson:"price,omitempty" json:"price, string, omitempty"`
-	Photo       string             `bson:"photo,omitempty" json:"photo,omitempty"` // url?? hosted somewhere? Cloudinary?
+	Photo       string             `bson:"photo,omitempty" json:"photo,omitempty"` // Cloudinary?
 }
 
 type Purchase struct {
 	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
 	Listing primitive.ObjectID `bson:"listing,omitempty" json:"listing,string"`
-	Buyer   string             `bson:"buyer,omitempty" json:"buyer,omitempty"`
-	Seller  string             `bson:"seller,omitempty" json:"seller,omitempty"` // crypto address?
+	Buyer   primitive.ObjectID `bson:"buyer,omitempty" json:"buyer,omitempty"`
+	Seller  primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
 }
 
 type Connection struct {
