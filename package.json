@@ -1,0 +1,18 @@
+{
+   "name": "my-first-truffle-project",
+   "version": "0.0.1",
+   "engines": {
+    "node": "11.6.x",
+    "npm": "6.5.x"
+   },
+  "scripts": {
+    "ganache": "ganache-cli --networkId $npm_package_config_ganache_networkId --allowUnlimitedContractSize --gasLimit $npm_package_config_ganache_gasLimit --gasPrice $npm_package_config_ganache_gasPrice --mnemonic \"$MNEMONIC\""
+   },
+   "config": {
+    "ganache": {
+      "networkId": 3431,
+      "gasPrice": 25000000000,
+      "gasLimit": 6500000
+    }
+  }
+}
