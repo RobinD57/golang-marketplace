@@ -37,12 +37,8 @@ export default {
   methods: {
     async fetchListings() {
       let res = await fetch(this.endpoint, {
-        "headers": {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "POST GET OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type"
-        }
-      })
+        mode: 'no-cors'
+      });
       let data = await res.json()
       return this.setResults(data);
     }
