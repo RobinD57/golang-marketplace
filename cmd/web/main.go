@@ -57,10 +57,6 @@ type Connection struct {
 	Purchases *mongo.Collection
 }
 
-func enableCors(w *http.ResponseWriter) { // ONLY FOR PRIVATE TESTING
-	(*w).Header().Set("Access-Control-Allow-Origin", "*")
-}
-
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
 	w.Header().Set("content-type", "application/json")
 	var listing Listing
@@ -80,8 +76,8 @@ func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *htt
 }
 
 func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("content-type", "application/json")
-	enableCors(&w) // ONLY FOR PRIVATE TESTING
 	var listings []Listing
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	cursor, err := connection.Listings.Find(ctx, bson.M{})
@@ -237,7 +233,7 @@ func main() {
 
 	router := mux.NewRouter()
 	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
-	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET")
+	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST")
