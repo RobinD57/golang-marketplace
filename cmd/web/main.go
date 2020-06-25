@@ -78,6 +78,7 @@ func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *htt
 func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("content-type", "application/json")
+	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 	var listings []Listing
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	cursor, err := connection.Listings.Find(ctx, bson.M{})
