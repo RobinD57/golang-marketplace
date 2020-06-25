@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import App from './App.vue';
-import Listings from './components/Listing.vue';
+import Listing from './components/Listing.vue';
 import Hello from './components/Hello.vue';
 
 Vue.use(Router);

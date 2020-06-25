@@ -21,11 +21,9 @@
 </template>
 
 <script>
-
 export default {
   name: 'App',
   components: {
-
   }
 }
 </script>
@@ -71,7 +69,7 @@ export default {
     overflow: hidden;
   }
   aside {
-    flex: 1 0 30%;
+    flex: 1 0 20%;
     height: 100%;
     overflow-y: auto;
     width: 30%;
@@ -80,7 +78,7 @@ export default {
     border-right: 1px solid #42b983;
   }
   .content {
-    flex: 1 1 70%;
+    flex: 1 1 80%;
     display: flex;
     align-items: center;
     justify-content: center;
