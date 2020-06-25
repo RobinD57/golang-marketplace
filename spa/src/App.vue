@@ -10,7 +10,9 @@
           v-for="listing in listings"
           class="link"
           :to="{ name: 'listing', params: { id: listing.id } }">
-          {{post.id}}. {{ post.title }}
+          {{ listing.description }}
+          <br>
+          {{listing.name}}
         </router-link>
       </aside>
       <div class="content">
@@ -36,18 +38,16 @@ export default {
 
   methods: {
     async fetchListings() {
-      let res = await fetch(this.endpoint, {
-        mode: 'no-cors'
-      });
+      let res = await fetch(this.endpoint)
       let data = await res.json()
+      console.log(data)
       return this.setResults(data);
+    },
+    setResults (results) {
+      this.listings = results;
     }
-  },
-  setResults (results) {
-    this.listings = results;
   }
 }
-
 </script>
 
 <style>
