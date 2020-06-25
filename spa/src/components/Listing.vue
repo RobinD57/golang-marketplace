@@ -1,37 +1,25 @@
 <template lang="html">
-  <div class="post" v-if="post">
-    <h1 class="post__title">{{ post.title }}</h1>
-    <p class="post__body">{{ post.body }}</p>
-    <p class="post__id">{{ post.id }}</p>
+  <div class="listing" v-if="listing">
+    <h1 class="listing__title">{{ listing.title }}</h1>
+    <p class="listing__body">{{ listing.body }}</p>
+    <p class="listing__id">{{ listing.id }}</p>
   </div>
 </template>
 
 <script>
-/* eslint-disable */
-import axios from 'axios';
+
 
 export default {
   props: ['id'],
   data() {
     return {
-      post: null,
-      endpoint: 'https://jsonplaceholder.typicode.com/posts/',
     }
   },
   methods: {
-    getPost(id) {
-      axios(this.endpoint + id)
-      .then((response) => {
-        this.post = response.data
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-    },
-    created() {
-      this.getPost(this.id);
-    },
-  },
+    getlisting(id) {
+      this.listing = 
+  }
+},
   watch: {
     '$route'() {
       this.getPost(this.id);
@@ -42,7 +30,7 @@ export default {
 </script>
 
 <style scoped>
-  .post {
+  .listing {
     position: relative;
     max-width: 500px;
     margin: 0 auto;
