@@ -40,7 +40,6 @@ export default {
     async fetchListings() {
       let res = await fetch(this.endpoint)
       let data = await res.json()
-      console.log(data)
       return this.setResults(data);
     },
     setResults (results) {

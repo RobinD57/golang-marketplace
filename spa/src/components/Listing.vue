@@ -1,8 +1,8 @@
 <template lang="html">
   <div class="listing" v-if="listing">
-    <h1 class="listing__title">{{ listing.title }}</h1>
-    <p class="listing__body">{{ listing.body }}</p>
-    <p class="listing__id">{{ listing.id }}</p>
+    <h1 class="listing_name">{{ listing.name }}</h1>
+    <p class="listing_description">{{ listing.description }}</p>
+    <p class="listing_price">${{ listing.price }}</p>
   </div>
 </template>
 
@@ -14,18 +14,17 @@ export default {
   data() {
     return {
       listing: null,
-      endpoint: 'http://localhost:8080/listings/',
+      endpoint: 'http://localhost:8080/listing/',
     };
   },
   methods: {
     async fetchListing(id) {
       let res = await fetch(this.endpoint + id)
       let data = await res.json()
-      console.log(data)
       return this.setResults(data);
     },
     setResults (results) {
-      this.listings = results;
+      this.listing = results;
     }
   },
   watch: {
@@ -43,18 +42,20 @@ export default {
     max-width: 500px;
     margin: 0 auto;
     padding: 50px 20px 70px;
-    &__title {
+  }
+
+  .listing .listing_name {
+    position: relative;
+    text-transform: uppercase;
+    z-index: 1;
+  }
+  .listing .listing_description {
       position: relative;
-      text-transform: uppercase;
       z-index: 1;
     }
-    &__body {
-      position: relative;
-      z-index: 1;
-    }
-    &__id {
+  .listing .listing_price {
       position: absolute;
-      font-size: 280px;
+      font-size: 50px;
       bottom: -50px;
       margin: 0;
       color: #eeeeee;
@@ -62,6 +63,5 @@ export default {
       line-height: 1;
       font-weight: 900;
       z-index: 0;
-    }
   }
 </style>
