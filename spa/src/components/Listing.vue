@@ -1,5 +1,6 @@
 <template lang="html">
   <div class="listing" v-if="listing">
+    Sold by: {{listing.user}}
     <h1 class="listing_name">{{ listing.name }}</h1>
     <p class="listing_description">{{ listing.description }}</p>
     <p class="listing_price">${{ listing.price }}</p>
@@ -26,6 +27,9 @@ export default {
     setResults (results) {
       this.listing = results;
     }
+  },
+  created() {
+    this.fetchListing(this.id);
   },
   watch: {
     '$route'() {

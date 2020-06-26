@@ -95,6 +95,7 @@ export default {
     overflow-y: auto;
     width: 30%;
     padding: 50px 30px;
+    padding-right: 55px;
     box-sizing: border-box;
     border-right: 1px solid #42b983;
   }
