@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header-nav :name="test"></header-nav>
+    <header-nav></header-nav>
     <main>
       <aside class="sidebar">
         <router-link
@@ -21,12 +21,18 @@
 </template>
 
 <script>
+import HeaderNav from '@/components/HeaderNav';
+
 export default {
+  name: 'app',
   props: ['id'],
+  components: {
+    HeaderNav
+  },
   data() {
     return {
       listings: [],
-      endpoint: 'http://localhost:8080/listings',
+      endpoint: 'http://localhost:8080/listings'
     };
   },
 
@@ -69,15 +75,7 @@ export default {
     display: inline-block;
     margin: 0 10px;
   }
-  header {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    min-height: 90px;
-    border-bottom: 1px solid #42b983;
-    text-align: center;
-    background: #ffffff;
-  }
+
   main {
     display: flex;
     height: calc(100vh - 90px);
