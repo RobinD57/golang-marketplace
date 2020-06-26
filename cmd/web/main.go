@@ -32,6 +32,11 @@ type User struct {
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
 
+func (u User) Validate() error {
+	validate := validator.New()
+	return validate.Struct(u)
+}
+
 type Review struct {
 	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
 	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"gte=1,lte=5"`
@@ -50,6 +55,11 @@ type Listing struct {
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Price       float64            `bson:"price,omitempty" json:"price, string" validate:"required"`
 	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
+}
+
+func (l Listing) Validate() error {
+	validate := validator.New()
+	return validate.Struct(l)
 }
 
 type Purchase struct {
