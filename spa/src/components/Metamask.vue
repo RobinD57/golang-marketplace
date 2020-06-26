@@ -9,12 +9,13 @@
       </div>
     </div>
     <div class="address"
+      v-if="currentAddress"
       @mouseover="hover = true"
       @mouseleave="hover = false">
-      <div class="short-address" :class="{ active: hover }">
+      <div class="short-address">
       <span>{{currentAddress.slice(0,8)}}</span>
     </div>
-    <span class="full-address" v-if="hover">{{currentAddress}}</span>
+    <span class="full-address" v-if="hover">{{currentAddress.slice(8)}}</span>
     </div>
   </div>
 </template>
@@ -53,15 +54,13 @@
           loginAndSetAddress() {
             this.loadWeb3();
             this.loadBlockchainData();
-          },
-          revealAddress() {
-
           }
         },
-         created() {
-             this.loadWeb3();
-             this.loadBlockchainData();
-         },
+        created() {
+          this.loadWeb3();
+          this.loadBlockchainData();
+        },
+
     }
 </script>
 
@@ -85,8 +84,8 @@
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
 
-    .Login-button span {
-      margin-top: 1.1rem;
+    #connect span {
+      margin-top: 1.2rem;
       margin-right: 0.5rem;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
@@ -105,6 +104,7 @@
       align-items: center;
       margin-right: 2rem;
       padding: 10px;
+      transition: .5s;
     }
 
     .address span {
