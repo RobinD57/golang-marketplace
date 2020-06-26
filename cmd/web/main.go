@@ -26,8 +26,8 @@ var tpl = template.Must(template.ParseFiles("static/index.html"))
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id" json:"id,string"`
-	PublicAddress string             `bson:"name,omitempty" json:"name,omitempty"`
-	Nonce         string             `bson:"name,omitempty" json:"name,omitempty"` // keep it as string, could be big rnd int
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty"`
+	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
 
@@ -56,6 +56,8 @@ type Purchase struct {
 type Connection struct {
 	Listings  *mongo.Collection
 	Purchases *mongo.Collection
+	Reviews   *mongo.Collection
+	Users     *mongo.Collection
 }
 
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
@@ -177,6 +179,29 @@ func (connection Connection) DeletePurchaseEndpoint(w http.ResponseWriter, r *ht
 	json.NewEncoder(w).Encode(result)
 }
 
+// IS VALIDATION NEEDED FOR PUBLIC ADDRESS FORMAT? WE GET IT FROM WEB3.JS ANYWAY
+func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *http.Request) {
+	opts := options.FindOneAndUpdate().SetUpsert(true)
+	params := mux.Vars(r)
+	publicAddress, _ := params["publicAddress"]
+	var user User
+	var result bson.M
+	filter := bson.D{{"publicAddress", publicAddress}}
+	update := bson.D{{"$set", bson.D{{"publicAddress", publicAddress}}}}
+	json.NewDecoder(r.Body).Decode(&user)
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	err := connection.Users.FindOneAndUpdate(ctx, filter, update, opts).Decode(&result)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return
+		}
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
+
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -203,6 +228,7 @@ func main() {
 	marketplaceDatabase := client.Database("marketplace")
 	listingsCollection := marketplaceDatabase.Collection("listings")
 	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
+	usersCollection := marketplaceDatabase.Collection("users")
 
 	//document := Listing{
 	//	Name:        "Guuuuccciii Gang",
@@ -244,7 +270,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection}
+	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection, Users: usersCollection}
 
 	router := mux.NewRouter()
 	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
@@ -257,5 +283,6 @@ func main() {
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
+	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
