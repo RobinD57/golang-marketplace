@@ -8,8 +8,13 @@
         </button>
       </div>
     </div>
-    <div class="" v-if="currentAddress">
-      <p @event="revealAddress">{{currentAddress}}</p>
+    <div class="address"
+      @mouseover="hover = true"
+      @mouseleave="hover = false">
+      <div class="short-address" :class="{ active: hover }">
+      <span>{{currentAddress.slice(0,8)}}</span>
+    </div>
+    <span class="full-address" v-if="hover">{{currentAddress}}</span>
     </div>
   </div>
 </template>
@@ -21,6 +26,7 @@
         data() {
             return {
                 currentAddress: "",
+                hover: false
             }
         },
         methods: {
@@ -52,10 +58,10 @@
 
           }
         },
-        // created() {
-        //     this.loadWeb3();
-        //     this.loadBlockchainData();
-        // },
+         created() {
+             this.loadWeb3();
+             this.loadBlockchainData();
+         },
     }
 </script>
 
@@ -75,13 +81,13 @@
         cursor: pointer;
     }
     p {
-      padding-right: 4rem;
+      margin-right: 4rem;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
 
-    span{
-      margin-top: 1rem;
-      margin-right: 1rem;
+    .Login-button span {
+      margin-top: 1.1rem;
+      margin-right: 0.5rem;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
     }
 
@@ -92,6 +98,21 @@
 
     .Login-button:hover {
         opacity: 0.9;
+    }
+
+    .address {
+      display: flex;
+      align-items: center;
+      margin-right: 2rem;
+      padding: 10px;
+    }
+
+    .address span {
+      font-size: 14px;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+    .short-address .active {
+      visibility: hidden;
     }
 
     #Login-mm {
