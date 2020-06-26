@@ -36,6 +36,7 @@
         if (window.ethereum) {
           window.web3 = new Web3(window.ethereum);
           await window.ethereum.enable()
+          this.loadBlockchainData();
         }
           // Legacy dapp browsers...
         else if (window.web3) {
@@ -50,18 +51,13 @@
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts()
         this.currentAddress = accounts[0]
-        console.log("hi");
-
       },
       loginAndSetAddress() {
         this.loadWeb3();
-        this.loadBlockchainData();
-
       }
     },
     created() {
       this.loadWeb3();
-      this.loadBlockchainData();
     },
   }
 </script>
