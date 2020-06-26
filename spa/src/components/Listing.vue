@@ -13,16 +13,24 @@ export default {
   props: ['id'],
   data() {
     return {
-    }
+      listing: null,
+      endpoint: 'http://localhost:8080/listings/',
+    };
   },
   methods: {
-    getlisting(id) {
-      this.listing = 
-  }
-},
+    async fetchListing(id) {
+      let res = await fetch(this.endpoint + id)
+      let data = await res.json()
+      console.log(data)
+      return this.setResults(data);
+    },
+    setResults (results) {
+      this.listings = results;
+    }
+  },
   watch: {
     '$route'() {
-      this.getPost(this.id);
+      this.fetchListing(this.id);
     }
   }
 }
