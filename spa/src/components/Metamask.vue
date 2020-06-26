@@ -1,6 +1,6 @@
 <template lang="html">
     <div id="connect">
-        <button type="button" class="Login-button" id="Login-mm" onClick="createExampleContract();">Connect with Metamask</button>
+        <button type="button" class="Login-button" id="Login-mm" @click="loadWeb3">Connect with Metamask</button>
     </div>
 </template>
 
@@ -36,6 +36,10 @@
                 this.currentAddress = accounts[0]
                 // put address into navbar ( { this.state.account } in React )
             }
+        },
+        created() {
+            this.loadWeb3();
+            this.loadBlockchainData();
         },
     }
 </script>

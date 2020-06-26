@@ -283,6 +283,7 @@ func main() {
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
-	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
+	// router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
+	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
