@@ -1,8 +1,6 @@
 <template>
   <div id="app">
-    <header>
-      <h1>CMarket</h1>
-    </header>
+    <header-nav :name="test"></header-nav>
     <main>
       <aside class="sidebar">
         <router-link
