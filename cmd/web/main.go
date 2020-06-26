@@ -12,6 +12,7 @@ import (
 	"os"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -26,24 +27,29 @@ var tpl = template.Must(template.ParseFiles("static/index.html"))
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
 
 type Review struct {
 	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
-	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty"` // range missing
+	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"gte=1,lte=5"`
 	Content string             `bson:"content,omitempty" json:"content,omitempty"`
+}
+
+func (r Review) Validate() error {
+	validate := validator.New()
+	return validate.Struct(r)
 }
 
 type Listing struct {
 	ID          primitive.ObjectID `bson:"_id" json:"id,string"`
-	Name        string             `bson:"name,omitempty" json:"name,omitempty"`
+	Name        string             `bson:"name,omitempty" json:"name" validate:"required"`
 	Seller      primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
-	Price       float64            `bson:"price,omitempty" json:"price, string, omitempty"`
-	Photo       string             `bson:"photo,omitempty" json:"photo,omitempty"` // Cloudinary?
+	Price       float64            `bson:"price,omitempty" json:"price, string" validate:"required"`
+	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
 }
 
 type Purchase struct {
