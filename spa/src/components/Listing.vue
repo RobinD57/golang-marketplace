@@ -134,6 +134,7 @@ export default {
     z-index: 99;
 
     width: 100%;
+    height: 50vh;
     max-width: 400px;
     background-color: #FFF;
     border-radius: 16px;
