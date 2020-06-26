@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
@@ -21,13 +20,13 @@ import (
 	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var tpl = template.Must(template.ParseFiles("static/index.html"))
+var validate *validator.Validate
 
 // need to add validations to structs!!
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,gte=5"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
@@ -204,6 +203,7 @@ func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *
 	var result bson.M
 	filter := bson.D{{"publicAddress", publicAddress}}
 	update := bson.D{{"$set", bson.D{{"publicAddress", publicAddress}}}}
+	user.Validate()
 	json.NewDecoder(r.Body).Decode(&user)
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	err := connection.Users.FindOneAndUpdate(ctx, filter, update, opts).Decode(&result)
@@ -245,28 +245,6 @@ func main() {
 	listingsCollection := marketplaceDatabase.Collection("listings")
 	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
 	usersCollection := marketplaceDatabase.Collection("users")
-
-	//document := Listing{
-	//	Name:        "Guuuuccciii Gang",
-	//	User:        "Nic Raboy",
-	//	Description: "Super cool Gucci tshirt with a fucking space eagle",
-	//	Price:       150,
-	//	Photo:       "photoURL",
-	//}
-
-	//listingResult, err := listingsCollection.InsertOne(ctx, document)
-
-	//purchasesResult, err := purchasesCollection.InsertOne(ctx, bson.D{
-	//	{"Listing", listingResult.InsertedID},
-	//	{"Buyer", "Rich boy"},
-	//	{"Seller", "Nic Raboy"},
-	//})
-
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-
-	// fmt.Printf("%v\n", purchasesResult)
 
 	cur, err := listingsCollection.Find(ctx, bson.D{})
 	if err != nil {
