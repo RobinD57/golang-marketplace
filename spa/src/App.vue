@@ -40,7 +40,6 @@ export default {
     async fetchListings() {
       let res = await fetch(this.endpoint)
       let data = await res.json()
-      console.log(data)
       return this.setResults(data);
     },
     setResults (results) {
@@ -95,7 +94,8 @@ export default {
     height: 100%;
     overflow-y: auto;
     width: 30%;
-    padding: 50px 30px;
+    padding: 50px 0 ;
+    padding-right: 55px;
     box-sizing: border-box;
     border-right: 1px solid #42b983;
   }
