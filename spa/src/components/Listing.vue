@@ -11,7 +11,7 @@
         <h1>{{listing.user}}</h1>
         <p>Member since:</p>
         <button class="user-info" @click="showModal = false" type="button" name="button">
-          Close Modal
+          close
         </button>
       </div>
     </transition>
@@ -61,6 +61,7 @@ export default {
     width: 90%;
     margin: 0 auto;
     padding: 50px 20px 70px;
+    height: 80vh;
   }
 
   .listing .listing_name {
@@ -112,7 +113,7 @@ export default {
     right: 0;
     bottom: 0;
     z-index: 98;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.1);
   }
 
   .fade-enter-active,
