@@ -77,9 +77,6 @@ func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *htt
 }
 
 func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Access-Control-Allow-Origin", "*")
-	w.Header().Set("content-type", "application/json")
-	w.Header().Set("Access-Control-Allow-Headers", "Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization")
 	var listings []Listing
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	cursor, err := connection.Listings.Find(ctx, bson.M{})
@@ -94,6 +91,22 @@ func (connection Connection) GetListingsEndpoint(w http.ResponseWriter, r *http.
 		return
 	}
 	json.NewEncoder(w).Encode(listings)
+}
+
+func (connection Connection) GetListingEndpoint(w http.ResponseWriter, r *http.Request) {
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+	var listing Listing
+	var result bson.M
+	json.NewDecoder(r.Body).Decode(&listing)
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	err := connection.Listings.FindOne(ctx, bson.M{"_id": id}).Decode(&result)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
 }
 
 func (connection Connection) UpdateListingEndpoint(w http.ResponseWriter, r *http.Request) {
@@ -237,11 +250,12 @@ func main() {
 	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
 	methods := handlers.AllowedMethods([]string{"GET", "POST", "PUT", "HEAD", "OPTIONS"})
 	origins := handlers.AllowedOrigins([]string{"*"})
-	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST")
+	router.HandleFunc("/listing", connection.CreateListingEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/listings", connection.GetListingsEndpoint).Methods("GET", "OPTIONS")
-	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT")
-	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE")
-	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST")
-	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE")
+	router.HandleFunc("/listing/{id}", connection.GetListingEndpoint).Methods("GET", "OPTIONS")
+	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT", "OPTIONS")
+	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
+	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
