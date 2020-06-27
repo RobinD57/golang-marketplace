@@ -57,7 +57,9 @@
       }
     },
     created() {
-      this.loadBlockchainData();
+      if (window.ethereum) {
+        this.currentAddress = new Web3(window.ethereum).givenProvider.selectedAddress;
+      }
     }
   }
 </script>
