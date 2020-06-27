@@ -25,7 +25,7 @@ var validate *validator.Validate
 // need to add validations to structs!!
 
 type User struct {
-	ID            primitive.ObjectID `bson:"_id" json:"id,string"`
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,gte=5"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
@@ -37,8 +37,8 @@ func (u User) Validate() error {
 }
 
 type Review struct {
-	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
-	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"gte=1,lte=5"`
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
+	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"required,gte=1,lte=5"`
 	Content string             `bson:"content,omitempty" json:"content,omitempty"`
 }
 
@@ -48,7 +48,7 @@ func (r Review) Validate() error {
 }
 
 type Listing struct {
-	ID          primitive.ObjectID `bson:"_id" json:"id,string"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	Name        string             `bson:"name,omitempty" json:"name" validate:"required"`
 	Seller      primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
@@ -56,13 +56,13 @@ type Listing struct {
 	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
 }
 
-func (l Listing) Validate() error {
+func (l *Listing) Validate() error {
 	validate := validator.New()
 	return validate.Struct(l)
 }
 
 type Purchase struct {
-	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	Listing primitive.ObjectID `bson:"listing,omitempty" json:"listing,string"`
 	Buyer   primitive.ObjectID `bson:"buyer,omitempty" json:"buyer,omitempty"`
 	Seller  primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
@@ -78,6 +78,11 @@ type Connection struct {
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
 	var listing Listing
 	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err := listing.Validate(); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 		return
