@@ -61,7 +61,6 @@ type Connection struct {
 }
 
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
-	w.Header().Set("content-type", "application/json")
 	var listing Listing
 	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -112,7 +111,6 @@ func (connection Connection) GetListingEndpoint(w http.ResponseWriter, r *http.R
 }
 
 func (connection Connection) UpdateListingEndpoint(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
 	params := mux.Vars(r)
 	id, _ := primitive.ObjectIDFromHex(params["id"])
 	var listing Listing
@@ -134,7 +132,6 @@ func (connection Connection) UpdateListingEndpoint(w http.ResponseWriter, r *htt
 }
 
 func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
 	params := mux.Vars(r)
 	id, _ := primitive.ObjectIDFromHex(params["id"])
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
@@ -148,7 +145,6 @@ func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *htt
 }
 
 func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
 	var purchase Purchase
 	if err := json.NewDecoder(r.Body).Decode(&purchase); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -166,7 +162,6 @@ func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *ht
 }
 
 func (connection Connection) DeletePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("content-type", "application/json")
 	params := mux.Vars(r)
 	id, _ := primitive.ObjectIDFromHex(params["id"])
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
@@ -229,28 +224,6 @@ func main() {
 	listingsCollection := marketplaceDatabase.Collection("listings")
 	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
 	usersCollection := marketplaceDatabase.Collection("users")
-
-	//document := Listing{
-	//	Name:        "Guuuuccciii Gang",
-	//	User:        "Nic Raboy",
-	//	Description: "Super cool Gucci tshirt with a fucking space eagle",
-	//	Price:       150,
-	//	Photo:       "photoURL",
-	//}
-
-	//listingResult, err := listingsCollection.InsertOne(ctx, document)
-
-	//purchasesResult, err := purchasesCollection.InsertOne(ctx, bson.D{
-	//	{"Listing", listingResult.InsertedID},
-	//	{"Buyer", "Rich boy"},
-	//	{"Seller", "Nic Raboy"},
-	//})
-
-	//if err != nil {
-	//	log.Fatal(err)
-	//}
-
-	// fmt.Printf("%v\n", purchasesResult)
 
 	cur, err := listingsCollection.Find(ctx, bson.D{})
 	if err != nil {
