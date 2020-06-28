@@ -6,12 +6,13 @@ import (
 	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
-	"html/template"
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"time"
 
+	"github.com/go-playground/validator/v10"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -20,34 +21,59 @@ import (
 	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
-var tpl = template.Must(template.ParseFiles("static/index.html"))
+var validate *validator.Validate
 
 // need to add validations to structs!!
 
 type User struct {
-	ID            primitive.ObjectID `bson:"_id" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty"`
+	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
 
+func (u *User) Validate() error {
+	validate := validator.New()
+	validate.RegisterValidation("ethaddress", validateAddress)
+	return validate.Struct(u)
+}
+
+func validateAddress(fl validator.FieldLevel) bool {
+	re := regexp.MustCompile(`^0x[a-fA-F0-9]{40}$`)
+	matches := re.FindAllString(fl.Field().String(), -1) // slice of strings
+	if len(matches) != 1 {
+		return false
+	}
+	return true
+}
+
 type Review struct {
-	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
-	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty"` // range missing
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
+	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"required,gte=1,lte=5"`
 	Content string             `bson:"content,omitempty" json:"content,omitempty"`
 }
 
+func (r *Review) Validate() error {
+	validate := validator.New()
+	return validate.Struct(r)
+}
+
 type Listing struct {
-	ID          primitive.ObjectID `bson:"_id" json:"id,string"`
-	Name        string             `bson:"name,omitempty" json:"name,omitempty"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
+	Name        string             `bson:"name,omitempty" json:"name" validate:"required"`
 	Seller      primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
-	Price       float64            `bson:"price,omitempty" json:"price, string, omitempty"`
-	Photo       string             `bson:"photo,omitempty" json:"photo,omitempty"` // Cloudinary?
+	Price       float64            `bson:"price,omitempty" json:"price, string" validate:"required"`
+	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
+}
+
+func (l *Listing) Validate() error {
+	validate := validator.New()
+	return validate.Struct(l)
 }
 
 type Purchase struct {
-	ID      primitive.ObjectID `bson:"_id" json:"id,string"`
+	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	Listing primitive.ObjectID `bson:"listing,omitempty" json:"listing,string"`
 	Buyer   primitive.ObjectID `bson:"buyer,omitempty" json:"buyer,omitempty"`
 	Seller  primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
@@ -63,6 +89,11 @@ type Connection struct {
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
 	var listing Listing
 	if err := json.NewDecoder(r.Body).Decode(&listing); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err := listing.Validate(); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 		return
@@ -184,6 +215,11 @@ func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *
 	filter := bson.D{{"publicAddress", publicAddress}}
 	update := bson.D{{"$set", bson.D{{"publicAddress", publicAddress}}}}
 	json.NewDecoder(r.Body).Decode(&user)
+	if err := user.Validate(); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	err := connection.Users.FindOneAndUpdate(ctx, filter, update, opts).Decode(&result)
 	if err != nil {
