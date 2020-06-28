@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -26,14 +27,24 @@ var validate *validator.Validate
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,gte=5"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
 
-func (u User) Validate() error {
+func (u *User) Validate() error {
 	validate := validator.New()
+	validate.RegisterValidation("ethaddress", validateAddress)
 	return validate.Struct(u)
+}
+
+func validateAddress(fl validator.FieldLevel) bool {
+	re := regexp.MustCompile(`^0x[a-fA-F0-9]{40}$`)
+	matches := re.FindAllString(fl.Field().String(), -1) // slice of strings
+	if len(matches) != 1 {
+		return false
+	}
+	return true
 }
 
 type Review struct {
@@ -42,7 +53,7 @@ type Review struct {
 	Content string             `bson:"content,omitempty" json:"content,omitempty"`
 }
 
-func (r Review) Validate() error {
+func (r *Review) Validate() error {
 	validate := validator.New()
 	return validate.Struct(r)
 }
@@ -203,8 +214,12 @@ func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *
 	var result bson.M
 	filter := bson.D{{"publicAddress", publicAddress}}
 	update := bson.D{{"$set", bson.D{{"publicAddress", publicAddress}}}}
-	user.Validate()
 	json.NewDecoder(r.Body).Decode(&user)
+	if err := user.Validate(); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
 	err := connection.Users.FindOneAndUpdate(ctx, filter, update, opts).Decode(&result)
 	if err != nil {
