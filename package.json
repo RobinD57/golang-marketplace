@@ -1,0 +1,29 @@
+{
+  "name": "my-first-truffle-project",
+  "version": "0.0.1",
+  "engines": {
+    "node": "v11.8.0",
+    "npm": "6.5.x"
+  },
+  "scripts": {
+    "ganache": "ganache-cli --networkId $npm_package_config_ganache_networkId --allowUnlimitedContractSize --gasLimit $npm_package_config_ganache_gasLimit --gasPrice $npm_package_config_ganache_gasPrice --mnemonic \"$MNEMONIC\"",
+    "start": "concurrently \"npm run ganache\" \"npm run migrate\"",
+    "migrate": "rm -rf build && truffle migrate --reset --compile-all --network development"
+  },
+  "config": {
+    "ganache": {
+      "networkId": 3431,
+      "gasPrice": 25000000000,
+      "gasLimit": 6500000
+    }
+  },
+  "dependencies": {
+    "node-gyp": "^7.0.0",
+    "scrypt": "^6.0.3",
+    "web3": "^1.2.9"
+  },
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "ganache-cli": "^6.10.0-beta.2"
+  }
+}
