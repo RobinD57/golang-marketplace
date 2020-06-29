@@ -24,7 +24,10 @@ func NewChatSession(user string, peer *websocket.Conn) *ChatSession {
 
 const usernameHasBeenTaken = "username %s is already taken. please retry with a different name"
 const retryMessage = "failed to connect. please try again"
+const welcome = "Welcome %s!"
+const joined = "%s: has joined the chat!"
 const chat = "%s: %s"
+const left = "%s: has left the chat!"
 
 func (s *ChatSession) Start() {
 	go func() {
