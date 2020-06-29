@@ -233,6 +233,45 @@ func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *
 	json.NewEncoder(w).Encode(result)
 }
 
+func (connection Connection) GetReviewsEndpoint(w http.ResponseWriter, r *http.Request) {
+	var reviews []Review
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	cursor, err := connection.Reviews.Find(ctx, bson.M{})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err = cursor.All(ctx, &reviews); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(reviews)
+}
+
+func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http.Request) {
+	var review Review
+	if err := json.NewDecoder(r.Body).Decode(&review); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err := review.Validate(); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	result, err := connection.Reviews.InsertOne(ctx, review)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(result)
+}
+
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -260,6 +299,7 @@ func main() {
 	listingsCollection := marketplaceDatabase.Collection("listings")
 	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
 	usersCollection := marketplaceDatabase.Collection("users")
+	reviewsCollection := marketplaceDatabase.Collection("reviews")
 
 	cur, err := listingsCollection.Find(ctx, bson.D{})
 	if err != nil {
@@ -279,7 +319,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection, Users: usersCollection}
+	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection, Users: usersCollection, Reviews: reviewsCollection}
 
 	router := mux.NewRouter()
 	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
@@ -294,5 +334,7 @@ func main() {
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
 	// router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
+	router.HandleFunc("/listing/{id}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
