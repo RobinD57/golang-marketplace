@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"regexp"
+	"strings"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -19,6 +20,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	// "go.mongodb.org/mongo-driver/mongo/readpref"
+	"github.com/gorilla/websocket"
 )
 
 var validate *validator.Validate
@@ -272,6 +274,16 @@ func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http
 	json.NewEncoder(w).Encode(result)
 }
 
+func websocketHandler(w http.ResponseWriter, r *http.Request) {
+	user := strings.TrimPrefix(r.URL.Path, "/chat/")
+	peer, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal("websocket conn failed", err)
+	}
+	chatSession := chat.NewChatSession(user, peer)
+	chatSession.Start()
+}
+
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
@@ -336,5 +348,6 @@ func main() {
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/listing/{id}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/chat", websocketHandler)
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
