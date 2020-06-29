@@ -79,7 +79,7 @@ export default {
   main {
     display: flex;
     height: calc(100vh - 90px);
-    max-width: 1200px;
+    max-width: 1700px;
     margin-top: 90px;
     margin-left: auto;
     margin-right: auto;
@@ -93,7 +93,7 @@ export default {
     padding: 50px 0 ;
     padding-right: 55px;
     box-sizing: border-box;
-    border-right: 1px solid #42b983;
+    border-right: 2px solid rgba(246, 246, 246, 1);
   }
   .content {
     flex: 1 1 80%;
