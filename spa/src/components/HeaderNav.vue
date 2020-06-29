@@ -3,7 +3,7 @@
     <header>
       <img src="http://acmelogos.com/images/logo-1.svg" alt="">
       <div class="">
-        <Metamask></Metamask>
+        <metamask></metamask>
       </div>
     </header>
   </div>
@@ -11,13 +11,13 @@
 
 <script>
 
-import Metamask from './Metamask'
+import metamask from './Metamask'
 
 export default {
   name: 'header-nav',
   props: ['name'],
   components: {
-    Metamask
+    metamask
   },
 }
 </script>
