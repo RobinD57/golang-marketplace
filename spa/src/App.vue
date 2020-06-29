@@ -54,12 +54,14 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
+
   body {
     margin: 0;
     padding: 0;
   }
   #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    font-family: 'Crimson Text', serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
@@ -83,7 +85,7 @@ export default {
     margin-top: 90px;
     margin-left: auto;
     margin-right: auto;
-    overflow: hidden;
+
   }
   aside {
     flex: 1 0 20%;
@@ -94,6 +96,7 @@ export default {
     padding-right: 55px;
     box-sizing: border-box;
     border-right: 2px solid rgba(246, 246, 246, 1);
+    border-bottom: 2px solid rgba(246, 246, 246, 1);
   }
   .content {
     flex: 1 1 80%;

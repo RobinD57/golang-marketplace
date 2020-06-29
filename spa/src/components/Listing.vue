@@ -15,7 +15,7 @@
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/dbd113ff-1516-417b-ae5a-1a393bc716a8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
       </div>
-      <UserSideBar :user='listing.user' :posting-date='"2020 05 10"' />
+      <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' />
     </div>
     <h1 class="listing_name">{{ listing.name }}</h1>
     <p class="listing_description">{{ listing.description }}</p>
@@ -25,12 +25,12 @@
 
 <script>
 
-import UserSideBar from './UserSideBar'
+import UserSideBar from './UserSideBar';
 
 export default {
   props: ['id'],
   components: {
-    UserSideBar,
+    UserSideBar
   },
   data() {
     return {
@@ -76,6 +76,7 @@ export default {
     margin: 0 auto;
     padding: 50px 20px 70px;
     height: 80vh;
+    margin-top: 3.5rem;
   }
 
   .listing-contents {
@@ -113,6 +114,7 @@ export default {
   .image-container img {
     border-radius: 5px;
     object-fit: cover;
+    z-index: 0;
   }
 
   .main-image {
@@ -123,79 +125,5 @@ export default {
     width: 9rem;
     margin-left: 10px;
     cursor: pointer;
-  }
-
-  .user-info {
-    appearance:none;
-    outline: none;
-    border: none;
-    background: none;
-    cursor: pointer;
-    display: inline-block;
-    margin-top: 2rem;
-    margin: 10px 9;
-    border-radius: 5px;
-    background-color: rgba(255, 255, 255, 0.25);
-    font-size: 18px;
-    font-weight: 700;
-    box-shadow:  2px 2px rgba(0, 0, 0, 0.4);
-    transition: 0.4s ease-out;
-    display: flex
-  }
-  .button:hover {
-      box-shadow: 4px 4px rgba(0, 0, 0, 0.6);
-  }
-
-  .modal-overlay {
-    position: absolute;
-    top:0;
-    left:0;
-    right: 0;
-    bottom: 0;
-    z-index: 98;
-    background-color: rgba(0, 0, 0, 0.1);
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
-  }
-
-  .modal {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 99;
-
-    width: 100%;
-    height: 50vh;
-    max-width: 400px;
-    background-color: #FFF;
-    border-radius: 16px;
-
-    padding: 25px;
-  }
-  .modal h1 {
-    color: #222;
-    font-size: 32px;
-    font-weight: 900;
-    margin-bottom: 15px;
-   }
-
-  .modal p {
-    color: #666;
-    font-size: 18px;
-    font-weight: 400;
-    margin-bottom: 15px;
-   }
-
-  .black {
-    color: black;
   }
 </style>

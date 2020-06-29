@@ -4,18 +4,28 @@
       <p class="user-name">{{user}}</p>
       <div class="user-details">
         <p>User since: 2020</p>
-        <p>Listing posted: {{posting-date}}</p>
+        <p>Listing posted: {{this.postingDate}}</p>
       </div>
     </div>
-
+    <div class="reviews-container">
+      <UserReview/>
+      <UserReview/>
+      <UserReview/>
+    </div>
   </div>
 </template>
 
 <script>
+
+import UserReview from './UserReview'
+
 export default {
-  props: ['user', 'posting-date'],
+  props: ['user', 'postingDate'],
   name: 'UserSideBar',
-  data() {
+  components: {
+    UserReview
+  },
+    data() {
     return {
     }
   }
@@ -30,6 +40,7 @@ export default {
   border: 2px solid rgba(246, 246, 246, 1);
   border-radius: 10px;
   box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+  z-index: 0;
 }
 
 .user-name {
@@ -46,5 +57,12 @@ export default {
 
 .user-details p {
   font-size: 12px;
+}
+
+.reviews-container {
+  border-left: 2px solid rgba(246, 246, 246, 1);
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 5px;
 }
 </style>

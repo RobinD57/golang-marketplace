@@ -23,7 +23,7 @@
 <script>
   import Web3 from 'web3';
   export default {
-    name: "meta-mask",
+    name: "Metamask",
     data() {
       return {
         currentAddress: null,
