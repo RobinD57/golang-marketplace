@@ -80,6 +80,7 @@ export default {
 
 <style scoped>
   .listing {
+    display: column;
     position: relative;
     width: 90%;
     margin: 0 auto;
@@ -110,7 +111,6 @@ export default {
 
   .main-image {
     width: 22rem !important;
-    transition: 0.5s;
   }
 
   .image-container{
@@ -123,10 +123,9 @@ export default {
   }
 
   .secondary-image {
-    width: 15rem;
+    width: 5rem;
     margin-left: 10px;
     cursor: pointer;
-    transition: 0.3s;
   }
 
     .user-info {
