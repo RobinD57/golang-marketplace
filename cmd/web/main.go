@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/RobinD57/golang-marketplace/chat"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
@@ -23,6 +24,13 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin:     func(r *http.Request) bool { return true },
+}
+var redisHost string
+var redisPassword string
 var validate *validator.Validate
 
 // need to add validations to structs!!
@@ -282,6 +290,18 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	chatSession := chat.NewChatSession(user, peer)
 	chatSession.Start()
+}
+
+func init() {
+	redisHost = os.Getenv("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("missing REDIS_HOST env var")
+	}
+
+	redisPassword = os.Getenv("REDIS_PASSWORD")
+	if redisPassword == "" {
+		log.Fatal("missing REDIS_PASSWORD env var")
+	}
 }
 
 func goDotEnvVariable(key string) string {
