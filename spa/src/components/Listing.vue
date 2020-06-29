@@ -15,7 +15,7 @@
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/dbd113ff-1516-417b-ae5a-1a393bc716a8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
       </div>
-      <UserSideBar :user='listing.user' />
+      <UserSideBar :user='listing.user' :posting-date='"2020 05 10"' />
     </div>
     <h1 class="listing_name">{{ listing.name }}</h1>
     <p class="listing_description">{{ listing.description }}</p>
@@ -104,8 +104,6 @@ export default {
       z-index: 0;
   }
 
-
-
   .image-container{
     min-height: 500px;
     display: flex;
@@ -118,11 +116,11 @@ export default {
   }
 
   .main-image {
-    width: 25rem !important;
+    width: 30rem !important;
   }
 
   .secondary-image {
-    width: 7rem;
+    width: 9rem;
     margin-left: 10px;
     cursor: pointer;
   }

@@ -34,7 +34,7 @@ header {
   top: 0;
   width: 100%;
   min-height: 90px;
-  border-bottom: 1px solid #42b983;
+  border-bottom: 2px solid rgba(246, 246, 246, 1);
   text-align: center;
   background: #ffffff;
   align-items: center;
