@@ -103,7 +103,7 @@ export default {
       bottom: -50px;
       margin: 0;
       right: -20px;
-      line-height: 1;
+      line-height: 2;
       font-weight: 900;
       z-index: 0;
   }
