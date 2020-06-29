@@ -1,8 +1,6 @@
 <template lang="html">
   <div class="listing" v-if="listing">
-    <button class="user-info" @click="showModal = true">
-      {{listing.user}}
-    </button>
+
     <transition name="fade" appear>
       <div class="modal-overlay" v-if="showModal" @click="showModal = false"></div>
     </transition>
@@ -15,6 +13,23 @@
         </button>
       </div>
     </transition>
+    <div class="image-container" ref="gallery">
+      <img v-bind:class="{ 'secondary-image': true, 'main-image': true,  }"
+      @click="resetImagesAndGrow"
+      src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/9b2e37e8-78f3-42bb-b31d-b0cf629c9627/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+      alt="">
+      <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+      @click="resetImagesAndGrow"
+      src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/ef03abcb-b457-4d0c-81ef-74ddd36bf82b/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+      alt="">
+      <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+      @click="resetImagesAndGrow"
+      src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/dbd113ff-1516-417b-ae5a-1a393bc716a8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+      alt="">
+    </div>
+    <button class="user-info" @click="showModal = true">
+      {{listing.user}}
+    </button>
     <h1 class="listing_name">{{ listing.name }}</h1>
     <p class="listing_description">{{ listing.description }}</p>
     <p class="listing_price">${{ listing.price }}</p>
@@ -30,7 +45,8 @@ export default {
     return {
       listing: null,
       endpoint: 'http://localhost:8080/listing/',
-      showModal: false
+      showModal: false,
+      isClicked: false
     };
   },
   methods: {
@@ -39,9 +55,16 @@ export default {
       let data = await res.json()
       return this.setResults(data);
     },
-    setResults (results) {
+    setResults(results) {
       this.listing = results;
     },
+    resetImagesAndGrow(e) {
+
+      this.$refs.gallery.children.forEach((img) => {
+        img.classList.remove('main-image');
+      })
+      e.currentTarget.classList.add('main-image');
+    }
   },
   created() {
     this.fetchListing(this.id);
@@ -80,9 +103,30 @@ export default {
       bottom: -50px;
       margin: 0;
       right: -20px;
-      line-height: 1;
+      line-height: 2;
       font-weight: 900;
       z-index: 0;
+  }
+
+  .main-image {
+    width: 22rem !important;
+    transition: 0.5s;
+  }
+
+  .image-container{
+    margin: 0 auto;
+    min-height: 500px;
+  }
+
+  .image-container img {
+    border-radius: 5px;
+  }
+
+  .secondary-image {
+    width: 15rem;
+    margin-left: 10px;
+    cursor: pointer;
+    transition: 0.3s;
   }
 
     .user-info {
@@ -93,7 +137,7 @@ export default {
       cursor: pointer;
       display: inline-block;
       margin-top: 2rem;
-      padding: 5px 10px;
+      margin: 10px 9;
       border-radius: 5px;
       background-color: rgba(255, 255, 255, 0.25);
       font-size: 18px;

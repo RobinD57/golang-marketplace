@@ -89,7 +89,7 @@ export default {
     flex: 1 0 20%;
     height: 100%;
     overflow-y: auto;
-    width: 30%;
+    width: 20%;
     padding: 50px 0 ;
     padding-right: 55px;
     box-sizing: border-box;
