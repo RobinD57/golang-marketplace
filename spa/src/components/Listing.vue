@@ -32,7 +32,9 @@
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
       </div>
-      <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
+      <div class="user-sidebar">
+        <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
+      </div>
     </div>
   </div>
 </template>
@@ -154,5 +156,9 @@ export default {
     width: 8.7rem;
     margin-left: 10px;
     cursor: pointer;
+  }
+
+  .user-sidebar {
+    width: 34%;
   }
 </style>

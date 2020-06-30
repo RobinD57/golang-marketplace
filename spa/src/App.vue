@@ -81,7 +81,7 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
 
   .main-card {
-    background-image: url(https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/i1-9fe1340b-ad01-4fc3-abc2-45ac40de20c3/windrunner-wild-run-mens-running-jacket-jDXm5l.jpg);
+    background-image: url(https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/resize=height:1400,fit:scale/output=quality:90/compress/https://cdn.fs.grailed.com/api/file/fpe0IssNQEWfiLXRbMX1);
     background-size: cover;
     height: 200px;
     width: 70%;
@@ -97,16 +97,15 @@ export default {
     height: 50px;
     width: 70%;
     margin-top: -4px;
-    z-index: -1;
+    padding: 2px;
+    border-radius: 5px;
   }
 
   .card-details {
     position: relative;
-    z-index: 1;
     display: flex;
     justify-content: space-around;
-    margin-top: 5px;
-    border-radius: 5px;
+    margin-top: 2.5px;
   }
 
   .card-details span {
