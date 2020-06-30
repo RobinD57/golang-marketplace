@@ -6,17 +6,19 @@
         <div class="collapse">
           <font-awesome-icon @click='toggleCollapse' :icon="['fas', 'chevron-left']"/>
         </div>
-        <router-link
-          :key="listing.title"
-          v-for="listing in listings"
-          class="link"
-          :to="{ name: 'listing', params: { id: listing.id } }">
-          <div class="">
-            {{ listing.description }}
-            <br>
-            {{listing.name}}
-          </div>
-        </router-link>
+        <div class="" v-if="!asideShrunk">
+          <router-link
+            :key="listing.title"
+            v-for="listing in listings"
+            class="link"
+            :to="{ name: 'listing', params: { id: listing.id } }">
+            <div class="">
+              {{ listing.description }}
+              <br>
+              {{listing.name}}
+            </div>
+          </router-link>
+        </div>
       </aside>
       <div class="content">
         <router-view></router-view>
@@ -37,6 +39,7 @@ export default {
   data() {
     return {
       listings: [],
+      asideShrunk: false,
       endpoint: 'http://localhost:8080/listings'
     };
   },
@@ -55,7 +58,15 @@ export default {
       this.listings = results;
     },
     toggleCollapse() {
-      document.querySelector('aside').style.flex = '0 1 3%';
+      if (!this.asideShrunk) {
+       document.querySelector('aside').style.flex = '0 1 3%';
+       document.querySelector('.collapse').style.transform = 'rotate(180deg)';
+       this.asideShrunk = true;
+    } else {
+      document.querySelector('aside').style.flex = '';
+      document.querySelector('.collapse').style.transform = '';
+      this.asideShrunk = false;
+    }
     }
   }
 }
@@ -98,6 +109,7 @@ export default {
     flex: 0 1 20%;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     width: 20%;
     padding: 50px 0 ;
     padding-right: 55px;
@@ -115,8 +127,8 @@ export default {
     display: flex;
     justify-content: center;
     top: 50%;
-    left: 110%;
-    opacity: .7;
+    left: 109%;
+    opacity: .5;
     cursor: pointer;
     padding: 2px;
   }
