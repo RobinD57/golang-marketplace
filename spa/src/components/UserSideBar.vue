@@ -40,7 +40,7 @@ export default {
 
 .user-container{
   width: 30%;
-  border: 2px solid rgba(246, 246, 246, 1);
+  border: 15px solid rgba(246, 246, 246, .8);
   border-radius: 10px;
   box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
   z-index: 0;
@@ -56,11 +56,12 @@ export default {
 }
 
 .user-details {
-  margin: 2rem 3rem;
+  margin: 2rem 1.5rem;
+  border-radius: 5px;
 }
 
 .user-details p {
-  font-size: 12px;
+  font-size: 14px;
 }
 
 .reviews-container {
@@ -69,7 +70,7 @@ export default {
   margin: 0 auto;
   border-radius: 5px;
   overflow-y: scroll;
-  max-height: 500px;
+  max-height: 300px;
 }
 
 .msg-button {
