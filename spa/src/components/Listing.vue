@@ -35,22 +35,23 @@ export default {
   data() {
     return {
       listing: null,
+      reviews: [],
       endpoint: 'http://localhost:8080/listing/',
       showModal: false,
       isClicked: false
     }
   },
   methods: {
-    async fetchListing(id) {
-      let res = await fetch(this.endpoint + id)
+    async fetchData(attr, id, dest = null) {
+      let res = await fetch(this.endpoint + id + dest)
       let data = await res.json()
-      return this.setResults(data);
+      return this.setResults(attr, data);
     },
-    setResults(results) {
-      this.listing = results;
+
+    setResults(attr, results) {
+      this.attr = results;
     },
     resetImagesAndGrow(e) {
-
       this.$refs.gallery.children.forEach((img) => {
         img.classList.remove('main-image');
       })
@@ -58,7 +59,8 @@ export default {
     }
   },
   created() {
-    this.fetchListing(this.id);
+    this.fetchData(listing, this.id);
+    this.fetchData(reviews, this.id, "reviews");
   },
   watch: {
     '$route'() {

@@ -112,10 +112,7 @@
       font-size: 14px;
       text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
-    .short-address .active {
-      visibility: hidden;
-    }
-
+    
     #Login-mm {
         background-color: rgba(0, 0, 0, 0.2);
     }
