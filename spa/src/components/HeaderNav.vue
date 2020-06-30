@@ -3,7 +3,7 @@
     <header>
       <img src="http://acmelogos.com/images/logo-1.svg" alt="">
       <div class="">
-        <Metamask></Metamask>
+        <Metamask class="alignment"></Metamask>
       </div>
     </header>
   </div>
@@ -41,6 +41,10 @@ header {
 }
 header p {
   padding-right: 4rem;
+}
+
+.alignment {
+  margin-right: 30%;
 }
 
 </style>

@@ -84,7 +84,7 @@ export default {
     display: flex;
     height: calc(100vh - 90px);
     max-width: 1700px;
-    margin-top: 90px;
+    margin: 90px 0;
     margin-left: auto;
     margin-right: auto;
 

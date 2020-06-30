@@ -1,6 +1,5 @@
 <template lang="html">
   <div class="listing" v-if="listing">
-    <div class="listing-contents">
       <div class="image-container" ref="gallery">
         <img v-bind:class="{ 'secondary-image': true, 'main-image': true,  }"
         @click="resetImagesAndGrow"
@@ -12,14 +11,29 @@
         alt="">
         <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
         @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/dbd113ff-1516-417b-ae5a-1a393bc716a8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a74cd00d-7272-4bd5-a898-dd03f233623c/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
+        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        @click="resetImagesAndGrow"
+        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a18ffc7e-f172-47f2-87eb-1b4de4163b10/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+        alt="">
+        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        @click="resetImagesAndGrow"
+        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/7d2b8bee-a73a-4021-b839-5191ad7709e4/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+        alt="">
+        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        @click="resetImagesAndGrow"
+        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/3e8834aa-2f0a-47d2-a7f6-b283447639c8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+        alt="">
+      </div>
+    <div class="listing-details">
+      <div class="">
+        <h1 class="listing_name">{{ listing.name }}</h1>
+        <p class="listing_description">{{ listing.description }}</p>
+        <p class="listing_price">${{ listing.price }}</p>
       </div>
       <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
     </div>
-    <h1 class="listing_name">{{ listing.name }}</h1>
-    <p class="listing_description">{{ listing.description }}</p>
-    <p class="listing_price">${{ listing.price }}</p>
   </div>
 </template>
 
@@ -87,25 +101,33 @@ export default {
 
   .listing-contents {
     display: flex;
+    flex-direction: row;
+  }
+
+  .listing-images {
+    display: flex;
+  }
+
+  .listing-details {
+    display: flex;
     justify-content: space-between;
+    margin-top: 5rem;
   }
 
   .listing .listing_name {
     position: relative;
     text-transform: uppercase;
     z-index: 1;
+    margin-top: 0;
   }
   .listing .listing_description {
       position: relative;
       z-index: 1;
     }
   .listing .listing_price {
-      position: relative;
-      font-size: 30px;
-      opacity: .7;
-      bottom: -50px;
+      font-size: 16px;
+      opacity: .9;
       margin: 0;
-      right: -20px;
       line-height: 2;
       font-weight: 900;
       z-index: 0;
@@ -125,10 +147,11 @@ export default {
 
   .main-image {
     width: 30rem !important;
+    margin-left: 0 !important;
   }
 
   .secondary-image {
-    width: 9rem;
+    width: 8.7rem;
     margin-left: 10px;
     cursor: pointer;
   }
