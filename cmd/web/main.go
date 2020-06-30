@@ -18,7 +18,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	// "go.mongodb.org/mongo-driver/mongo/readpref"
 )
 
 var validate *validator.Validate
@@ -26,10 +25,10 @@ var validate *validator.Validate
 // need to add validations to structs!!
 
 type User struct {
-	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
-	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
-	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
+	ID            primitive.ObjectID   `bson:"_id,omitempty" json:"id,string"`
+	PublicAddress string               `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
+	Nonce         string               `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
+	Reviews       []primitive.ObjectID `bson:"reviews,omitempty" json:"reviews,string"`
 }
 
 func (u *User) Validate() error {
@@ -48,9 +47,10 @@ func validateAddress(fl validator.FieldLevel) bool {
 }
 
 type Review struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	Rating  int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"required,gte=1,lte=5"`
-	Content string             `bson:"content,omitempty" json:"content,omitempty"`
+	ID       primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
+	Purchase primitive.ObjectID `bson:"purchase" json:"purchase,string" validate:"required"`
+	Rating   int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"required,gte=1,lte=5"`
+	Content  string             `bson:"content,omitempty" json:"content,omitempty"`
 }
 
 func (r *Review) Validate() error {
@@ -74,9 +74,10 @@ func (l *Listing) Validate() error {
 
 type Purchase struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	Listing primitive.ObjectID `bson:"listing,omitempty" json:"listing,string"`
+	Listing primitive.ObjectID `bson:"listing" json:"listing,string"`
 	Buyer   primitive.ObjectID `bson:"buyer,omitempty" json:"buyer,omitempty"`
 	Seller  primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
+	Review  primitive.ObjectID `bson:"purchase" json:"purchase,string"` // update purchase required
 }
 
 type Connection struct {
@@ -233,25 +234,29 @@ func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *
 	json.NewEncoder(w).Encode(result)
 }
 
-func (connection Connection) GetReviewsEndpoint(w http.ResponseWriter, r *http.Request) {
-	var reviews []Review
-	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	cursor, err := connection.Reviews.Find(ctx, bson.M{})
-	if err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
-		return
-	}
-	if err = cursor.All(ctx, &reviews); err != nil {
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
-		return
-	}
-	json.NewEncoder(w).Encode(reviews)
-}
+//func (connection Connection) GetReviewsEndpoint(w http.ResponseWriter, r *http.Request) {
+//	var reviews []bson.M
+//	params := mux.Vars(r)
+//	id, _ := primitive.ObjectIDFromHex(params["id"])
+//	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+//	cursor, err := connection.Reviews.Find(ctx, bson.D{{"listing", id}})
+//	if err != nil {
+//		w.WriteHeader(http.StatusInternalServerError)
+//		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+//		return
+//	}
+//	if err = cursor.All(ctx, &reviews); err != nil {
+//		w.WriteHeader(http.StatusInternalServerError)
+//		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+//		return
+//	}
+//	json.NewEncoder(w).Encode(reviews)
+//}
 
 func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http.Request) {
 	var review Review
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
 	if err := json.NewDecoder(r.Body).Decode(&review); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
@@ -263,6 +268,7 @@ func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http
 		return
 	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	review.Purchase = id
 	result, err := connection.Reviews.InsertOne(ctx, review)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -332,9 +338,8 @@ func main() {
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
-	// router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
-	router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
-	router.HandleFunc("/listing/{id}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
+	// router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
+	router.HandleFunc("/purchase/{id}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 }
