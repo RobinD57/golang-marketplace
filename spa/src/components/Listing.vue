@@ -1,27 +1,27 @@
 <template lang="html">
   <div class="listing" v-if="listing">
       <div class="image-container" ref="gallery">
-        <img v-bind:class="{ 'secondary-image': true, 'main-image': true,  }"
+        <img draggable="false" v-bind:class="{ 'secondary-image': true, 'main-image': true,  } "
         @click="resetImagesAndGrow"
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/9b2e37e8-78f3-42bb-b31d-b0cf629c9627/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
-        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
         @click="resetImagesAndGrow"
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/ef03abcb-b457-4d0c-81ef-74ddd36bf82b/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
-        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a74cd00d-7272-4bd5-a898-dd03f233623c/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a18ffc7e-f172-47f2-87eb-1b4de4163b10/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
         @click="resetImagesAndGrow"
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/7d2b8bee-a73a-4021-b839-5191ad7709e4/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
-        <img v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        @click="resetImagesAndGrow"
+        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a18ffc7e-f172-47f2-87eb-1b4de4163b10/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+        alt="">
+        <img draggable="false"  v-bind:class="{ 'main-image': false, 'secondary-image': true }"
+        @click="resetImagesAndGrow"
+        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a74cd00d-7272-4bd5-a898-dd03f233623c/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
+        alt="">
+        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
         @click="resetImagesAndGrow"
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/3e8834aa-2f0a-47d2-a7f6-b283447639c8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
@@ -32,7 +32,9 @@
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
       </div>
-      <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
+      <div class="user-sidebar">
+        <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +61,6 @@ export default {
     async fetchData(attr, id, dest = "" ) {
       let res = await fetch(`${this.endpoint}${id}${dest}`);
       let data = await res.json()
-      console.log(data);
       return this.setResults(attr, data);
     },
 
@@ -112,6 +113,8 @@ export default {
     display: flex;
     justify-content: space-between;
     margin-top: 5rem;
+    margin-left: 10px;
+    width: inherit;
   }
 
   .listing .listing_name {
@@ -147,12 +150,15 @@ export default {
 
   .main-image {
     width: 30rem !important;
-    margin-left: 0 !important;
   }
 
   .secondary-image {
     width: 8.7rem;
     margin-left: 10px;
     cursor: pointer;
+  }
+
+  .user-sidebar {
+    width: 34%;
   }
 </style>
