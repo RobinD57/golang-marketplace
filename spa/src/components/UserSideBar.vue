@@ -12,6 +12,7 @@
       <UserReview/>
       <UserReview/>
     </div>
+    <button class="msg-button" type="button" name="button">Message</button>
   </div>
 </template>
 
@@ -46,7 +47,7 @@ export default {
 .user-name {
   margin-top: 3rem;
   text-align: center;
-  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   font-weight: bold;
   font-size: 20px;
 }
@@ -64,5 +65,25 @@ export default {
   width: 90%;
   margin: 0 auto;
   border-radius: 5px;
+}
+
+.msg-button {
+  display: flex;
+  margin: 0 auto;
+  margin-top: 3rem;
+  width: 150px;
+  font-family: 'Crimson Text', serif;
+  opacity: .7;
+  border: none;
+  padding: .4rem;
+  border-radius: 5px;
+  justify-content: center;
+  cursor: pointer;
+  text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+}
+
+.msg-button:hover {
+  opacity: .5;
 }
 </style>

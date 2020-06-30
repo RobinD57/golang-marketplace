@@ -81,13 +81,13 @@
     }
     p {
       margin-right: 4rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
 
     #connect span {
       margin-top: 1.2rem;
       margin-right: 0.5rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
 
     .Login-button img {
@@ -109,7 +109,7 @@
 
     .address span {
       font-size: 14px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
     .short-address .active {
       visibility: hidden;

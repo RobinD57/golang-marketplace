@@ -46,14 +46,17 @@ export default {
 
   .review-details {
     font-size: 12px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
 
   .rating {
     margin-top: .7rem;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
 
   .review-details h3 {
     margin: 0;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
 
   .rating {
