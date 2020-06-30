@@ -7,10 +7,8 @@
         <p>Listing posted: {{this.postingDate}}</p>
       </div>
     </div>
-    <div class="reviews-container">
-      <UserReview/>
-      <UserReview/>
-      <UserReview/>
+    <div class="reviews-container" v-for='review in reviews' :key='review.id' >
+      <UserReview :rating='review.rating' :content='review.content'/>
     </div>
     <button class="msg-button" type="button" name="button">Message</button>
   </div>
@@ -21,7 +19,7 @@
 import UserReview from './UserReview'
 
 export default {
-  props: ['user', 'postingDate'],
+  props: ['user', 'postingDate', 'reviews'],
   name: 'UserSideBar',
   components: {
     UserReview
@@ -65,6 +63,8 @@ export default {
   width: 90%;
   margin: 0 auto;
   border-radius: 5px;
+  overflow-y: scroll;
+  max-height: 500px;
 }
 
 .msg-button {

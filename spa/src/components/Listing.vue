@@ -15,7 +15,7 @@
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/dbd113ff-1516-417b-ae5a-1a393bc716a8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
       </div>
-      <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' />
+      <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
     </div>
     <h1 class="listing_name">{{ listing.name }}</h1>
     <p class="listing_description">{{ listing.description }}</p>
@@ -42,29 +42,33 @@ export default {
     }
   },
   methods: {
-    async fetchData(attr, id, dest = null) {
-      let res = await fetch(this.endpoint + id + dest)
+    async fetchData(attr, id, dest = "" ) {
+      let res = await fetch(`${this.endpoint}${id}${dest}`);
       let data = await res.json()
+      console.log(data);
       return this.setResults(attr, data);
     },
 
     setResults(attr, results) {
-      this.attr = results;
+      attr == "listing" ? this.listing = results : this.reviews = results
     },
     resetImagesAndGrow(e) {
       this.$refs.gallery.children.forEach((img) => {
         img.classList.remove('main-image');
       })
       e.currentTarget.classList.add('main-image');
+    },
+    onLoadOrChange() {
+      this.fetchData("listing", this.id);
+      this.fetchData("reviews", this.id, "/reviews");
     }
   },
   created() {
-    this.fetchData(listing, this.id);
-    this.fetchData(reviews, this.id, "reviews");
+    this.onLoadOrChange()
   },
   watch: {
     '$route'() {
-      this.fetchListing(this.id);
+      this.onLoadOrChange()
     }
   }
 }

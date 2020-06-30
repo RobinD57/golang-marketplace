@@ -2,9 +2,9 @@
   <div class="review-container">
     <div class="left-border"></div>
     <div class="review-details">
-      <h3>Good Seller</h3>
-      <p>Great prices, and quality pieces, would reccomend</p>
-      <p class="rating">4/5</p>
+      <h3>Title</h3>
+      <p>{{content}}</p>
+      <p class="rating">{{rating}}/5</p>
     </div>
   </div>
 </template>
