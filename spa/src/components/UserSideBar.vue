@@ -8,9 +8,11 @@
       </div>
     </div>
     <div class="reviews-container">
-      <UserReview/>
-      <UserReview/>
-      <UserReview/>
+      <UserReview
+      :rating='review.rating'
+      :content='review.content'
+      v-for='review in reviews'
+      :key='review.id'/>
     </div>
     <button class="msg-button" type="button" name="button">Message</button>
   </div>
@@ -21,7 +23,7 @@
 import UserReview from './UserReview'
 
 export default {
-  props: ['user', 'postingDate'],
+  props: ['user', 'postingDate', 'reviews'],
   name: 'UserSideBar',
   components: {
     UserReview
@@ -42,6 +44,7 @@ export default {
   border-radius: 10px;
   box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
   z-index: 0;
+  margin-bottom: 150px;
 }
 
 .user-name {
@@ -65,12 +68,15 @@ export default {
   width: 90%;
   margin: 0 auto;
   border-radius: 5px;
+  overflow-y: scroll;
+  max-height: 500px;
 }
 
 .msg-button {
   display: flex;
   margin: 0 auto;
   margin-top: 3rem;
+  margin-bottom: 3rem;
   width: 150px;
   font-family: 'Crimson Text', serif;
   opacity: .7;
@@ -81,6 +87,7 @@ export default {
   cursor: pointer;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+
 }
 
 .msg-button:hover {

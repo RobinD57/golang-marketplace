@@ -103,7 +103,7 @@
     .address {
       display: flex;
       align-items: center;
-      margin-right: 2rem;
+      margin-right: 8rem;
       padding: 10px;
       transition: .5s;
     }
@@ -112,9 +112,6 @@
       font-size: 14px;
       text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
-    .short-address .active {
-      visibility: hidden;
-    }
 
     #Login-mm {
         background-color: rgba(0, 0, 0, 0.2);
@@ -122,5 +119,6 @@
 
     #connect {
       display: flex;
+      margin-right: 4rem;
     }
 </style>
