@@ -13,9 +13,10 @@
       @mouseover="hover = true"
       @mouseleave="hover = false">
       <div class="short-address">
-      <span>{{currentAddress.slice(0,8)}}</span>
+      <span>{{currentAddress.slice(0,3)}}<span v-if="!hover">...</span>
+      <span v-if="!hover">{{currentAddress.slice(39)}} </span> </span>
     </div>
-    <span class="full-address" v-if="hover">{{currentAddress.slice(8)}}</span>
+    <span class="full-address" v-if="hover">{{currentAddress.slice(4)}}</span>
     </div>
   </div>
 </template>
@@ -81,13 +82,13 @@
     }
     p {
       margin-right: 4rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
 
     #connect span {
       margin-top: 1.2rem;
       margin-right: 0.5rem;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
 
     .Login-button img {
@@ -102,17 +103,14 @@
     .address {
       display: flex;
       align-items: center;
-      margin-right: 2rem;
+      margin-right: 8rem;
       padding: 10px;
       transition: .5s;
     }
 
     .address span {
       font-size: 14px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
-    }
-    .short-address .active {
-      visibility: hidden;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     }
 
     #Login-mm {
@@ -121,5 +119,6 @@
 
     #connect {
       display: flex;
+      margin-right: 4rem;
     }
 </style>
