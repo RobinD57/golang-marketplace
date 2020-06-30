@@ -3,6 +3,9 @@
     <header-nav></header-nav>
     <main>
       <aside class="sidebar">
+        <div class="collapse">
+          <font-awesome-icon @click='toggleCollapse' :icon="['fas', 'chevron-left']"/>
+        </div>
         <router-link
           :key="listing.title"
           v-for="listing in listings"
@@ -50,6 +53,9 @@ export default {
     },
     setResults (results) {
       this.listings = results;
+    },
+    toggleCollapse() {
+      document.querySelector('aside').style.flex = '0 1 3%';
     }
   }
 }
@@ -57,7 +63,6 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
-
   body {
     margin: 0;
     padding: 0;
@@ -90,7 +95,7 @@ export default {
 
   }
   aside {
-    flex: 1 0 20%;
+    flex: 0 1 20%;
     height: 100%;
     overflow-y: auto;
     width: 20%;
@@ -99,12 +104,31 @@ export default {
     box-sizing: border-box;
     border-right: 2px solid rgba(246, 246, 246, 1);
     border-bottom: 2px solid rgba(246, 246, 246, 1);
+    transition: 1s;
   }
+  .collapse {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    top: 50%;
+    left: 110%;
+    opacity: .7;
+    cursor: pointer;
+    padding: 2px;
+  }
+
   .content {
+    position: relative;
     flex: 1 1 80%;
     display: flex;
     align-items: center;
     justify-content: center;
+    right: 0.5%;
+
   }
   .link {
     display: block;

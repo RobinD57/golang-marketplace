@@ -59,7 +59,6 @@ export default {
     async fetchData(attr, id, dest = "" ) {
       let res = await fetch(`${this.endpoint}${id}${dest}`);
       let data = await res.json()
-      console.log(data);
       return this.setResults(attr, data);
     },
 
@@ -113,6 +112,7 @@ export default {
     justify-content: space-between;
     margin-top: 5rem;
     margin-left: 10px;
+    width: inherit;
   }
 
   .listing .listing_name {

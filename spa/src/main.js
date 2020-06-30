@@ -5,11 +5,10 @@ import Listing from './components/Listing.vue';
 import Hello from './components/Hello.vue';
 import Metamask from './components/Metamask.vue';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
-library.add(faUserSecret)
-
+library.add(fas)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 Vue.config.productionTip = false
