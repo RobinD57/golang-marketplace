@@ -10,8 +10,10 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"regexp"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -368,6 +370,17 @@ func main() {
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/listing/{id}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
-	router.HandleFunc("/chat", websocketHandler)
+	router.HandleFunc("/chat/", websocketHandler)
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
+
+	exit := make(chan os.Signal)
+	signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
+	<-exit
+
+	log.Println("exit signalled")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	chat.Cleanup()
+	log.Println("chat app exited")
 }

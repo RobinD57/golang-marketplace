@@ -19,7 +19,6 @@ type ChatSession struct {
 }
 
 func NewChatSession(user string, peer *websocket.Conn) *ChatSession {
-
 	return &ChatSession{user: user, peer: peer}
 }
 

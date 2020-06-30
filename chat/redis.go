@@ -25,7 +25,6 @@ func goDotEnvVariable(key string) string {
 }
 
 func init() {
-
 	redisHost = goDotEnvVariable("REDIS_HOST")
 	if redisHost == "" {
 		log.Fatal("missing REDIS_HOST env var")
@@ -51,7 +50,7 @@ const channel = "chat"
 
 func startSubscriber() {
 	/*
-		this goroutine exits when the application shuts down. When the pusub connection is closed,
+		this goroutine exits when the application shuts down. When the pub-sub connection is closed,
 		the channel range loop terminates, hence terminating the goroutine
 	*/
 	go func() {
@@ -79,15 +78,6 @@ func SendToChannel(msg string) {
 }
 
 const users = "chat-users"
-
-// CheckUserExists checks whether the user exists in the SET of active chat users
-func CheckUserExists(user string) (bool, error) {
-	usernameTaken, err := client.SIsMember(users, user).Result()
-	if err != nil {
-		return false, err
-	}
-	return usernameTaken, nil
-}
 
 // CreateUser creates a new user in the SET of active chat users
 func CreateUser(user string) error {
