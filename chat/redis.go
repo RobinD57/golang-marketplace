@@ -1,7 +1,7 @@
 package chat
 
 import (
-	"crypto/tls"
+	// "crypto/tls"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -37,8 +37,8 @@ func init() {
 	}
 
 	log.Println("connecting to Redis...")
-	client = redis.NewClient(&redis.Options{Addr: redisHost, Password: redisPassword, TLSConfig: &tls.Config{MinVersion: tls.VersionTLS12}})
-
+	client = redis.NewClient(&redis.Options{Addr: redisHost, Password: redisPassword})
+	// , TLSConfig: &tls.Config{MinVersion: tls.VersionTLS12} => problems with TLS
 	_, err := client.Ping().Result()
 	if err != nil {
 		log.Fatal("failed to connect to redis", err)
