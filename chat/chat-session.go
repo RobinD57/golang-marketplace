@@ -68,9 +68,6 @@ func (s *ChatSession) disconnect() {
 	//remove user from SET
 	RemoveUser(s.user)
 
-	//notify other users that this user has left
-	SendToChannel(fmt.Sprintf(left, s.user))
-
 	//close websocket
 	s.peer.Close()
 

@@ -2,6 +2,7 @@ package chat
 
 import (
 	"crypto/tls"
+	"github.com/joho/godotenv"
 	"log"
 	"os"
 	"strings"
@@ -15,14 +16,22 @@ var redisHost string
 var redisPassword string
 var sub *redis.PubSub
 
+func goDotEnvVariable(key string) string {
+	err := godotenv.Load(".env")
+	if err != nil {
+		log.Fatalf("Error loading .env file")
+	}
+	return os.Getenv(key)
+}
+
 func init() {
 
-	redisHost = os.Getenv("REDIS_HOST")
+	redisHost = goDotEnvVariable("REDIS_HOST")
 	if redisHost == "" {
 		log.Fatal("missing REDIS_HOST env var")
 	}
 
-	redisPassword = os.Getenv("REDIS_PASSWORD")
+	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
 	if redisPassword == "" {
 		log.Fatal("missing REDIS_PASSWORD env var")
 	}

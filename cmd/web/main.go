@@ -10,10 +10,8 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
 	"regexp"
 	"strings"
-	"syscall"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -294,24 +292,24 @@ func websocketHandler(w http.ResponseWriter, r *http.Request) {
 	chatSession.Start()
 }
 
-func init() {
-	redisHost = os.Getenv("REDIS_HOST")
-	if redisHost == "" {
-		log.Fatal("missing REDIS_HOST env var")
-	}
-
-	redisPassword = os.Getenv("REDIS_PASSWORD")
-	if redisPassword == "" {
-		log.Fatal("missing REDIS_PASSWORD env var")
-	}
-}
-
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
 	return os.Getenv(key)
+}
+
+func init() {
+	redisHost = goDotEnvVariable("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("missing REDIS_HOST env var")
+	}
+
+	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
+	if redisPassword == "" {
+		log.Fatal("missing REDIS_PASSWORD env var")
+	}
 }
 
 func main() {
