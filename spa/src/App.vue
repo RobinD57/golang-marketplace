@@ -12,10 +12,15 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <div class="">
-              {{ listing.description }}
-              <br>
-              {{listing.name}}
+            <div class="main-card">
+            </div>
+            <div class="blur">
+              <div class="card-details">
+                <span>
+                  {{listing.name.length > 15 ? listing.name.slice(0,15) + "..." : listing.name}}
+                </span>
+                <span>${{listing.price}}</span>
+              </div>
             </div>
           </router-link>
         </div>
@@ -74,6 +79,41 @@ export default {
 
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
+
+  .main-card {
+    background-image: url(https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/i1-9fe1340b-ad01-4fc3-abc2-45ac40de20c3/windrunner-wild-run-mens-running-jacket-jDXm5l.jpg);
+    background-size: cover;
+    height: 200px;
+    width: 70%;
+    margin: 0 auto;
+    margin-top: 30px;
+    border-radius: 5px;
+    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+  }
+
+  .blur {
+    background: rgba(245, 245, 245, 0.9);
+    margin: 0 auto;
+    height: 50px;
+    width: 70%;
+    margin-top: -4px;
+    z-index: -1;
+  }
+
+  .card-details {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: space-around;
+    margin-top: 5px;
+    border-radius: 5px;
+  }
+
+  .card-details span {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    margin-top: 0.8rem;
+  }
+
   body {
     margin: 0;
     padding: 0;
@@ -116,7 +156,6 @@ export default {
     box-sizing: border-box;
     border-right: 2px solid rgba(246, 246, 246, 1);
     border-bottom: 2px solid rgba(246, 246, 246, 1);
-    transition: 1s;
   }
   .collapse {
     position: relative;
