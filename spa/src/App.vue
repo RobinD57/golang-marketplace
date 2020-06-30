@@ -8,9 +8,11 @@
           v-for="listing in listings"
           class="link"
           :to="{ name: 'listing', params: { id: listing.id } }">
-          {{ listing.description }}
-          <br>
-          {{listing.name}}
+          <div class="">
+            {{ listing.description }}
+            <br>
+            {{listing.name}}
+          </div>
         </router-link>
       </aside>
       <div class="content">

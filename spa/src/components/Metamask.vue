@@ -13,9 +13,10 @@
       @mouseover="hover = true"
       @mouseleave="hover = false">
       <div class="short-address">
-      <span>{{currentAddress.slice(0,8)}}</span>
+      <span>{{currentAddress.slice(0,3)}}<span v-if="!hover">...</span>
+      <span v-if="!hover">{{currentAddress.slice(39)}} </span> </span>
     </div>
-    <span class="full-address" v-if="hover">{{currentAddress.slice(8)}}</span>
+    <span class="full-address" v-if="hover">{{currentAddress.slice(4)}}</span>
     </div>
   </div>
 </template>

@@ -22,16 +22,17 @@ export default {
 
   .review-container {
     display: flex;
-    margin: 2rem 0;
+    margin: 1rem 0;
     width: 100%;
-    align-items: baseline;
-    margin: 0 auto;
+    align-items: flex-start;
   }
 
   .left-border {
     height: 15px;
     border-left: 3px solid black;
-    margin-right: 2rem;
+    margin-right: 1.6rem;
+    position: relative;
+    right: 2px;
   }
 
   .avatar {
@@ -61,5 +62,6 @@ export default {
 
   .rating {
     margin-top: .7rem;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
 </style>
