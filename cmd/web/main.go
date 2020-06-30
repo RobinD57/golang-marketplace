@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"log"
@@ -301,24 +300,6 @@ func main() {
 	usersCollection := marketplaceDatabase.Collection("users")
 	reviewsCollection := marketplaceDatabase.Collection("reviews")
 
-	cur, err := listingsCollection.Find(ctx, bson.D{})
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer cur.Close(ctx)
-
-	for cur.Next(ctx) {
-		var result bson.M
-		err := cur.Decode(&result)
-		if err != nil {
-			log.Fatal(err)
-		}
-		fmt.Println(result)
-	}
-	if err := cur.Err(); err != nil {
-		log.Fatal(err)
-	}
-
 	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection, Users: usersCollection, Reviews: reviewsCollection}
 
 	router := mux.NewRouter()
@@ -332,7 +313,6 @@ func main() {
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
-	// router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/listing/{id}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
