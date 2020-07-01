@@ -3,8 +3,14 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+	"os/signal"
+	"syscall"
+
+	"github.com/RobinD57/golang-marketplace/chat"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"os"
@@ -19,16 +25,21 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin:     func(r *http.Request) bool { return true },
+}
+var redisHost string
+var redisPassword string
 var validate *validator.Validate
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,unique,ethaddress"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
-
-// created on
 
 func (u *User) Validate() error {
 	validate := validator.New()
@@ -50,7 +61,7 @@ type Review struct {
 	UserPubAddress string             `bson:"userPubAddress" json:"userPubAddress" validate:"required"` // the one getting the review
 	Rating         int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"required,gte=1,lte=5"`
 	Content        string             `bson:"content,omitempty" json:"content,omitempty"`
-	Reviewer       string             `bson:"userPubAddress" json:"userPubAddress" validate:"required"`
+	Reviewer       string             `bson:"reviewer, omitempty" json:"reviewer"`
 }
 
 func (r *Review) Validate() error {
@@ -306,12 +317,36 @@ func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http
 	json.NewEncoder(w).Encode(result)
 }
 
+func websocketHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.URL.Path)
+	params := mux.Vars(r)
+	user, _ := params["username"]
+	peer, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal("websocket conn failed", err)
+	}
+	chatSession := chat.NewChatSession(user, peer)
+	chatSession.Start()
+}
+
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
 	return os.Getenv(key)
+}
+
+func init() {
+	redisHost = goDotEnvVariable("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("missing REDIS_HOST env var")
+	}
+
+	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
+	if redisPassword == "" {
+		log.Fatal("missing REDIS_PASSWORD env var")
+	}
 }
 
 func main() {
@@ -348,8 +383,19 @@ func main() {
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
-	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
-	// router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
+	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
+	router.HandleFunc("/chat/{username}", websocketHandler)
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
+
+	exit := make(chan os.Signal)
+	signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
+	<-exit
+
+	log.Println("exit signalled")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	chat.Cleanup()
+	log.Println("chat app exited")
 }
