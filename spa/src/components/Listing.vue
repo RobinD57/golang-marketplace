@@ -33,7 +33,7 @@
         <p class="listing_price">${{ listing.price }}</p>
       </div>
       <div class="user-sidebar">
-        <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
+        <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
       </div>
     </div>
   </div>
@@ -51,39 +51,34 @@ export default {
   data() {
     return {
       listing: null,
-      reviews: [],
       endpoint: 'http://localhost:8080/listing/',
       showModal: false,
       isClicked: false
     }
   },
   methods: {
-    async fetchData(attr, id, dest = "" ) {
-      let res = await fetch(`${this.endpoint}${id}${dest}`);
+    async fetchData(attr, id) {
+      let res = await fetch(`${this.endpoint}${id}`);
       let data = await res.json()
       return this.setResults(attr, data);
     },
 
     setResults(attr, results) {
-      attr == "listing" ? this.listing = results : this.reviews = results
+      this.listing = results
     },
     resetImagesAndGrow(e) {
       this.$refs.gallery.children.forEach((img) => {
         img.classList.remove('main-image');
       })
       e.currentTarget.classList.add('main-image');
-    },
-    onLoadOrChange() {
-      this.fetchData("listing", this.id);
-      this.fetchData("reviews", this.id, "/reviews");
     }
   },
   created() {
-    this.onLoadOrChange()
+    this.fetchData("listing", this.id);
   },
   watch: {
     '$route'() {
-      this.onLoadOrChange()
+      this.fetchData("listing", this.id);
     }
   }
 }

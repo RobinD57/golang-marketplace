@@ -2,7 +2,7 @@
   <div class="review-container">
     <div class="left-border"></div>
     <div class="review-details">
-      <h3>Title</h3>
+      <h3>{{reviewer.slice(0,3)}}...{{reviewer.slice(39)}}</h3>
       <p>{{content}}</p>
       <p class="rating">{{rating}}/5</p>
     </div>
@@ -12,7 +12,7 @@
 <script>
 
 export default {
-  props: ['id', 'rating', 'content'],
+  props: ['reviewer', 'rating', 'content'],
   name: 'UserReview'
 }
 
