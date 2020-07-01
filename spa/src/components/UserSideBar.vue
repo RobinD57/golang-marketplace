@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="user-container">
     <div class="">
-      <p class="user-name">{{user}}</p>
+      <p class="user-name">{{seller.slice(0,3)}}...{{seller.slice(39)}}</p>
       <div class="user-details">
         <p>User since: 2020</p>
         <p>Listing posted: {{this.postingDate}}</p>
@@ -11,7 +11,7 @@
       <UserReview
       :rating='review.rating'
       :content='review.content'
-      :reviwer='review.reviewer'
+      :reviewer='review.reviewer'
       v-for='review in reviews'
       :key='review.id'/>
     </div>
@@ -40,7 +40,7 @@ export default {
         let res = await fetch(`${this.endpoint}${address}`);
         let data = await res.json();
         console.log(data);
-        return this.setResults(data);
+        return this.setResults(data.Reviews);
       },
       setResults(results) {
         this.reviews = results;

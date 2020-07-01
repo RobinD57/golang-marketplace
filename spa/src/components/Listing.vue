@@ -33,7 +33,7 @@
         <p class="listing_price">${{ listing.price }}</p>
       </div>
       <div class="user-sidebar">
-        <UserSideBar :seller='listing.seller' :postingDate='"2020 05 10"'/>
+        <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
       </div>
     </div>
   </div>
@@ -60,6 +60,7 @@ export default {
     async fetchData(attr, id) {
       let res = await fetch(`${this.endpoint}${id}`);
       let data = await res.json()
+      console.log(data);
       return this.setResults(attr, data);
     },
 
