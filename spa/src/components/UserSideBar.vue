@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="user-container">
     <div class="">
-      <p class="user-name">{{user}}</p>
+      <p class="user-name">{{seller.slice(0,3)}}...{{seller.slice(39)}}</p>
       <div class="user-details">
         <p>User since: 2020</p>
         <p>Listing posted: {{this.postingDate}}</p>
@@ -11,10 +11,11 @@
       <UserReview
       :rating='review.rating'
       :content='review.content'
+      :reviewer='review.reviewer'
       v-for='review in reviews'
       :key='review.id'/>
     </div>
-    <button class="msg-button" type="button" name="button">Message</button>
+    <button class="msg-button" type="button" name="button">message</button>
   </div>
 </template>
 
@@ -23,17 +24,31 @@
 import UserReview from './UserReview'
 
 export default {
-  props: ['user', 'postingDate', 'reviews'],
+  props: ['seller', 'postingDate'],
   name: 'UserSideBar',
   components: {
     UserReview
   },
     data() {
     return {
+      endpoint: 'http://localhost:8080/user/',
+      reviews: []
+    }
+  },
+    methods: {
+      async fetchData(address) {
+        let res = await fetch(`${this.endpoint}${address}`);
+        let data = await res.json();
+        return this.setResults(data.Reviews);
+      },
+      setResults(results) {
+        this.reviews = results;
+      },
+    },
+    created() {
+      this.fetchData(this.seller);
     }
   }
-}
-
 </script>
 
 <style lang="css" scoped>
@@ -88,7 +103,7 @@ export default {
   cursor: pointer;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-
+  outline: none;
 }
 
 .msg-button:hover {

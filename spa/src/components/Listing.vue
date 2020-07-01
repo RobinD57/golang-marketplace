@@ -31,9 +31,10 @@
         <h1 class="listing_name">{{ listing.name }}</h1>
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
+        <PurchaseButton :seller='listing.seller' />
       </div>
       <div class="user-sidebar">
-        <UserSideBar :user='listing.user' :postingDate='"2020 05 10"' :reviews='reviews' />
+        <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
       </div>
     </div>
   </div>
@@ -42,48 +43,45 @@
 <script>
 
 import UserSideBar from './UserSideBar';
+import PurchaseButton from './PurchaseButton';
 
 export default {
   props: ['id'],
   components: {
-    UserSideBar
+    UserSideBar,
+    PurchaseButton
   },
   data() {
     return {
       listing: null,
-      reviews: [],
       endpoint: 'http://localhost:8080/listing/',
       showModal: false,
       isClicked: false
     }
   },
   methods: {
-    async fetchData(attr, id, dest = "" ) {
-      let res = await fetch(`${this.endpoint}${id}${dest}`);
+    async fetchData(attr, id) {
+      let res = await fetch(`${this.endpoint}${id}`);
       let data = await res.json()
       return this.setResults(attr, data);
     },
 
     setResults(attr, results) {
-      attr == "listing" ? this.listing = results : this.reviews = results
+      this.listing = results
     },
     resetImagesAndGrow(e) {
       this.$refs.gallery.children.forEach((img) => {
         img.classList.remove('main-image');
       })
       e.currentTarget.classList.add('main-image');
-    },
-    onLoadOrChange() {
-      this.fetchData("listing", this.id);
-      this.fetchData("reviews", this.id, "/reviews");
     }
   },
   created() {
-    this.onLoadOrChange()
+    this.fetchData("listing", this.id);
   },
   watch: {
     '$route'() {
-      this.onLoadOrChange()
+      this.fetchData("listing", this.id);
     }
   }
 }
@@ -126,13 +124,13 @@ export default {
     margin-top: 0;
   }
   .listing .listing_description {
-      position: relative;
-      z-index: 1;
+    position: relative;
+    z-index: 1;
     }
   .listing .listing_price {
       font-size: 16px;
       opacity: .9;
-      margin: 0;
+      margin-bottom: 5rem;
       line-height: 2;
       font-weight: 900;
       z-index: 0;
@@ -159,6 +157,5 @@ export default {
     margin-left: 10px;
     cursor: pointer;
   }
-
 
 </style>
