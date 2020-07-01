@@ -3,8 +3,8 @@
     <header-nav></header-nav>
     <main>
       <aside class="sidebar">
-        <div class="collapse">
-          <font-awesome-icon @click='toggleCollapse' :icon="['fas', 'chevron-left']"/>
+        <div @click='toggleCollapse' class="collapse">
+          <font-awesome-icon :icon="['fas', 'chevron-left']"/>
         </div>
         <div class="" v-if="!asideShrunk">
           <router-link
@@ -66,10 +66,12 @@ export default {
       if (!this.asideShrunk) {
        document.querySelector('aside').style.flex = '0 1 3%';
        document.querySelector('.collapse').style.transform = 'rotate(180deg)';
+       document.querySelector('.listing').style.marginLeft = '11rem'
        this.asideShrunk = true;
     } else {
       document.querySelector('aside').style.flex = '';
       document.querySelector('.collapse').style.transform = '';
+      document.querySelector('.listing').style.marginLeft = ''
       this.asideShrunk = false;
     }
     }
