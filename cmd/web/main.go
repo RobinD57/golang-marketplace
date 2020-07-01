@@ -72,7 +72,7 @@ func (r *Review) Validate() error {
 type Listing struct {
 	ID          primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	Name        string             `bson:"name,omitempty" json:"name" validate:"required"`
-	Seller      primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
+	Seller      string             `bson:"seller,omitempty" json:"seller,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Price       float64            `bson:"price,omitempty" json:"price, string" validate:"required"`
 	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
@@ -87,8 +87,8 @@ func (l *Listing) Validate() error {
 type Purchase struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	Listing primitive.ObjectID `bson:"listing" json:"listing,string"`
-	Buyer   primitive.ObjectID `bson:"buyer,omitempty" json:"buyer,omitempty"`
-	Seller  primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
+	Buyer   string             `bson:"buyer,omitempty" json:"buyer,omitempty"`
+	Seller  string             `bson:"seller,omitempty" json:"seller,omitempty"`
 	Status  string             `bson:"status,omitempty" json:"status,omitempty" validate:"status"`
 }
 
