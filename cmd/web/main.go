@@ -12,9 +12,7 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"os/signal"
 	"regexp"
-	"syscall"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -36,12 +34,10 @@ var validate *validator.Validate
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,unique,ethaddress"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
-
-// created on
 
 func (u *User) Validate() error {
 	validate := validator.New()
@@ -63,7 +59,7 @@ type Review struct {
 	UserPubAddress string             `bson:"userPubAddress" json:"userPubAddress" validate:"required"` // the one getting the review
 	Rating         int                `bson:"rating,omitempty" json:"rating, string, omitempty" validate:"required,gte=1,lte=5"`
 	Content        string             `bson:"content,omitempty" json:"content,omitempty"`
-	Reviewer       string             `bson:"userPubAddress" json:"userPubAddress" validate:"required"`
+	Reviewer       string             `bson:"reviewer, omitempty" json:"reviewer"`
 }
 
 func (r *Review) Validate() error {
@@ -339,17 +335,17 @@ func goDotEnvVariable(key string) string {
 	return os.Getenv(key)
 }
 
-func init() {
-	redisHost = goDotEnvVariable("REDIS_HOST")
-	if redisHost == "" {
-		log.Fatal("missing REDIS_HOST env var")
-	}
-
-	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
-	if redisPassword == "" {
-		log.Fatal("missing REDIS_PASSWORD env var")
-	}
-}
+//func init() {
+//	redisHost = goDotEnvVariable("REDIS_HOST")
+//	if redisHost == "" {
+//		log.Fatal("missing REDIS_HOST env var")
+//	}
+//
+//	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
+//	if redisPassword == "" {
+//		log.Fatal("missing REDIS_PASSWORD env var")
+//	}
+//}
 
 func main() {
 	dotenv := goDotEnvVariable("MONGO_ATLAS")
@@ -386,19 +382,19 @@ func main() {
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
-	router.HandleFunc("/chat/{username}", websocketHandler)
+	//router.HandleFunc("/chat/{username}", websocketHandler)
 	// router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 
-	exit := make(chan os.Signal)
-	signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
-	<-exit
-
-	log.Println("exit signalled")
-
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	defer cancel()
-	chat.Cleanup()
-	log.Println("chat app exited")
+	//exit := make(chan os.Signal)
+	//signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
+	//<-exit
+	//
+	//log.Println("exit signalled")
+	//
+	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	//defer cancel()
+	//chat.Cleanup()
+	//log.Println("chat app exited")
 }
