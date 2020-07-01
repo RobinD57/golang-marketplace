@@ -31,6 +31,7 @@
         <h1 class="listing_name">{{ listing.name }}</h1>
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
+        <PurchaseButton :seller='listing.seller' />
       </div>
       <div class="user-sidebar">
         <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
@@ -42,11 +43,13 @@
 <script>
 
 import UserSideBar from './UserSideBar';
+import PurchaseButton from './PurchaseButton';
 
 export default {
   props: ['id'],
   components: {
-    UserSideBar
+    UserSideBar,
+    PurchaseButton
   },
   data() {
     return {
@@ -121,13 +124,13 @@ export default {
     margin-top: 0;
   }
   .listing .listing_description {
-      position: relative;
-      z-index: 1;
+    position: relative;
+    z-index: 1;
     }
   .listing .listing_price {
       font-size: 16px;
       opacity: .9;
-      margin: 0;
+      margin-bottom: 5rem;
       line-height: 2;
       font-weight: 900;
       z-index: 0;
@@ -154,6 +157,5 @@ export default {
     margin-left: 10px;
     cursor: pointer;
   }
-
 
 </style>
