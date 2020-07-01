@@ -23,16 +23,33 @@
 import UserReview from './UserReview'
 
 export default {
-  props: ['user', 'postingDate', 'reviews'],
+  props: ['postingDate'],
   name: 'UserSideBar',
   components: {
     UserReview
   },
     data() {
     return {
+      user: null,
+      endpoint: 'http://localhost:8080/user/',
+      reviews: []
+    }
+  },
+    methods: {
+      async fetchData(address) {
+        let res = await fetch(`${this.endpoint}${address}`);
+        let data = await res.json();
+        console.log(data);
+        return this.setResults(data);
+      },
+      setResults(results) {
+        this.user = results;
+      },
+    },
+    created() {
+      this.fetchData("0xB408D044F1537C061836fF50E57D7A0D982E5E5c");
     }
   }
-}
 
 </script>
 
