@@ -3,7 +3,7 @@
     <button @click='showModal' class="button" type="button" name="button">request to purchase</button>
     <transition name="slide" appear>
       <div class="modal" v-if="modalOpen">
-        <button class="button" @click="modalOpen = false" type="button" name="button">
+        <button class="button" @click="removeOverlay" type="button" name="button">
           Close
         </button>
       </div>
@@ -22,12 +22,18 @@ export default {
   },
   methods: {
     showModal() {
-      document.querySelector('header').insertAdjacentHTML("afterend",
-        `<transition name="fade" appear>
-          <div class='modal-overlay'>
-          </div>
-        </transition>`);
       this.modalOpen = true;
+      if (this.modalOpen) {
+        document.querySelector('header').insertAdjacentHTML("afterend",
+        `<transition id='overlay' name="fade" appear>
+        <div class='modal-overlay'>
+        </div>
+        </transition>`);
+      }
+    },
+    removeOverlay() {
+      this.modalOpen = false;
+      document.querySelector('#overlay').style.display = ('none');
     }
   }
 }
