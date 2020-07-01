@@ -124,8 +124,8 @@ export default {
     margin-top: 0;
   }
   .listing .listing_description {
-      position: relative;
-      z-index: 1;
+    position: relative;
+    z-index: 1;
     }
   .listing .listing_price {
       font-size: 16px;
@@ -156,29 +156,6 @@ export default {
     width: 8.7rem;
     margin-left: 10px;
     cursor: pointer;
-  }
-
-  .msg-button {
-    display: flex;
-    margin: 0 auto;
-    margin-top: 3rem;
-    margin-bottom: 3rem;
-    width: 250px;
-    font-family: 'Crimson Text', serif;
-    font-size: 20px;
-    opacity: .7;
-    border: none;
-    padding: 1rem;
-    border-radius: 5px;
-    justify-content: center;
-    cursor: pointer;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-    outline: none;
-  }
-
-  .msg-button:hover {
-    opacity: .5;
   }
 
 </style>

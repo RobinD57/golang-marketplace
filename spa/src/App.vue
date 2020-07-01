@@ -84,6 +84,17 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
 
+.modal-overlay {
+  position: absolute;
+  top:0;
+  left:0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.3);
+  min-height: 2000px;
+}
+
   .main-card {
     background-image: url(https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/resize=height:1400,fit:scale/output=quality:90/compress/https://cdn.fs.grailed.com/api/file/fpe0IssNQEWfiLXRbMX1);
     background-size: cover;
@@ -192,4 +203,6 @@ export default {
     margin-bottom: 10px;
     color: #2c3e50;
   }
+
+
 </style>
