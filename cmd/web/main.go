@@ -36,7 +36,7 @@ var validate *validator.Validate
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }

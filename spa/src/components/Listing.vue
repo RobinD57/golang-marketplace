@@ -33,7 +33,7 @@
         <p class="listing_price">${{ listing.price }}</p>
       </div>
       <div class="user-sidebar">
-        <UserSideBar :postingDate='"2020 05 10"'/>
+        <UserSideBar :seller='listing.seller' :postingDate='"2020 05 10"'/>
       </div>
     </div>
   </div>
@@ -64,7 +64,7 @@ export default {
     },
 
     setResults(attr, results) {
-      this.listing = results 
+      this.listing = results
     },
     resetImagesAndGrow(e) {
       this.$refs.gallery.children.forEach((img) => {

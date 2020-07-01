@@ -11,6 +11,7 @@
       <UserReview
       :rating='review.rating'
       :content='review.content'
+      :reviwer='review.reviewer'
       v-for='review in reviews'
       :key='review.id'/>
     </div>
@@ -23,14 +24,13 @@
 import UserReview from './UserReview'
 
 export default {
-  props: ['postingDate'],
+  props: ['seller', 'postingDate'],
   name: 'UserSideBar',
   components: {
     UserReview
   },
     data() {
     return {
-      user: null,
       endpoint: 'http://localhost:8080/user/',
       reviews: []
     }
@@ -43,14 +43,13 @@ export default {
         return this.setResults(data);
       },
       setResults(results) {
-        this.user = results;
+        this.reviews = results;
       },
     },
     created() {
-      this.fetchData("0xB408D044F1537C061836fF50E57D7A0D982E5E5c");
+      this.fetchData(this.seller);
     }
   }
-
 </script>
 
 <style lang="css" scoped>
