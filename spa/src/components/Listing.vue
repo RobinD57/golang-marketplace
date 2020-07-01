@@ -60,7 +60,6 @@ export default {
     async fetchData(attr, id) {
       let res = await fetch(`${this.endpoint}${id}`);
       let data = await res.json()
-      console.log(data);
       return this.setResults(attr, data);
     },
 

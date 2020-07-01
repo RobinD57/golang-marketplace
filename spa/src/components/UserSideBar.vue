@@ -39,7 +39,6 @@ export default {
       async fetchData(address) {
         let res = await fetch(`${this.endpoint}${address}`);
         let data = await res.json();
-        console.log(data);
         return this.setResults(data.Reviews);
       },
       setResults(results) {

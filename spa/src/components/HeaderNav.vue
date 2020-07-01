@@ -52,8 +52,4 @@ header p {
   padding-right: 4rem;
 }
 
-.alignment {
-  margin-right: 30%;
-}
-
 </style>
