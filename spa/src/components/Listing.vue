@@ -31,6 +31,7 @@
         <h1 class="listing_name">{{ listing.name }}</h1>
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
+        <PurchaseButton :seller='listing.seller' />
       </div>
       <div class="user-sidebar">
         <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
@@ -42,11 +43,13 @@
 <script>
 
 import UserSideBar from './UserSideBar';
+import PurchaseButton from './PurchaseButton';
 
 export default {
   props: ['id'],
   components: {
-    UserSideBar
+    UserSideBar,
+    PurchaseButton
   },
   data() {
     return {
@@ -127,7 +130,7 @@ export default {
   .listing .listing_price {
       font-size: 16px;
       opacity: .9;
-      margin: 0;
+      margin-bottom: 5rem;
       line-height: 2;
       font-weight: 900;
       z-index: 0;
@@ -155,5 +158,27 @@ export default {
     cursor: pointer;
   }
 
+  .msg-button {
+    display: flex;
+    margin: 0 auto;
+    margin-top: 3rem;
+    margin-bottom: 3rem;
+    width: 250px;
+    font-family: 'Crimson Text', serif;
+    font-size: 20px;
+    opacity: .7;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+
+  .msg-button:hover {
+    opacity: .5;
+  }
 
 </style>

@@ -159,6 +159,8 @@ export default {
     box-sizing: border-box;
     border-right: 2px solid rgba(246, 246, 246, 1);
     border-bottom: 2px solid rgba(246, 246, 246, 1);
+    border-radius: 5px;
+
   }
   .collapse {
     position: relative;

@@ -15,7 +15,7 @@
       v-for='review in reviews'
       :key='review.id'/>
     </div>
-    <button class="msg-button" type="button" name="button">Message</button>
+    <button class="msg-button" type="button" name="button">message</button>
   </div>
 </template>
 
@@ -103,7 +103,7 @@ export default {
   cursor: pointer;
   text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-
+  outline: none;
 }
 
 .msg-button:hover {
