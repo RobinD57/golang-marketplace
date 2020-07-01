@@ -3,7 +3,7 @@
     <header>
       <img src="http://acmelogos.com/images/logo-1.svg" alt="">
       <div class="">
-        <Metamask></Metamask>
+        <Metamask class="alignment"></Metamask>
       </div>
     </header>
   </div>
@@ -11,11 +11,10 @@
 
 <script>
 
-import Metamask from './Metamask'
+import Metamask from './Metamask';
 
 export default {
   name: 'header-nav',
-  props: ['name'],
   components: {
     Metamask
   },
@@ -34,13 +33,18 @@ header {
   top: 0;
   width: 100%;
   min-height: 90px;
-  border-bottom: 1px solid #42b983;
+  border-bottom: 2px solid rgba(246, 246, 246, 1);
   text-align: center;
   background: #ffffff;
   align-items: center;
+  z-index: 1;
 }
 header p {
   padding-right: 4rem;
+}
+
+.alignment {
+  margin-right: 30%;
 }
 
 </style>
