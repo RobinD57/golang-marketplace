@@ -21,8 +21,6 @@ import (
 
 var validate *validator.Validate
 
-// need to add validations to structs!!
-
 type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
@@ -67,9 +65,8 @@ type Listing struct {
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Price       float64            `bson:"price,omitempty" json:"price, string" validate:"required"`
 	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
+	CreatedAt   time.Time          `bson:"createdAt,omitempty" json:"createdAt"`
 }
-
-// created on
 
 func (l *Listing) Validate() error {
 	validate := validator.New()
@@ -105,6 +102,7 @@ func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *htt
 		return
 	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	listing.CreatedAt = time.Now()
 	result, err := connection.Listings.InsertOne(ctx, listing)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
