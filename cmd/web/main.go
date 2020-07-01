@@ -23,7 +23,7 @@ var validate *validator.Validate
 
 type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
-	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
+	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,unique,ethaddress"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
 	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
 }
@@ -78,9 +78,18 @@ type Purchase struct {
 	Listing primitive.ObjectID `bson:"listing" json:"listing,string"`
 	Buyer   primitive.ObjectID `bson:"buyer,omitempty" json:"buyer,omitempty"`
 	Seller  primitive.ObjectID `bson:"seller,omitempty" json:"seller,omitempty"`
+	Status  string             `bson:"status,omitempty" json:"status,omitempty" validate:"status"`
 }
 
-// status + validations for uniqueness on address
+func (p *Purchase) Validate() error {
+	validate := validator.New()
+	validate.RegisterValidation("status", validateStatus)
+	return validate.Struct(p)
+}
+
+func validateStatus(fl validator.FieldLevel) bool {
+	return fl.Field().String() == "open" || fl.Field().String() == "escrow" || fl.Field().String() == "done"
+}
 
 type Connection struct {
 	Listings  *mongo.Collection
