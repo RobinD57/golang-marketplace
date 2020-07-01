@@ -27,7 +27,7 @@
         alt="">
       </div>
     <div class="listing-details">
-      <div class="">
+      <div class="listing-product">
         <h1 class="listing_name">{{ listing.name }}</h1>
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
@@ -100,21 +100,23 @@ export default {
     margin-top: 3.5rem;
   }
 
-  .listing-contents {
-    display: flex;
-    flex-direction: row;
-  }
-
   .listing-images {
     display: flex;
   }
 
   .listing-details {
     display: flex;
-    justify-content: space-between;
     margin-top: 5rem;
     margin-left: 10px;
-    width: inherit;
+    width: 100%;
+  }
+
+  .listing-product {
+    flex: 0 1 70%;
+  }
+
+  .user-sidebar {
+    flex: 0 1 30%;
   }
 
   .listing .listing_name {
@@ -139,7 +141,7 @@ export default {
   .image-container{
     min-height: 500px;
     display: flex;
-    width: 60%;
+    width: 100%;
   }
 
   .image-container img {
@@ -158,7 +160,5 @@ export default {
     cursor: pointer;
   }
 
-  .user-sidebar {
-    width: 34%;
-  }
+
 </style>
