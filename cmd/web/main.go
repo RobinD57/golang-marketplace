@@ -3,12 +3,18 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"fmt"
+
+	"github.com/RobinD57/golang-marketplace/chat"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"regexp"
+	"syscall"
 	"time"
 
 	"github.com/go-playground/validator/v10"
@@ -19,6 +25,13 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+	CheckOrigin:     func(r *http.Request) bool { return true },
+}
+var redisHost string
+var redisPassword string
 var validate *validator.Validate
 
 type User struct {
@@ -306,12 +319,36 @@ func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http
 	json.NewEncoder(w).Encode(result)
 }
 
+func websocketHandler(w http.ResponseWriter, r *http.Request) {
+	fmt.Println(r.URL.Path)
+	params := mux.Vars(r)
+	user, _ := params["username"]
+	peer, err := upgrader.Upgrade(w, r, nil)
+	if err != nil {
+		log.Fatal("websocket conn failed", err)
+	}
+	chatSession := chat.NewChatSession(user, peer)
+	chatSession.Start()
+}
+
 func goDotEnvVariable(key string) string {
 	err := godotenv.Load(".env")
 	if err != nil {
 		log.Fatalf("Error loading .env file")
 	}
 	return os.Getenv(key)
+}
+
+func init() {
+	redisHost = goDotEnvVariable("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("missing REDIS_HOST env var")
+	}
+
+	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
+	if redisPassword == "" {
+		log.Fatal("missing REDIS_PASSWORD env var")
+	}
 }
 
 func main() {
@@ -349,7 +386,19 @@ func main() {
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/chat/{username}", websocketHandler)
 	// router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
+
+	exit := make(chan os.Signal)
+	signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
+	<-exit
+
+	log.Println("exit signalled")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	chat.Cleanup()
+	log.Println("chat app exited")
 }
