@@ -1,9 +1,11 @@
 <template lang="html">
   <div id="app">
     <header>
-      <img src="http://acmelogos.com/images/logo-1.svg" alt="">
-      <div class="">
-        <Metamask class="alignment"></Metamask>
+      <div class="header-contents">
+        <img src="http://acmelogos.com/images/logo-1.svg" alt="">
+        <div class="">
+          <Metamask class="alignment"></Metamask>
+        </div>
       </div>
     </header>
   </div>
@@ -26,9 +28,8 @@ export default {
 <style lang="css" scoped>
 
 header {
-  display: flex;
-  justify-content: space-between;
   padding: 0px 1.5rem;
+  display: flex;
   position: fixed;
   top: 0;
   width: 100%;
@@ -36,9 +37,17 @@ header {
   border-bottom: 2px solid rgba(246, 246, 246, 1);
   text-align: center;
   background: #ffffff;
-  align-items: center;
   z-index: 1;
+  align-items: center;
 }
+
+.header-contents {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
 header p {
   padding-right: 4rem;
 }
