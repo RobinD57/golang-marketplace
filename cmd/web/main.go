@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"os/signal"
+	"syscall"
 
 	"github.com/RobinD57/golang-marketplace/chat"
 	"github.com/gorilla/handlers"
@@ -335,17 +337,17 @@ func goDotEnvVariable(key string) string {
 	return os.Getenv(key)
 }
 
-//func init() {
-//	redisHost = goDotEnvVariable("REDIS_HOST")
-//	if redisHost == "" {
-//		log.Fatal("missing REDIS_HOST env var")
-//	}
-//
-//	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
-//	if redisPassword == "" {
-//		log.Fatal("missing REDIS_PASSWORD env var")
-//	}
-//}
+func init() {
+	redisHost = goDotEnvVariable("REDIS_HOST")
+	if redisHost == "" {
+		log.Fatal("missing REDIS_HOST env var")
+	}
+
+	redisPassword = goDotEnvVariable("REDIS_PASSWORD")
+	if redisPassword == "" {
+		log.Fatal("missing REDIS_PASSWORD env var")
+	}
+}
 
 func main() {
 	dotenv := goDotEnvVariable("MONGO_ATLAS")
@@ -382,19 +384,19 @@ func main() {
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
-	//router.HandleFunc("/chat/{username}", websocketHandler)
+	router.HandleFunc("/chat/{username}", websocketHandler)
 	// router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 
-	//exit := make(chan os.Signal)
-	//signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
-	//<-exit
-	//
-	//log.Println("exit signalled")
-	//
-	//ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-	//defer cancel()
-	//chat.Cleanup()
-	//log.Println("chat app exited")
+	exit := make(chan os.Signal)
+	signal.Notify(exit, syscall.SIGTERM, syscall.SIGINT)
+	<-exit
+
+	log.Println("exit signalled")
+
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	chat.Cleanup()
+	log.Println("chat app exited")
 }
