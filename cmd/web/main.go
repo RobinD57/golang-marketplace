@@ -3,7 +3,8 @@ package main
 import (
 	"context"
 	"encoding/json"
-	// "fmt"
+	"fmt"
+
 	"github.com/RobinD57/golang-marketplace/chat"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
@@ -13,7 +14,6 @@ import (
 	"os"
 	"os/signal"
 	"regexp"
-	"strings"
 	"syscall"
 	"time"
 
@@ -320,7 +320,9 @@ func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http
 }
 
 func websocketHandler(w http.ResponseWriter, r *http.Request) {
-	user := strings.TrimPrefix(r.URL.Path, "/chat/")
+	fmt.Println(r.URL.Path)
+	params := mux.Vars(r)
+	user, _ := params["username"]
 	peer, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		log.Fatal("websocket conn failed", err)
@@ -384,7 +386,7 @@ func main() {
 	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
 	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("POST", "OPTIONS")
-	router.HandleFunc("/chat/", websocketHandler)
+	router.HandleFunc("/chat/{username}", websocketHandler)
 	// router.HandleFunc("/listing/{id}/reviews", connection.GetReviewsEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
