@@ -1,6 +1,7 @@
 package chat
 
 import (
+	"fmt"
 	// "crypto/tls"
 	"github.com/joho/godotenv"
 	"log"
@@ -60,6 +61,8 @@ func startSubscriber() {
 		for message := range messages {
 			from := strings.Split(message.Payload, ":")[0]
 			//send to all websocket sessions/peers
+			fmt.Println(message.Payload)
+			// <= this is how we can intercept the actual message for saving (string)
 			for user, peer := range Peers {
 				if from != user { //don't recieve your own messages
 					peer.WriteMessage(websocket.TextMessage, []byte(message.Payload))
@@ -98,7 +101,7 @@ func RemoveUser(user string) {
 	log.Println("removed user from redis:", user)
 }
 
-// Cleanup is invoked when the app is shutdown - disconnects websocket peers, closes pusb-sub and redis client connection
+// Cleanup is invoked when the app is shutdown - disconnects websocket peers, closes pub-sub and redis client connection
 func Cleanup() {
 	for user, peer := range Peers {
 		client.SRem(users, user)

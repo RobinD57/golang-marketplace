@@ -38,7 +38,7 @@ type User struct {
 	ID            primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	PublicAddress string             `bson:"publicAddress,omitempty" json:"publicAddress,omitempty" validate:"required,ethaddress"`
 	Nonce         string             `bson:"nonce,omitempty" json:"nonce,omitempty"` // keep it as string, could be big rnd int
-	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews,string"`
+	Reviews       []Review           `bson:"reviews,omitempty" json:"reviews"`
 }
 
 func (u *User) Validate() error {
@@ -396,6 +396,7 @@ func main() {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
+
 	chat.Cleanup()
 	log.Println("chat app exited")
 }
