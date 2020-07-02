@@ -25,6 +25,12 @@
                  <span class='shadowed'>${{listing.price}}</span>
                </h2>
              </div>
+             <div class="">
+               <h2 class='shadowed'>Listing id:
+                 <br>
+                 <span class='shadowed'>${{listing._id}}</span>
+               </h2>
+             </div>
           </div>
         </div>
         <button class="purchase-button" @click="removeOverlay" type="button" name="button">
@@ -95,6 +101,7 @@ export default {
 
   .purchase-main {
     display: flex;
+    margin-top: 3rem;
   }
 
   .product-card {
@@ -120,7 +127,7 @@ export default {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
-    margin-top: 9rem;
+    margin-top: 6rem;
   }
 
   .shadowed {
