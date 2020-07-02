@@ -199,16 +199,41 @@ func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *htt
 	json.NewEncoder(w).Encode(result)
 }
 
+func (connection Connection) GetPurchasesEndpoint(w http.ResponseWriter, r *http.Request) {
+	var purchases []bson.M
+	params := mux.Vars(r)
+	publicAddress, _ := params["publicAddress"]
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	cursor, err := connection.Purchases.Find(ctx, bson.M{"$or": []interface{}{
+		bson.M{"seller": publicAddress},
+		bson.M{"buyer": publicAddress},
+	},
+	})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err = cursor.All(ctx, &purchases); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(purchases)
+}
+
 func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
-	// status defaults to "open"
-	// take ID from url and directly add it as listing ID
 	var purchase Purchase
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
 	if err := json.NewDecoder(r.Body).Decode(&purchase); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 		return
 	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	purchase.Listing = id
+	purchase.Status = "open"
 	result, err := connection.Purchases.InsertOne(ctx, purchase)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
@@ -368,7 +393,7 @@ func main() {
 
 	marketplaceDatabase := client.Database("marketplace")
 	listingsCollection := marketplaceDatabase.Collection("listings")
-	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
+	purchasesCollection := marketplaceDatabase.Collection("purchases")
 	usersCollection := marketplaceDatabase.Collection("users")
 	reviewsCollection := marketplaceDatabase.Collection("reviews")
 
@@ -388,6 +413,7 @@ func main() {
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/chat/{username}", websocketHandler)
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/user/{publicAddress}/purchases", connection.GetPurchasesEndpoint).Methods("GET", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 
 	exit := make(chan os.Signal)
