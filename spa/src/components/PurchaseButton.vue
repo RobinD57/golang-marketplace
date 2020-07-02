@@ -1,17 +1,34 @@
 <template lang="html">
   <div class="">
-    <button @click='showModal' class="purchase-button" type="button" name="button">request to purchase</button>
+    <button @click='showModal' class="purchase-button" type="button" name="button">
+      request to purchase
+    </button>
     <transition name="slide" appear>
       <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
         <div class="purchase-main">
-          <div class="">
-            <span>buyer</span>
-            <span>seller</span>
+          <div class="buying">
+            <h2>Requesting to buy:</h2>
+            <div class="product-card">
+              <div class="card-wrapper" ref="cWrap"></div>
+            </div>
           </div>
-          <div class="card-wrapper" ref="cWrap"></div>
+          <div class="selling">
+            <h2 class='shadowed'>Seller:
+              <br>
+               <span class="shadowed">
+                 {{listing.seller.slice(0,3)}}...{{listing.seller.slice(39)}}
+               </span>
+             </h2>
+             <div class="">
+               <h2 class='shadowed'>Price:
+                 <br>
+                 <span class='shadowed'>${{listing.price}}</span>
+               </h2>
+             </div>
+          </div>
         </div>
         <button class="purchase-button" @click="removeOverlay" type="button" name="button">
-          Close
+          proceed
         </button>
       </div>
     </transition>
@@ -20,7 +37,7 @@
 
 <script>
 export default {
-  props: ['seller', 'id'],
+  props: ['listing'],
   name:'PurchaseButton',
   data() {
     return {
@@ -38,8 +55,10 @@ export default {
         </transition>`);
       }
       this.$refs.modal.style.display = ""
-      //inject card from index into modal for preview
-      const cardHTML = document.querySelector(`[data-id="${this.id}"]`).innerHTML;
+      this.injectCardInModal()
+    },
+    injectCardInModal() {
+      const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;
       this.$refs.cWrap.innerHTML = cardHTML;
     },
     removeOverlay() {
@@ -53,37 +72,35 @@ export default {
 }
 </script>
 
-<style >
+<style scoped>
 
-  .main-card {
-    background-size: cover;
-    height: 200px;
-    width: 20%;
-    margin-top: 30px;
-    border-radius: 5px;
-    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+  .selling {
+
   }
 
-  .blur {
-    background: rgba(245, 245, 245, 0.9);
-    margin: 0 auto;
-    height: 50px;
-    width: 20%;
-    margin-top: -4px;
-    padding: 2px;
-    border-radius: 5px;
-  }
-
-  .card-details {
-    position: relative;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2.5px;
-  }
-
-  .card-details span {
+  .selling span {
+    font-size: 18px;
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    margin-top: 0.8rem;
+  }
+
+  .buying {
+    width: 50%;
+    padding-left: 8rem;
+  }
+
+  .buying span {
+    font-size: 16px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  }
+
+  .purchase-main {
+    display: flex;
+  }
+
+  .product-card {
+    width: 250px;
+    height: 250px;
+    margin-top: 0rem;
   }
 
   .purchase-button {
@@ -103,6 +120,11 @@ export default {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
+    margin-top: 9rem;
+  }
+
+  .shadowed {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
 
   .purchase-button:hover {

@@ -31,7 +31,7 @@
         <h1 class="listing_name">{{ listing.name }}</h1>
         <p class="listing_description">{{ listing.description }}</p>
         <p class="listing_price">${{ listing.price }}</p>
-        <PurchaseButton :id='this.id' :seller='listing.seller' />
+        <PurchaseButton :listing='this.listing' />
       </div>
       <div class="user-sidebar">
         <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
