@@ -200,6 +200,8 @@ func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *htt
 }
 
 func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
+	// status defaults to "open"
+	// take ID from url and directly add it as listing ID
 	var purchase Purchase
 	if err := json.NewDecoder(r.Body).Decode(&purchase); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
