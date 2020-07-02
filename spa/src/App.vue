@@ -12,14 +12,16 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <div class="main-card" v-bind:data-id='listing.id' v-bind:style= "{ backgroundImage: `url(${listing.photo}` }">
-            </div>
-            <div class="blur">
-              <div class="card-details">
-                <span>
-                  {{ listing.name.length > 15 ? listing.name.slice(0,15) + "..." : listing.name }}
-                </span>
-                <span>${{listing.price}}</span>
+            <div class="aside-card-wrapper" v-bind:data-id='listing.id'>
+              <div class="main-card" v-bind:style= "{ backgroundImage: `url(${listing.photo}` }">
+              </div>
+              <div class="blur">
+                <div class="card-details">
+                  <span>
+                    {{ listing.name.length > 15 ? listing.name.slice(0,15) + "..." : listing.name }}
+                  </span>
+                  <span>${{listing.price}}</span>
+                </div>
               </div>
             </div>
           </router-link>
@@ -82,7 +84,7 @@ export default {
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
 
   .modal-overlay {
     position: absolute;
