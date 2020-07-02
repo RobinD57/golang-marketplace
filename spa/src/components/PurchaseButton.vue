@@ -3,6 +3,13 @@
     <button @click='showModal' class="button" type="button" name="button">request to purchase</button>
     <transition name="slide" appear>
       <div class="modal" v-if="modalOpen">
+        <div class="purchase-main">
+          <div class="">
+            <span>buyer</span>
+            <span>seller</span>
+          </div>
+          <div class="card-wrapper" ref='cwrap'></div>
+        </div>
         <button class="button" @click="removeOverlay" type="button" name="button">
           Close
         </button>
@@ -13,7 +20,7 @@
 
 <script>
 export default {
-  props: ['seller'],
+  props: ['seller', 'id'],
   name:'PurchaseButton',
   data() {
     return {
@@ -25,7 +32,7 @@ export default {
       this.modalOpen = true;
       if (this.modalOpen) {
         document.querySelector('header').insertAdjacentHTML("afterend",
-        `<transition id='overlay' name="fade" appear>
+        `<transition id='overlay' appear>
         <div class='modal-overlay'>
         </div>
         </transition>`);
@@ -34,6 +41,10 @@ export default {
     removeOverlay() {
       this.modalOpen = false;
       document.querySelector('#overlay').style.display = 'none';
+    },
+    created() {
+      const cardHTML = document.querySelector(`[data-id="${this.id}"]`).innerHTML;
+      this.$refs.cwrap.insertAdjacentHTML('beforeend', cardHTML);
     }
   }
 }
@@ -62,16 +73,6 @@ export default {
 
   .msg-button:hover {
     opacity: .5;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: 0.5s;
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
   }
 
   .modal {

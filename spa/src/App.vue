@@ -12,12 +12,12 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <div class="main-card" v-bind:style= "{ backgroundImage: `url(${listing.photo}` }">
+            <div class="main-card" v-bind:data-id='listing.id' v-bind:style= "{ backgroundImage: `url(${listing.photo}` }">
             </div>
             <div class="blur">
               <div class="card-details">
                 <span>
-                  {{listing.name.length > 15 ? listing.name.slice(0,15) + "..." : listing.name}}
+                  {{ listing.name.length > 15 ? listing.name.slice(0,15) + "..." : listing.name }}
                 </span>
                 <span>${{listing.price}}</span>
               </div>
@@ -84,15 +84,15 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
 
-.modal-overlay {
-  position: absolute;
-  top:0;
-  left:0;
-  right: 0;
-  bottom: 0;
-  z-index: 1;
-  background-color: rgba(0, 0, 0, 0.3);
-  min-height: 2000px;
+  .modal-overlay {
+    position: absolute;
+    top:0;
+    left:0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+    min-height: 2000px;
 }
 
   .main-card {
