@@ -5,9 +5,16 @@
     </button>
     <transition name="slide" appear>
       <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
+        <button
+          class="close-button"
+          @click="removeOverlay"
+          type="button"
+          name="button">
+          x
+        </button>
         <div class="purchase-main">
           <div class="buying">
-            <h2>Requesting to buy:</h2>
+            <h2 class="shadowed">Requesting to buy:</h2>
             <div class="product-card">
               <div class="card-wrapper" ref="cWrap"></div>
             </div>
@@ -33,7 +40,7 @@
              </div>
           </div>
         </div>
-        <button class="purchase-button" @click="removeOverlay" type="button" name="button">
+        <button class="purchase-button" @click="purchaseStep2" type="button" name="button">
           proceed
         </button>
       </div>
@@ -72,7 +79,11 @@ export default {
       document.querySelector('#overlay').style.display = 'none';
       this.$refs.modal.style.display = "none"
     },
+    purchaseStep2() {
+        this.$refs.modal.innerHTML = ""
+    },
     created() {
+      this.injectCardInModal()
     }
   }
 }
@@ -81,7 +92,9 @@ export default {
 <style scoped>
 
   .selling {
-
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
   }
 
   .selling span {
@@ -130,6 +143,25 @@ export default {
     margin-top: 6rem;
   }
 
+  .close-button {
+    display: flex;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-family: 'Crimson Text', serif;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: .7;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+    outline: none;
+
+  }
   .shadowed {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
