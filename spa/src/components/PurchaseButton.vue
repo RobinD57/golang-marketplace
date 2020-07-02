@@ -33,7 +33,7 @@ export default {
     },
     removeOverlay() {
       this.modalOpen = false;
-      document.querySelector('#overlay').style.display = ('none');
+      document.querySelector('#overlay').style.display = 'none';
     }
   }
 }

@@ -12,7 +12,7 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <div class="main-card">
+            <div class="main-card" v-bind:style= "{ backgroundImage: `url(${listing.photo}` }">
             </div>
             <div class="blur">
               <div class="card-details">
