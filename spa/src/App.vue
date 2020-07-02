@@ -12,18 +12,11 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <div class="aside-card-wrapper" v-bind:data-id='listing.id'>
-              <div class="main-card" v-bind:style= "{ backgroundImage: `url(${listing.photo}` }">
-              </div>
-              <div class="blur">
-                <div class="card-details">
-                  <span>
-                    {{ listing.name.length > 15 ? listing.name.slice(0,15) + "..." : listing.name }}
-                  </span>
-                  <span>${{listing.price}}</span>
-                </div>
-              </div>
-            </div>
+            <MainCard
+              :id='listing.id'
+              :name='listing.name'
+              :price='listing.price'
+              :photo='listing.photo'/>
           </router-link>
         </div>
       </aside>
@@ -36,12 +29,14 @@
 
 <script>
 import HeaderNav from '@/components/HeaderNav';
+import MainCard from '@/components/MainCard';
 
 export default {
   name: 'app',
   props: ['id'],
   components: {
-    HeaderNav
+    HeaderNav,
+    MainCard
   },
   data() {
     return {
@@ -96,39 +91,6 @@ export default {
     background-color: rgba(0, 0, 0, 0.3);
     min-height: 2000px;
 }
-
-  .main-card {
-    background-image: url(https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/resize=height:1400,fit:scale/output=quality:90/compress/https://cdn.fs.grailed.com/api/file/fpe0IssNQEWfiLXRbMX1);
-    background-size: cover;
-    height: 200px;
-    width: 70%;
-    margin: 0 auto;
-    margin-top: 30px;
-    border-radius: 5px;
-    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-  }
-
-  .blur {
-    background: rgba(245, 245, 245, 0.9);
-    margin: 0 auto;
-    height: 50px;
-    width: 70%;
-    margin-top: -4px;
-    padding: 2px;
-    border-radius: 5px;
-  }
-
-  .card-details {
-    position: relative;
-    display: flex;
-    justify-content: space-around;
-    margin-top: 2.5px;
-  }
-
-  .card-details span {
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    margin-top: 0.8rem;
-  }
 
   body {
     margin: 0;
@@ -205,6 +167,4 @@ export default {
     margin-bottom: 10px;
     color: #2c3e50;
   }
-
-
 </style>

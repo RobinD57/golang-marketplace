@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="">
-    <button @click='showModal' class="button" type="button" name="button">request to purchase</button>
+    <button @click='showModal' class="purchase-button" type="button" name="button">request to purchase</button>
     <transition name="slide" appear>
       <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
         <div class="purchase-main">
@@ -10,7 +10,7 @@
           </div>
           <div class="card-wrapper" ref="cWrap"></div>
         </div>
-        <button class="button" @click="removeOverlay" type="button" name="button">
+        <button class="purchase-button" @click="removeOverlay" type="button" name="button">
           Close
         </button>
       </div>
@@ -38,6 +38,7 @@ export default {
         </transition>`);
       }
       this.$refs.modal.style.display = ""
+      //inject card from index into modal for preview
       const cardHTML = document.querySelector(`[data-id="${this.id}"]`).innerHTML;
       this.$refs.cWrap.innerHTML = cardHTML;
     },
@@ -52,14 +53,12 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style >
 
   .main-card {
-    background-image: url(https://process.fs.grailed.com/AJdAgnqCST4iPtnUxiGtTz/auto_image/cache=expiry:max/rotate=deg:exif/resize=height:1400,fit:scale/output=quality:90/compress/https://cdn.fs.grailed.com/api/file/fpe0IssNQEWfiLXRbMX1);
     background-size: cover;
     height: 200px;
-    width: 70%;
-    margin: 0 auto;
+    width: 20%;
     margin-top: 30px;
     border-radius: 5px;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
@@ -69,7 +68,7 @@ export default {
     background: rgba(245, 245, 245, 0.9);
     margin: 0 auto;
     height: 50px;
-    width: 70%;
+    width: 20%;
     margin-top: -4px;
     padding: 2px;
     border-radius: 5px;
@@ -87,7 +86,7 @@ export default {
     margin-top: 0.8rem;
   }
 
-  .button {
+  .purchase-button {
     display: flex;
     margin: 0 auto;
     margin-top: 3rem;
@@ -106,7 +105,7 @@ export default {
     outline: none;
   }
 
-  .msg-button:hover {
+  .purchase-button:hover {
     opacity: .5;
   }
 
@@ -125,6 +124,5 @@ export default {
 
     padding: 25px;
 }
-
 
 </style>
