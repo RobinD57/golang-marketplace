@@ -16,42 +16,52 @@
           x
         </button>
         <h1>post listing</h1>
-        <div class="inputs">
-          <div class="email-group">
-            <p>email:</p>
+        <div class="inputs-main">
+          <div class="inputs-left">
+            <div class="email-group">
               <FormulateInput
-              type="email"
-              name="email"
-              validation="required|email" />
+                type="email"
+                name="email"
+                label="email:"
+                v-model='newlistingDetails.email'
+                validation="^required|email" />
+            </div>
+            <div class="listing-name-group">
+              <FormulateInput
+                type="text"
+                name="name"
+                label="title of your listing:"
+                v-model='newlistingDetails.name'
+                validation="^required|min:5" />
+            </div>
+            <div class="price-group">
+              <FormulateInput
+                type="text"
+                name="price"
+                label="selling price:"
+                v-model='newlistingDetails.price'
+                validation="^required|number|min:1" />
+            </div>
+            <div class="description-group">
+              <FormulateInput
+                type="textarea"
+                name="description"
+                label="provide a short description:"
+                v-model='newlistingDetails.description'
+                validation="^required|min:1" />
+            </div>
           </div>
-
-          <div class="listing-name-group">
-            <p>listing name:</p>
-            <FormulateInput
-              type="text"
-              name="name"
-              validation="required|min:5" />
+          <div class="inputs-right">
+            <div class="photo-group">
+              <FormulateInput
+                type="image"
+                name="listing-photos"
+                label="Select images to upload"
+                v-model='newlistingDetails.photos'
+                help="png, jpg or gif"
+              />
+            </div>
           </div>
-          <div class="price-group">
-            <p class="">price:</p>
-            <FormulateInput
-              type="text"
-              name="price"
-              validation="required|number|min:1" />
-          </div>
-          <div class="description-group">
-            <p class="">description:</p>
-            <FormulateInput
-              type="textarea"
-              name="description"
-              validation="required|min:1" />
-          </div>
-          <FormulateInput
-            type="image"
-            name="listing-images"
-            label="Select an image to upload"
-            help="png, jpg or gif"
-          />
         </div>
       </div>
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
@@ -86,7 +96,13 @@ export default {
     return {
       modalOpen: false,
       currentAddress: this.NewListingAddress,
-
+      newlistingDetails: {
+        email: null,
+        name: null,
+        price: null,
+        description: null,
+        photos: ['placeholder']
+      }
     }
   },
   watch: {
@@ -158,9 +174,10 @@ export default {
     height: 600px;
     background-color: #FFF;
     border-radius: 16px;
-    padding: 25px;
+    padding: 20px;
     h1 {
       text-align: center;
+      margin-bottom: 10px;
     }
   }
 
@@ -170,8 +187,18 @@ export default {
     width:200px;
   }
 
-  .inputs {
+  .inputs-main {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
+  .inputs-left {
+    display: flex;
+    display: flex;
+    flex-direction: column;
     width: 100;
+    margin-left: 2rem;
+    padding-bottom: 5rem;
     div {
       display: flex;
       align-items: baseline;
@@ -180,5 +207,10 @@ export default {
         margin-right: 1rem;
       }
     }
+  }
+
+  .inputs-right {
+    display: flex;
+    flex-direction: column;
   }
 </style>
