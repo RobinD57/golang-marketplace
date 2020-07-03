@@ -15,12 +15,15 @@
           name="button">
           x
         </button>
+        <FormulateInput type="text" />
       </div>
     </transition>
   </div>
 </template>
 
 <script>
+import '../assets/scss/main.scss';
+
 export default {
   props: ['user'],
   name:'NewListingButton',
@@ -46,7 +49,7 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style lang="scss" scoped>
 
   .newlisting-button {
     display: flex;
@@ -98,7 +101,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 10000;
+    z-index: 10;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 1000px;

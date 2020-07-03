@@ -87,6 +87,7 @@ export default {
 
 <style scoped>
 
+
   .selling {
     display: flex;
     flex-direction: column;

@@ -42,7 +42,7 @@ header {
   border-bottom: 2px solid rgba(246, 246, 246, 1);
   text-align: center;
   background: #ffffff;
-  z-index: 1;
+  z-index: 3;
   align-items: center;
 }
 
