@@ -95,13 +95,13 @@ import '../assets/scss/main.scss';
 
 
 export default {
-  props: ['user', 'NewListingAddress'],
+  props: ['user', 'newListingAddress'],
   name:'NewListingButton',
   mixins: [ModalMixin, MetamaskMixin],
   data() {
     return {
       modalOpen: false,
-      currentAddress: this.NewListingAddress,
+      currentAddress: this.newListingAddress,
       endpoint: 'http://localhost:8080/listing',
       newlistingDetails: {
         name: null,
@@ -120,8 +120,9 @@ export default {
         method: 'POST',
         body: JSON.stringify(this.newlistingDetails)
       })
-      console.log(JSON.stringify(this.newlistingDetails))
-    }
+      this.removeOverlay();
+      this.$root.$emit('fetchListings', "hi");
+    },
   },
   watch: {
     modalOpen: function () {
@@ -187,8 +188,8 @@ export default {
     transform: translate(-50%, -50%);
     z-index: 10;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 1000px;
+    width: 80%;
+    max-width: 700px;
     height: 600px;
     background-color: #FFF;
     border-radius: 16px;

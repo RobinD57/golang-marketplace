@@ -53,11 +53,9 @@ export default {
       endpoint: 'http://localhost:8080/listings'
     };
   },
-
   created() {
     this.fetchListings();
   },
-
   methods: {
     async fetchListings() {
       let res = await fetch(this.endpoint)
@@ -82,11 +80,17 @@ export default {
         this.asideShrunk = false;
       }
     }
+  },
+  mounted() {
+    this.$root.$on('fetchListings', message => {
+      this.fetchListings();
+      return message
+    })
   }
 }
 </script>
 
-<style>
+<style lang='scss'>
   @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
 
   .modal-overlay {
@@ -146,7 +150,9 @@ export default {
     border-radius: 5px;
     flex-direction: column;
     justify-content: center;
-
+    h3 {
+      margin-bottom: 0;
+    }
   }
   .collapse {
     position: relative;

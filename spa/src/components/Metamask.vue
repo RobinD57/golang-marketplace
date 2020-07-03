@@ -24,12 +24,12 @@
 <script>
 import MetamaskMixin from '../mixins/MetamaskMixin';
   export default {
-    props: ['MetaAddress'],
+    props: ['metaAddress'],
     name: "Metamask",
     mixins: [MetamaskMixin],
     data() {
       return {
-        currentAddress: this.MetaAddress,
+        currentAddress: this.metaAddress,
         hover: false
       }
     },
