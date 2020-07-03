@@ -75,7 +75,7 @@ type Listing struct {
 	Seller      string             `bson:"seller,omitempty" json:"seller,omitempty"`
 	Description string             `bson:"description,omitempty" json:"description,omitempty"`
 	Price       float64            `bson:"price,omitempty" json:"price, string" validate:"required"`
-	Photo       string             `bson:"photo,omitempty" json:"photo" validate:"required"` // Cloudinary?
+	Photos      []string           `bson:"photos,omitempty" json:"photos" validate:"required"` // Cloudinary?
 	CreatedAt   time.Time          `bson:"createdAt,omitempty" json:"createdAt"`
 }
 
