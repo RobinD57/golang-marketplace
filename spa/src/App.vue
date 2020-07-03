@@ -3,6 +3,9 @@
     <header-nav></header-nav>
     <main>
       <aside class="sidebar">
+        <div class="">
+          <h3>Listings: {{listings.length}}</h3>
+        </div>
         <div @click='toggleCollapse' class="collapse">
           <font-awesome-icon :icon="['fas', 'chevron-left']"/>
         </div>
@@ -130,11 +133,12 @@ export default {
     overflow-x: hidden;
     width: 20%;
     padding: 50px 0 ;
-    padding-right: 55px;
     box-sizing: border-box;
     border-right: 2px solid rgba(246, 246, 246, 1);
     border-bottom: 2px solid rgba(246, 246, 246, 1);
     border-radius: 5px;
+    flex-direction: column;
+    justify-content: center;
 
   }
   .collapse {
