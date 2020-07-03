@@ -160,7 +160,6 @@ export default {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
-
   }
   .shadowed {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
