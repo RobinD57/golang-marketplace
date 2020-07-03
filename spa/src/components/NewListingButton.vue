@@ -18,14 +18,14 @@
         <h1>post listing</h1>
         <div class="inputs-main">
           <div class="inputs-left">
-            <div class="email-group">
+            <!-- <div class="email-group">
               <FormulateInput
                 type="email"
                 name="email"
                 label="email:"
                 v-model='newlistingDetails.email'
                 validation="^required|email" />
-            </div>
+            </div> -->
             <div class="listing-name-group">
               <FormulateInput
                 type="text"
@@ -36,7 +36,7 @@
             </div>
             <div class="price-group">
               <FormulateInput
-                type="text"
+                type="number"
                 name="price"
                 label="selling price:"
                 v-model='newlistingDetails.price'
@@ -59,6 +59,12 @@
                 label="Select images to upload"
                 v-model='newlistingDetails.photos'
                 help="png, jpg or gif"
+              />
+              <br>
+              <FormulateInput
+                type="submit"
+                label="post"
+                @click='submitListing'
               />
             </div>
           </div>
@@ -96,19 +102,31 @@ export default {
     return {
       modalOpen: false,
       currentAddress: this.NewListingAddress,
+      endpoint: 'http://localhost:8080/listing',
       newlistingDetails: {
-        email: null,
         name: null,
         price: null,
         description: null,
-        photos: ['placeholder']
-      }
+        photo: null,
+        seller: this.NewListingAddress
+      },
+    }
+  },
+  methods: {
+    async submitListing() {
+      this.newlistingDetails.price = Number(this.newlistingDetails.price);
+      this.newlistingDetails.photo = "null"; //temp untill we figure out photo logic
+      await fetch(this.endpoint, {
+        method: 'POST',
+        body: JSON.stringify(this.newlistingDetails)
+      })
+      console.log(JSON.stringify(this.newlistingDetails))
     }
   },
   watch: {
     modalOpen: function () {
       if (this.modalOpen) {
-        this.loginAndSetAddress()
+        this.loginAndSetAddress();
       }
     }
   }
@@ -187,10 +205,17 @@ export default {
     width:200px;
   }
 
+  .label {
+    text-align: left !important;
+  }
+
   .inputs-main {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
+    max-width: 650px;
+    margin: 0 auto;
+
   }
   .inputs-left {
     display: flex;
