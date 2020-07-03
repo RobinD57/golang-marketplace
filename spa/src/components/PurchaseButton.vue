@@ -61,11 +61,7 @@ export default {
     showModal() {
       this.modalOpen = true;
       if (this.modalOpen) {
-        document.querySelector('header').insertAdjacentHTML("afterend",
-        `<transition id='overlay' appear>
-        <div class='modal-overlay'>
-        </div>
-        </transition>`);
+        document.querySelector('.modal-overlay').style.display = "block";
       }
       this.$refs.modal.style.display = ""
       this.injectCardInModal()
@@ -76,7 +72,7 @@ export default {
     },
     removeOverlay() {
       this.modalOpen = false;
-      document.querySelector('#overlay').style.display = 'none';
+      document.querySelector('.modal-overlay').style.display = 'none';
       this.$refs.modal.style.display = "none"
     },
     purchaseStep2() {
@@ -143,28 +139,6 @@ export default {
     margin-top: 6rem;
   }
 
-  .close-button {
-    display: flex;
-    align-items: center;
-    width: 25px;
-    height: 25px;
-    font-family: 'Crimson Text', serif;
-    font-size: 12px;
-    font-weight: bold;
-    opacity: .7;
-    border: none;
-    padding: 1rem;
-    border-radius: 5px;
-    justify-content: center;
-    cursor: pointer;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-    outline: none;
-  }
-  .shadowed {
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
-  }
-
   .purchase-button:hover {
     opacity: .5;
   }
@@ -174,7 +148,7 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    z-index: 99;
+    z-index: 2;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 1000px;
@@ -183,6 +157,6 @@ export default {
     border-radius: 16px;
 
     padding: 25px;
-}
+  }
 
 </style>

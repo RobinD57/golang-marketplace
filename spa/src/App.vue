@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <header-nav></header-nav>
+    <transition id='overlay' appear>
+      <div class='modal-overlay'></div>
+    </transition>
     <main>
       <aside class="sidebar">
         <div class="">
@@ -85,6 +88,7 @@ export default {
   @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
 
   .modal-overlay {
+    display: none;
     position: absolute;
     top:0;
     left:0;
@@ -171,4 +175,43 @@ export default {
     margin-bottom: 10px;
     color: #2c3e50;
   }
+
+
+  .close-button {
+    display: flex;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-family: 'Crimson Text', serif;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: .7;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+    outline: none;
+  }
+  .shadowed {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  }
+
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99;
+    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 1000px;
+    height: 600px;
+    background-color: #FFF;
+    border-radius: 16px;
+
+    padding: 25px;
+}
 </style>
