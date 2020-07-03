@@ -49,38 +49,21 @@
 </template>
 
 <script>
+import ModalMixin from '../mixins/ModalMixin';
+
 export default {
   props: ['listing'],
   name:'PurchaseButton',
+  mixins: [ModalMixin],
   data() {
     return {
       modalOpen: false
     }
   },
   methods: {
-    showModal() {
-      this.modalOpen = true;
-      if (this.modalOpen) {
-        document.querySelector('.modal-overlay').style.display = "block";
-      }
-      this.$refs.modal.style.display = ""
-      this.injectCardInModal()
-    },
-    injectCardInModal() {
-      const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;
-      this.$refs.cWrap.innerHTML = cardHTML;
-    },
-    removeOverlay() {
-      this.modalOpen = false;
-      document.querySelector('.modal-overlay').style.display = 'none';
-      this.$refs.modal.style.display = "none"
-    },
     purchaseStep2() {
         this.$refs.modal.innerHTML = ""
     },
-    created() {
-      this.injectCardInModal()
-    }
   }
 }
 </script>

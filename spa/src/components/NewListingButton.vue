@@ -22,29 +22,20 @@
 </template>
 
 <script>
+import ModalMixin from '../mixins/ModalMixin';
 import '../assets/scss/main.scss';
+
 
 export default {
   props: ['user'],
   name:'NewListingButton',
+  mixins: [ModalMixin],
   data() {
     return {
       modalOpen: false
     }
   },
   methods: {
-    showModal() {
-      this.modalOpen = true;
-      if (this.modalOpen) {
-        document.querySelector('.modal-overlay').style.display = "block";
-        this.$refs.modal.style.display = "";
-      }
-    },
-    removeOverlay() {
-      this.modalOpen = false;
-      document.querySelector('.modal-overlay').style.display = 'none';
-      this.$refs.modal.style.display = "none"
-    },
   }
 }
 </script>
