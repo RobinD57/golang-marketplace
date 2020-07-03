@@ -2,7 +2,7 @@
   <div id="app">
     <header-nav></header-nav>
     <transition id='overlay' appear>
-      <div class='modal-overlay'></div>
+      <div class='modal-overlay' @click="removeOverlay"></div>
     </transition>
     <main>
       <aside class="sidebar">
@@ -36,10 +36,12 @@
 <script>
 import HeaderNav from '@/components/HeaderNav';
 import MainCard from '@/components/MainCard';
+import ModalMixin from '../src/mixins/ModalMixin';
 
 export default {
   name: 'app',
   props: ['id'],
+  mixins: [ModalMixin],
   components: {
     HeaderNav,
     MainCard
@@ -102,6 +104,7 @@ export default {
   body {
     margin: 0;
     padding: 0;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
   #app {
     font-family: 'Crimson Text', serif;

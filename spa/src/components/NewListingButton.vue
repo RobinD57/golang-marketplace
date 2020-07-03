@@ -15,7 +15,44 @@
           name="button">
           x
         </button>
-        <FormulateInput type="text" />
+        <h1>post listing</h1>
+        <div class="inputs">
+          <div class="email-group">
+            <p>email:</p>
+              <FormulateInput
+              type="email"
+              name="email"
+              validation="required|email" />
+          </div>
+
+          <div class="listing-name-group">
+            <p>listing name:</p>
+            <FormulateInput
+              type="text"
+              name="name"
+              validation="required|min:5" />
+          </div>
+          <div class="price-group">
+            <p class="">price:</p>
+            <FormulateInput
+              type="text"
+              name="price"
+              validation="required|number|min:1" />
+          </div>
+          <div class="description-group">
+            <p class="">description:</p>
+            <FormulateInput
+              type="textarea"
+              name="description"
+              validation="required|min:1" />
+          </div>
+          <FormulateInput
+            type="image"
+            name="listing-images"
+            label="Select an image to upload"
+            help="png, jpg or gif"
+          />
+        </div>
       </div>
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
         <button
@@ -48,7 +85,8 @@ export default {
   data() {
     return {
       modalOpen: false,
-      currentAddress: this.NewListingAddress
+      currentAddress: this.NewListingAddress,
+
     }
   },
   watch: {
@@ -104,7 +142,7 @@ export default {
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
   }
-  .shadowed {
+  .v {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
 
@@ -120,13 +158,27 @@ export default {
     height: 600px;
     background-color: #FFF;
     border-radius: 16px;
-
     padding: 25px;
+    h1 {
+      text-align: center;
+    }
   }
 
   .meta-logo img {
     margin-top: 5rem;
     height: 200px;
     width:200px;
+  }
+
+  .inputs {
+    width: 100;
+    div {
+      display: flex;
+      align-items: baseline;
+      margin-top: 1rem;
+      p {
+        margin-right: 1rem;
+      }
+    }
   }
 </style>
