@@ -84,7 +84,7 @@ func (l *Listing) Validate() error {
 	return validate.Struct(l)
 }
 
-type Purchase struct {
+type Transaction struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"id,string"`
 	Listing primitive.ObjectID `bson:"listing" json:"listing,string"`
 	Buyer   string             `bson:"buyer,omitempty" json:"buyer,omitempty"`
@@ -92,10 +92,10 @@ type Purchase struct {
 	Status  string             `bson:"status,omitempty" json:"status,omitempty" validate:"status"`
 }
 
-func (p *Purchase) Validate() error {
+func (t *Transaction) Validate() error {
 	validate := validator.New()
 	validate.RegisterValidation("status", validateStatus)
-	return validate.Struct(p)
+	return validate.Struct(t)
 }
 
 func validateStatus(fl validator.FieldLevel) bool {
@@ -103,10 +103,10 @@ func validateStatus(fl validator.FieldLevel) bool {
 }
 
 type Connection struct {
-	Listings  *mongo.Collection
-	Purchases *mongo.Collection
-	Reviews   *mongo.Collection
-	Users     *mongo.Collection
+	Listings     *mongo.Collection
+	Transactions *mongo.Collection
+	Reviews      *mongo.Collection
+	Users        *mongo.Collection
 }
 
 func (connection Connection) CreateListingEndpoint(w http.ResponseWriter, r *http.Request) { // no proper validations for now
@@ -199,17 +199,42 @@ func (connection Connection) DeleteListingEndpoint(w http.ResponseWriter, r *htt
 	json.NewEncoder(w).Encode(result)
 }
 
-func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
-	// status defaults to "open"
-	// take ID from url and directly add it as listing ID
-	var purchase Purchase
-	if err := json.NewDecoder(r.Body).Decode(&purchase); err != nil {
+func (connection Connection) GetTransactionsEndpoint(w http.ResponseWriter, r *http.Request) {
+	var transactions []bson.M
+	params := mux.Vars(r)
+	publicAddress, _ := params["publicAddress"]
+	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
+	cursor, err := connection.Transactions.Find(ctx, bson.M{"$or": []interface{}{
+		bson.M{"seller": publicAddress},
+		bson.M{"buyer": publicAddress},
+	},
+	})
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	if err = cursor.All(ctx, &transactions); err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
+		return
+	}
+	json.NewEncoder(w).Encode(transactions)
+}
+
+func (connection Connection) CreateTransactionEndpoint(w http.ResponseWriter, r *http.Request) {
+	var transaction Transaction
+	params := mux.Vars(r)
+	id, _ := primitive.ObjectIDFromHex(params["id"])
+	if err := json.NewDecoder(r.Body).Decode(&transaction); err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
 		return
 	}
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	result, err := connection.Purchases.InsertOne(ctx, purchase)
+	transaction.Listing = id
+	transaction.Status = "open"
+	result, err := connection.Transactions.InsertOne(ctx, transaction)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
@@ -218,11 +243,11 @@ func (connection Connection) CreatePurchaseEndpoint(w http.ResponseWriter, r *ht
 	json.NewEncoder(w).Encode(result)
 }
 
-func (connection Connection) DeletePurchaseEndpoint(w http.ResponseWriter, r *http.Request) {
+func (connection Connection) DeleteTransactionEndpoint(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
 	id, _ := primitive.ObjectIDFromHex(params["id"])
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	result, err := connection.Purchases.DeleteOne(ctx, bson.M{"_id": id})
+	result, err := connection.Transactions.DeleteOne(ctx, bson.M{"_id": id})
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
@@ -368,11 +393,11 @@ func main() {
 
 	marketplaceDatabase := client.Database("marketplace")
 	listingsCollection := marketplaceDatabase.Collection("listings")
-	purchasesCollection := marketplaceDatabase.Collection("purchases") // nest reviews in here
+	transactionsCollection := marketplaceDatabase.Collection("transactions")
 	usersCollection := marketplaceDatabase.Collection("users")
 	reviewsCollection := marketplaceDatabase.Collection("reviews")
 
-	connection := Connection{Listings: listingsCollection, Purchases: purchasesCollection, Users: usersCollection, Reviews: reviewsCollection}
+	connection := Connection{Listings: listingsCollection, Transactions: transactionsCollection, Users: usersCollection, Reviews: reviewsCollection}
 
 	router := mux.NewRouter()
 	header := handlers.AllowedHeaders([]string{"X-Requested-With", "Content-Type", "Authorization"})
@@ -383,11 +408,12 @@ func main() {
 	router.HandleFunc("/listing/{id}", connection.GetListingEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/listing/{id}", connection.UpdateListingEndpoint).Methods("PUT", "OPTIONS")
 	router.HandleFunc("/listing/{id}", connection.DeleteListingEndpoint).Methods("DELETE", "OPTIONS")
-	router.HandleFunc("/listing/{id}/purchase", connection.CreatePurchaseEndpoint).Methods("POST", "OPTIONS")
-	router.HandleFunc("/purchase/{id}", connection.DeletePurchaseEndpoint).Methods("DELETE", "OPTIONS")
+	router.HandleFunc("/listing/{id}/transaction", connection.CreateTransactionEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/transaction/{id}", connection.DeleteTransactionEndpoint).Methods("DELETE", "OPTIONS")
 	router.HandleFunc("/user/{publicAddress}", connection.FindOrCreateUserEndpoint).Methods("GET", "OPTIONS")
 	router.HandleFunc("/chat/{username}", websocketHandler)
 	router.HandleFunc("/user/{publicAddress}/review", connection.CreateReviewEndpoint).Methods("POST", "OPTIONS")
+	router.HandleFunc("/user/{publicAddress}/transactions", connection.GetTransactionsEndpoint).Methods("GET", "OPTIONS")
 	http.ListenAndServe(":8080", handlers.CORS(header, methods, origins)(router))
 
 	exit := make(chan os.Signal)
