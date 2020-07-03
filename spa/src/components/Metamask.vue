@@ -50,6 +50,7 @@ import MetamaskMixin from '../mixins/MetamaskMixin';
         border: none;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
         cursor: pointer;
+        outline: none;
     }
     p {
       margin-right: 4rem;

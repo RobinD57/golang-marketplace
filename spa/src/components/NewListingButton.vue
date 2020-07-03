@@ -7,7 +7,7 @@
     name="button">
     post ad</button>
     <transition name="slide" appear>
-      <div class="modal"  v-bind:style='{display: "none"}' ref='modal'>
+      <div class="modal" v-if='currentAddress' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
           @click="removeOverlay"
@@ -17,6 +17,19 @@
         </button>
         <FormulateInput type="text" />
       </div>
+      <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
+        <button
+          class="close-button"
+          @click="removeOverlay"
+          type="button"
+          name="button">
+          x
+        </button>
+        <h1>please login with metamask to continue</h1>
+        <div class="meta-logo">
+          <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fmetamask-logo-png-transparent.png&f=1&nofb=1" alt="">
+        </div>
+      </div>
     </transition>
   </div>
 
@@ -24,19 +37,27 @@
 
 <script>
 import ModalMixin from '../mixins/ModalMixin';
+import MetamaskMixin from '../mixins/MetamaskMixin';
 import '../assets/scss/main.scss';
 
 
 export default {
   props: ['user', 'NewListingAddress'],
   name:'NewListingButton',
-  mixins: [ModalMixin],
+  mixins: [ModalMixin, MetamaskMixin],
   data() {
     return {
       modalOpen: false,
       currentAddress: this.NewListingAddress
     }
   },
+  watch: {
+    modalOpen: function () {
+      if (this.modalOpen) {
+        this.loginAndSetAddress()
+      }
+    }
+  }
 }
 </script>
 
@@ -103,4 +124,9 @@ export default {
     padding: 25px;
   }
 
+  .meta-logo img {
+    margin-top: 5rem;
+    height: 200px;
+    width:200px;
+  }
 </style>
