@@ -1,10 +1,47 @@
 <template lang="html">
   <div class="">
-    <button @click='showModal' class="button" type="button" name="button">request to purchase</button>
+    <button @click='showModal' class="purchase-button" type="button" name="button">
+      request to purchase
+    </button>
     <transition name="slide" appear>
-      <div class="modal" v-if="modalOpen">
-        <button class="button" @click="removeOverlay" type="button" name="button">
-          Close
+      <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
+        <button
+          class="close-button"
+          @click="removeOverlay"
+          type="button"
+          name="button">
+          x
+        </button>
+        <div class="purchase-main">
+          <div class="buying">
+            <h2 class="shadowed">Requesting to buy:</h2>
+            <div class="product-card">
+              <div class="card-wrapper" ref="cWrap"></div>
+            </div>
+          </div>
+          <div class="selling">
+            <h2 class='shadowed'>Seller:
+              <br>
+               <span class="shadowed">
+                 {{listing.seller.slice(0,3)}}...{{listing.seller.slice(39)}}
+               </span>
+             </h2>
+             <div class="">
+               <h2 class='shadowed'>Price:
+                 <br>
+                 <span class='shadowed'>${{listing.price}}</span>
+               </h2>
+             </div>
+             <div class="">
+               <h2 class='shadowed'>Listing id:
+                 <br>
+                 <span class='shadowed'>${{listing._id}}</span>
+               </h2>
+             </div>
+          </div>
+        </div>
+        <button class="purchase-button" @click="purchaseStep2" type="button" name="button">
+          proceed
         </button>
       </div>
     </transition>
@@ -13,7 +50,7 @@
 
 <script>
 export default {
-  props: ['seller'],
+  props: ['listing'],
   name:'PurchaseButton',
   data() {
     return {
@@ -25,23 +62,68 @@ export default {
       this.modalOpen = true;
       if (this.modalOpen) {
         document.querySelector('header').insertAdjacentHTML("afterend",
-        `<transition id='overlay' name="fade" appear>
+        `<transition id='overlay' appear>
         <div class='modal-overlay'>
         </div>
         </transition>`);
       }
+      this.$refs.modal.style.display = ""
+      this.injectCardInModal()
+    },
+    injectCardInModal() {
+      const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;
+      this.$refs.cWrap.innerHTML = cardHTML;
     },
     removeOverlay() {
       this.modalOpen = false;
       document.querySelector('#overlay').style.display = 'none';
+      this.$refs.modal.style.display = "none"
+    },
+    purchaseStep2() {
+        this.$refs.modal.innerHTML = ""
+    },
+    created() {
+      this.injectCardInModal()
     }
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 
-  .button {
+  .selling {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+
+  .selling span {
+    font-size: 18px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  }
+
+  .buying {
+    width: 50%;
+    padding-left: 8rem;
+  }
+
+  .buying span {
+    font-size: 16px;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  }
+
+  .purchase-main {
+    display: flex;
+    margin-top: 3rem;
+  }
+
+  .product-card {
+    width: 250px;
+    height: 250px;
+    margin-top: 0rem;
+  }
+
+  .purchase-button {
     display: flex;
     margin: 0 auto;
     margin-top: 3rem;
@@ -58,20 +140,34 @@ export default {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
+    margin-top: 6rem;
   }
 
-  .msg-button:hover {
+  .close-button {
+    display: flex;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+    font-family: 'Crimson Text', serif;
+    font-size: 12px;
+    font-weight: bold;
+    opacity: .7;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    justify-content: center;
+    cursor: pointer;
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
+    outline: none;
+
+  }
+  .shadowed {
+    text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
+  }
+
+  .purchase-button:hover {
     opacity: .5;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: 0.5s;
-  }
-
-  .fade-enter,
-  .fade-leave-to {
-    opacity: 0;
   }
 
   .modal {
@@ -89,6 +185,5 @@ export default {
 
     padding: 25px;
 }
-
 
 </style>
