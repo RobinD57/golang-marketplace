@@ -23,13 +23,14 @@ export default {
 
   .aside-card-wrapper {
     width: 100%;
-    margin-left: 4rem;
+    justify-content:
   }
 
   .main-card {
+    display: flex;
     background-size: cover;
     height: 200px;
-    width: 70%;
+    width: 90%;
     margin-top: 30px;
     border-radius: 5px;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
@@ -38,7 +39,7 @@ export default {
   .blur {
     background: rgba(245, 245, 245, 0.9);
     height: 50px;
-    width: 70%;
+    width: 90%;
     margin-top: -4px;
     padding: 2px;
     border-radius: 5px;
