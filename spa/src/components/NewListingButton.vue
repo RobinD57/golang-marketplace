@@ -7,7 +7,7 @@
     name="button">
     post ad</button>
     <transition name="slide" appear>
-      <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
+      <div class="modal"  v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
           @click="removeOverlay"
@@ -19,6 +19,7 @@
       </div>
     </transition>
   </div>
+
 </template>
 
 <script>
@@ -27,16 +28,15 @@ import '../assets/scss/main.scss';
 
 
 export default {
-  props: ['user'],
+  props: ['user', 'NewListingAddress'],
   name:'NewListingButton',
   mixins: [ModalMixin],
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
+      currentAddress: this.NewListingAddress
     }
   },
-  methods: {
-  }
 }
 </script>
 
