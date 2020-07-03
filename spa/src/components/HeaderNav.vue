@@ -10,7 +10,6 @@
           <div class="metamask">
             <Metamask
               class="alignment"
-              @click="loginAndSetAddress"
               :MetaAddress='currentAddress'
               >
             </Metamask>
@@ -23,11 +22,13 @@
 
 <script>
 import Metamask from './Metamask';
+import MetamaskMixin from '../mixins/MetamaskMixin';
 import NewListingButton from './NewListingButton';
 import Web3 from 'web3';
 
 export default {
   name: 'header-nav',
+  mixins: [MetamaskMixin],
   components: {
     Metamask,
     NewListingButton
@@ -35,34 +36,6 @@ export default {
   data() {
     return {
       currentAddress: null
-    }
-  },
-  methods: {
-    async loadWeb3() {
-      // Modern dapp browsers...
-        if (window.ethereum) {
-          window.web3 = new Web3(window.ethereum);
-          await window.ethereum.enable();
-          this.loadBlockchainData();
-        }
-          // Legacy dapp browsers...
-        else if (window.web3) {
-          window.web3 = new Web3(window.web3.currentProvider);
-        }
-        // Non-dapp browsers...
-        else {
-          window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
-        }
-      },
-    async loadBlockchainData() {
-      const web3 = window.web3
-      const accounts = await web3.eth.getAccounts()
-      this.currentAddress = accounts[0];
-    },
-    loginAndSetAddress() {
-      if (!this.currentAddress) {
-        this.loadWeb3();
-      }
     }
   },
   created() {
