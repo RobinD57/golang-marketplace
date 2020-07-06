@@ -16,4 +16,12 @@ contract AuthenticityOracle is Ownable {
         emit GetAuthenticityCheckEvent(msg.sender, id);
         return id;
     }
+    function setLatestEthPrice(bool _authenticityCheck, address _callerAddress,   uint256 _id) public onlyOwner {
+        require(pendingRequests[_id], "This request is not in my pending list.");
+        delete pendingRequests[_id];
+        EscrowContractInterface escrowContractInstance;
+        escrowContractInstance = EscrowContractInterface(_callerAddress);
+        escrowContractInstance.callback(_authenticityCheck, _id);
+        emit SetAuthenticityCheckEvent(_authenticityCheck, _authenticityCheck);
+  }
 }
