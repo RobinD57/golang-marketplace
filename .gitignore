@@ -1,2 +1,4 @@
 .env*
 node_modules/
+contracts/oracle/escrow_private__key
+contracts/oracle/oracle_private_key
