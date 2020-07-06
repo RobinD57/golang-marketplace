@@ -59,7 +59,7 @@
                 label="Select images to upload"
                 v-model='newlistingDetails.photos'
                 help="png, jpg or gif"
-                :uploader="uploadPhotos"
+                multiple
               />
             </div>
           </div>
@@ -69,6 +69,7 @@
           class="submit-button"
           type="submit"
           label="post"
+          @click='uploadPhotos'
         />
       </div>
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
@@ -117,23 +118,26 @@ export default {
   methods: {
     async submitListing() {
       this.newlistingDetails.price = Number(this.newlistingDetails.price);
-      //need photo logic here map ID for DB
+
       await fetch(this.endpoint, {
         method: 'POST',
         body: JSON.stringify(this.newlistingDetails)
       })
+      this.uploadPhotos();
       this.removeOverlay();
       this.$root.$emit('fetchListings', "hi");
     },
-    async uploadPhotos() {
-      this.newlistingDetails.photos = this.newlistingDetails.photos.files[0].file;
-      const formData =  new FormData();
-      formData.append('upload_preset','iwc9hf9e');
-      formData.append('file',this.newlistingDetails.photos);
-      await fetch(this.cloudinary_endpoint, {
-        method: 'POST',
-        body: formData
-      })
+    uploadPhotos() {
+      this.newlistingDetails.photos = this.newlistingDetails.photos.files;
+      this.newlistingDetails.photos.forEach(async function(photo) {
+        const formData = new FormData();
+        formData.append('upload_preset','iwc9hf9e');
+        formData.append('file', photo.file);
+        await fetch(this.cloudinary_endpoint, {
+          method: 'POST',
+          body: formData
+        });
+      }.bind(this))
     },
   },
   watch: {
