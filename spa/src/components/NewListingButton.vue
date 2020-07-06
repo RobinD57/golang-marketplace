@@ -59,6 +59,7 @@
                 label="Select images to upload"
                 v-model='newlistingDetails.photos'
                 help="png, jpg or gif"
+                :uploader="uploadPhotos"
               />
             </div>
           </div>
@@ -68,7 +69,6 @@
           class="submit-button"
           type="submit"
           label="post"
-          @click='submitListing'
         />
       </div>
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
@@ -109,7 +109,7 @@ export default {
         name: null,
         price: null,
         description: null,
-        photo: null,
+        photos: null,
         seller: this.NewListingAddress
       },
     }
@@ -117,7 +117,7 @@ export default {
   methods: {
     async submitListing() {
       this.newlistingDetails.price = Number(this.newlistingDetails.price);
-      console.log(this.newlistingDetails.photo);
+      //need photo logic here map ID for DB
       await fetch(this.endpoint, {
         method: 'POST',
         body: JSON.stringify(this.newlistingDetails)
@@ -126,9 +126,13 @@ export default {
       this.$root.$emit('fetchListings', "hi");
     },
     async uploadPhotos() {
+      this.newlistingDetails.photos = this.newlistingDetails.photos.files[0].file;
+      const formData =  new FormData();
+      formData.append('upload_preset','iwc9hf9e');
+      formData.append('file',this.newlistingDetails.photos);
       await fetch(this.cloudinary_endpoint, {
         method: 'POST',
-        body: this.photos
+        body: formData
       })
     },
   },
