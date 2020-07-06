@@ -9,7 +9,7 @@ contract AuthenticityOracle is Ownable {
     mapping(uint256=>bool) pendingRequests;
     event GetAuthenticityCheckEvent(address callerAddress, uint id);
     event SetAuthenticityCheckEvent(bool authenticityCheck, address callerAddress);
-    function GetAuthenticityCheckEvent() public returns (uint256) {
+    function GetAuthenticityCheck() public returns (uint256) {
         randNonce++;
         uint id = uint(keccak256(abi.encodePacked(now, msg.sender, randNonce))) % modulus;
         pendingRequests[id] = true;
