@@ -300,25 +300,6 @@ func (connection Connection) FindOrCreateUserEndpoint(w http.ResponseWriter, r *
 	json.NewEncoder(w).Encode(result)
 }
 
-//func (connection Connection) GetReviewsEndpoint(w http.ResponseWriter, r *http.Request) {
-//	var reviews []bson.M
-//	params := mux.Vars(r)
-//	id, _ := primitive.ObjectIDFromHex(params["id"])
-//	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-//	cursor, err := connection.Reviews.Find(ctx, bson.M{"listing": id})
-//	if err != nil {
-//		w.WriteHeader(http.StatusInternalServerError)
-//		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
-//		return
-//	}
-//	if err = cursor.All(ctx, &reviews); err != nil {
-//		w.WriteHeader(http.StatusInternalServerError)
-//		w.Write([]byte(`{ "message": "` + err.Error() + `" }`))
-//		return
-//	}
-//	json.NewEncoder(w).Encode(reviews)
-//}
-
 func (connection Connection) CreateReviewEndpoint(w http.ResponseWriter, r *http.Request) {
 	var review Review
 	params := mux.Vars(r)
