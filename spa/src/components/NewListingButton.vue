@@ -60,15 +60,16 @@
                 v-model='newlistingDetails.photos'
                 help="png, jpg or gif"
               />
-              <br>
-              <FormulateInput
-                type="submit"
-                label="post"
-                @click='submitListing'
-              />
             </div>
           </div>
         </div>
+        <br>
+        <FormulateInput
+          class="submit-button"
+          type="submit"
+          label="post"
+          @click='submitListing'
+        />
       </div>
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
         <button
@@ -102,7 +103,8 @@ export default {
     return {
       modalOpen: false,
       currentAddress: this.newListingAddress,
-      endpoint: 'http://localhost:8080/listing',
+      listing_endpoint: 'http://localhost:8080/listing',
+      cloudinary_endpoint: 'https://api.cloudinary.com/v1_1/duueqba0z/upload',
       newlistingDetails: {
         name: null,
         price: null,
@@ -115,13 +117,19 @@ export default {
   methods: {
     async submitListing() {
       this.newlistingDetails.price = Number(this.newlistingDetails.price);
-      this.newlistingDetails.photo = "null"; //temp untill we figure out photo logic
+      console.log(this.newlistingDetails.photo);
       await fetch(this.endpoint, {
         method: 'POST',
         body: JSON.stringify(this.newlistingDetails)
       })
       this.removeOverlay();
       this.$root.$emit('fetchListings', "hi");
+    },
+    async uploadPhotos() {
+      await fetch(this.cloudinary_endpoint, {
+        method: 'POST',
+        body: this.photos
+      })
     },
   },
   watch: {
@@ -238,5 +246,9 @@ export default {
   .inputs-right {
     display: flex;
     flex-direction: column;
+  }
+
+  .submit-button {
+    width: 200px;
   }
 </style>
