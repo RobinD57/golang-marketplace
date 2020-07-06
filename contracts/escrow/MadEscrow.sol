@@ -1,6 +1,6 @@
 pragma solidity ^0.6.0;
 
-import "openzeppelin-solidity/contracts/utils/Address.sol"
+import "../installed_contracts/zeppelin/contracts/utils/Address.sol"
 
 /**
  * @title ConditionalEscrow
