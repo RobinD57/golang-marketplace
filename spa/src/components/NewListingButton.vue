@@ -23,7 +23,7 @@
                 type="email"
                 name="email"
                 label="email:"
-                v-model='newlistingDetails.email'
+                v-model='newListing.email'
                 validation="^required|email" />
             </div> -->
             <div class="listing-name-group">
@@ -31,7 +31,7 @@
                 type="text"
                 name="name"
                 label="title of your listing:"
-                v-model='newlistingDetails.name'
+                v-model='newListing.name'
                 validation="^required|min:5" />
             </div>
             <div class="price-group">
@@ -39,7 +39,7 @@
                 type="number"
                 name="price"
                 label="selling price:"
-                v-model='newlistingDetails.price'
+                v-model='newListing.price'
                 validation="^required|number|min:1" />
             </div>
             <div class="description-group">
@@ -47,7 +47,7 @@
                 type="textarea"
                 name="description"
                 label="provide a short description:"
-                v-model='newlistingDetails.description'
+                v-model='newListing.description'
                 validation="^required|min:1" />
             </div>
           </div>
@@ -57,7 +57,7 @@
                 type="image"
                 name="listing-photos"
                 label="Select images to upload"
-                v-model='newlistingDetails.photos'
+                v-model='newListing.photos'
                 help="png, jpg or gif"
                 multiple
               />
@@ -69,7 +69,7 @@
           class="submit-button"
           type="submit"
           label="post"
-          @click='uploadPhotos'
+          @click='finalSubmit'
         />
       </div>
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
@@ -104,39 +104,47 @@ export default {
     return {
       modalOpen: false,
       currentAddress: this.newListingAddress,
-      listing_endpoint: 'http://localhost:8080/listing',
-      cloudinary_endpoint: 'https://api.cloudinary.com/v1_1/duueqba0z/upload',
-      newlistingDetails: {
+      listingEndpoint: 'http://localhost:8080/listing',
+      cloudinaryEndpoint: 'https://api.cloudinary.com/v1_1/duueqba0z/upload',
+      urlArray: [],
+      newListing: {
         name: null,
         price: null,
         description: null,
         photos: null,
-        seller: this.NewListingAddress
+        seller: this.newListingAddress
       },
     }
   },
   methods: {
-    async submitListing() {
-      this.newlistingDetails.price = Number(this.newlistingDetails.price);
-
-      await fetch(this.endpoint, {
-        method: 'POST',
-        body: JSON.stringify(this.newlistingDetails)
-      })
+    finalSubmit() {
+      //upload images to cloudinary
       this.uploadPhotos();
+      this.postData();
+    },
+    async postData() {
+      // map urls into photos prop
+      this.newListing.photos = this.urlArray;
+      this.newListing.price = Number(this.newListing.price);
+      console.log(this.newListing);
+      await fetch(this.listingEndpoint, {
+        method: 'POST',
+        body: JSON.stringify(this.newListing)
+      })
       this.removeOverlay();
       this.$root.$emit('fetchListings', "hi");
     },
     uploadPhotos() {
-      this.newlistingDetails.photos = this.newlistingDetails.photos.files;
-      this.newlistingDetails.photos.forEach(async function(photo) {
+      this.newListing.photos.files.forEach(async function(photo) {
         const formData = new FormData();
         formData.append('upload_preset','iwc9hf9e');
         formData.append('file', photo.file);
-        await fetch(this.cloudinary_endpoint, {
+        let res = await fetch(this.cloudinaryEndpoint, {
           method: 'POST',
           body: formData
         });
+        let data = await res.json();
+        this.urlArray.push(data.secure_url);
       }.bind(this))
     },
   },
