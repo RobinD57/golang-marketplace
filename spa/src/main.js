@@ -9,6 +9,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueFormulate from '@braid/vue-formulate';
 import Cloudinary from 'cloudinary-vue';
+import KProgress from 'k-progress';
+
+Vue.component('k-progress', KProgress);
 
 Vue.use(VueFormulate)
 

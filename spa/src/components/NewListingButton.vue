@@ -7,6 +7,23 @@
     name="button">
     post ad</button>
     <transition name="slide" appear>
+
+      <!-- listing posted notice -->
+      <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
+        <button
+          class="close-button"
+          @click="removeOverlay"
+          type="button"
+          name="button">
+          x
+        </button>
+        <h1>Listing successfully posted!</h1>
+        <div class="meta-logo">
+          <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fclipartix.com%2Fwp-content%2Fuploads%2F2016%2F05%2FCheck-mark-checkmark-clip-art-at-vector-clip-art-clipartcow-2.png&f=1&nofb=1" alt="">
+        </div>
+      </div>
+
+      <!-- signed in and able to post listing -->
       <div class="modal" v-if='currentAddress' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
@@ -18,14 +35,6 @@
         <h1>post listing</h1>
         <div class="inputs-main">
           <div class="inputs-left">
-            <!-- <div class="email-group">
-              <FormulateInput
-                type="email"
-                name="email"
-                label="email:"
-                v-model='newListing.email'
-                validation="^required|email" />
-            </div> -->
             <div class="listing-name-group">
               <FormulateInput
                 type="text"
@@ -70,8 +79,10 @@
           type="submit"
           label="post"
           @click='finalSubmit'
+          :disabled='working'
         />
       </div>
+      <!-- if not signed in -->
       <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
@@ -102,6 +113,8 @@ export default {
   mixins: [ModalMixin, MetamaskMixin],
   data() {
     return {
+      listingPosted: false,
+      working: false,
       modalOpen: false,
       currentAddress: this.newListingAddress,
       listingEndpoint: 'http://localhost:8080/listing',
@@ -117,9 +130,10 @@ export default {
   },
   methods: {
     async finalSubmit() {
-      //upload images to cloudinary
+      this.working = true;
       const urls = await this.uploadPhotos();
       this.postData(urls);
+      this.listingPosted = true;
       this.resetState();
     },
      postData(urlArray) {
@@ -130,8 +144,7 @@ export default {
         method: 'POST',
         body: JSON.stringify(this.newListing)
       })
-      this.removeOverlay();
-      this.$root.$emit('fetchListings', "hi");
+      this.$root.$emit('fetchListings', "listing added successfully");
     },
      async uploadPhotos() {
       const urlArray = [];
@@ -158,6 +171,7 @@ export default {
         photos: [],
         seller: this.newListingAddress
       }
+      this.working = false;
     },
   },
   watch: {

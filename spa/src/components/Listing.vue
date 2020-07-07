@@ -33,8 +33,10 @@
         <p class="listing_price">${{ listing.price }}</p>
         <PurchaseButton :listing='this.listing' />
       </div>
-      <div class="user-sidebar">
-        <UserSideBar :seller='listing.seller' :postingDate='listing.createdAt.slice(0,10)'/>
+      <div class="user-sidebar" >
+        <UserSideBar
+        :seller='listing.seller'
+        :postingDate='listing.createdAt.slice(0,10)'/>
       </div>
     </div>
   </div>
