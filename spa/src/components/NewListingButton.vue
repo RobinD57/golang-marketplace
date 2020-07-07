@@ -106,46 +106,58 @@ export default {
       currentAddress: this.newListingAddress,
       listingEndpoint: 'http://localhost:8080/listing',
       cloudinaryEndpoint: 'https://api.cloudinary.com/v1_1/duueqba0z/upload',
-      urlArray: [],
       newListing: {
         name: null,
         price: null,
         description: null,
-        photos: null,
+        photos: [],
         seller: this.newListingAddress
       },
     }
   },
   methods: {
-    finalSubmit() {
+    async finalSubmit() {
       //upload images to cloudinary
-      this.uploadPhotos();
-      this.postData();
+      const urls = await this.uploadPhotos();
+      this.postData(urls);
+      this.resetState();
     },
-    async postData() {
+     postData(urlArray) {
       // map urls into photos prop
-      this.newListing.photos = this.urlArray;
+      this.newListing.photos = urlArray;
       this.newListing.price = Number(this.newListing.price);
-      console.log(this.newListing);
-      await fetch(this.listingEndpoint, {
+      fetch(this.listingEndpoint, {
         method: 'POST',
         body: JSON.stringify(this.newListing)
       })
       this.removeOverlay();
       this.$root.$emit('fetchListings', "hi");
     },
-    uploadPhotos() {
-      this.newListing.photos.files.forEach(async function(photo) {
+     async uploadPhotos() {
+      const urlArray = [];
+      const files = this.newListing.photos.files
+
+      for await (const f of files) {
         const formData = new FormData();
         formData.append('upload_preset','iwc9hf9e');
-        formData.append('file', photo.file);
+        formData.append('file', f.file);
         let res = await fetch(this.cloudinaryEndpoint, {
           method: 'POST',
           body: formData
         });
         let data = await res.json();
-        this.urlArray.push(data.secure_url);
-      }.bind(this))
+        urlArray.push(data.secure_url);
+      }
+        return urlArray;
+    },
+    resetState() {
+      this.newListing = {
+        name: null,
+        price: null,
+        description: null,
+        photos: [],
+        seller: this.newListingAddress
+      }
     },
   },
   watch: {
