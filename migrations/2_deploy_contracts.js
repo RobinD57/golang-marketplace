@@ -1,4 +1,4 @@
-const Escrow = artifacts.require("/escrow/MadEscrow");
+const Escrow = artifacts.require("escrow/MadEscrow");
 const Oracle = artifacts.require("oracle/AuthenticityOracle");
 
 module.exports = async function(deployer) {

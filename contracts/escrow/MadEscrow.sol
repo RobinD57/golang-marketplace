@@ -3,20 +3,27 @@ pragma solidity ^0.6.0;
 import "./AuthenticityOracleInterface.sol";
 import "../installed_contracts/zeppelin/contracts/payment/Escrow.sol";
 
-abstract contract MadEscrow is Escrow {
+contract MadEscrow is Escrow {
     AuthenticityOracleInterface private oracleInstance;
     address private oracleAddress;
     bool private authenticityCheck;
     mapping(uint256=>bool) myRequests;
-    event AuthenticityCheckCompletedEvent(bool authenticityCheck, uint256 id);
+    event newOracleAddressEvent(address oracleAddress);
     event ReceivedNewRequestIdEvent(uint256 id);
+    event AuthenticityCheckCompletedEvent(bool authenticityCheck, uint256 id);
 
     function setOracleAddress(address _oracleAddress) public onlyOwner {
             oracleAddress = _oracleAddress;
     }
 
+    function setOracleInstanceAddress (address _oracleInstanceAddress) public onlyOwner {
+        oracleAddress = _oracleInstanceAddress;
+        oracleInstance = AuthenticityOracleInterface(oracleAddress);
+        emit newOracleAddressEvent(oracleAddress);
+    }
+
     function updateAuthenticityCheck() public {
-      uint256 id = oracleInstance.authentictyCheck();
+      uint256 id = oracleInstance.authenticityCheck();
       myRequests[id] = true;
       emit ReceivedNewRequestIdEvent(id);
     }
@@ -33,10 +40,10 @@ abstract contract MadEscrow is Escrow {
       _;
     }
 
-    function withdrawalAllowed(address payee) public view virtual returns (bool);
-
-    function withdraw(address payable payee) public virtual override {
-        require(withdrawalAllowed(payee), "ConditionalEscrow: payee is not allowed to withdraw");
-        super.withdraw(payee);
-    }
+//    function withdrawalAllowed(address payee) public view virtual returns (bool);
+//
+//    function withdraw(address payable payee) public virtual override {
+//        require(withdrawalAllowed(payee), "ConditionalEscrow: payee is not allowed to withdraw");
+//        super.withdraw(payee);
+//    }
 }
