@@ -84,7 +84,7 @@ export default {
   mounted() {
     this.$root.$on('fetchListings', message => {
       this.fetchListings();
-      return message
+      return console.log(message);
     })
   }
 }

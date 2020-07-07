@@ -110,7 +110,7 @@ export default {
         name: null,
         price: null,
         description: null,
-        photos: [],
+        photos: {},
         seller: this.newListingAddress
       },
     }
