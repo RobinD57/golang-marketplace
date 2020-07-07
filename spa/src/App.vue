@@ -22,7 +22,7 @@
               :id='listing.id'
               :name='listing.name'
               :price='listing.price'
-              :photo='listing.photo'/>
+              :photos='listing.photos'/>
           </router-link>
         </div>
       </aside>

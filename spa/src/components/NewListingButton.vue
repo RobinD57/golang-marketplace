@@ -6,10 +6,10 @@
     type="button"
     name="button">
     post ad</button>
-    <transition name="slide" appear>
-
-      <!-- listing posted notice -->
-      <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
+        <!-- listing posted notice -->
+    <transition>
+      <template>
+        <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
           @click="removeOverlay"
@@ -24,7 +24,7 @@
       </div>
 
       <!-- signed in and able to post listing -->
-      <div class="modal" v-if='currentAddress' v-bind:style='{display: "none"}' ref='modal'>
+      <div class="modal" v-else-if='currentAddress' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
           @click="removeOverlay"
@@ -96,6 +96,7 @@
           <img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fcdn.freebiesupply.com%2Flogos%2Flarge%2F2x%2Fmetamask-logo-png-transparent.png&f=1&nofb=1" alt="">
         </div>
       </div>
+      </template>
     </transition>
   </div>
 
@@ -168,7 +169,7 @@ export default {
         name: null,
         price: null,
         description: null,
-        photos: [],
+        photos: {},
         seller: this.newListingAddress
       }
       this.working = false;

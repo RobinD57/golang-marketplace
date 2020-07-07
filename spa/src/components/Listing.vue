@@ -1,7 +1,22 @@
 <template lang="html">
   <div class="listing" v-if="listing">
       <div class="image-container" ref="gallery">
-        <img draggable="false" v-bind:class="{ 'secondary-image': true, 'main-image': true,  } "
+        <img
+        v-for='photo in listing.photos'
+        :src='photo'
+        alt=""
+        draggable="false"
+        v-bind:class="[
+          listing.photos[0] == photo ?
+          { 'secondary-image': true, 'main-image': true }
+          :
+          { 'secondary-image': true, 'main-image': false }
+          ]"
+        @click="resetImagesAndGrow"
+        v-bind:key='photo'
+        >
+
+        <!-- <img draggable="false" v-bind:class="{ 'secondary-image': true, 'main-image': true,  } "
         @click="resetImagesAndGrow"
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/9b2e37e8-78f3-42bb-b31d-b0cf629c9627/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
         alt="">
@@ -24,7 +39,7 @@
         <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
         @click="resetImagesAndGrow"
         src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/3e8834aa-2f0a-47d2-a7f6-b283447639c8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
+        alt=""> -->
       </div>
     <div class="listing-details">
       <div class="listing-product">
