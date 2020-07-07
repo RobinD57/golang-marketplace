@@ -6,9 +6,8 @@
     type="button"
     name="button">
     post ad</button>
-    <transition name="slide" appear>
-
-      <!-- listing posted notice -->
+        <!-- listing posted notice -->
+    <transition>
       <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
@@ -168,7 +167,7 @@ export default {
         name: null,
         price: null,
         description: null,
-        photos: [],
+        photos: {},
         seller: this.newListingAddress
       }
       this.working = false;
