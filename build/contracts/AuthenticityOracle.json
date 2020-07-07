@@ -69,7 +69,8 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function"
+      "type": "function",
+      "constant": true
     },
     {
       "inputs": [],
@@ -3182,9 +3183,75 @@
     "name": "solc",
     "version": "0.6.10+commit.00c0fcaf.Emscripten.clang"
   },
-  "networks": {},
+  "networks": {
+    "5777": {
+      "events": {
+        "0xa0f4b8338e7140cbb6d9ab9be0436c4b3e45fafbb26ac585e59a232ce7512856": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "callerAddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            }
+          ],
+          "name": "GetAuthenticityCheckEvent",
+          "type": "event"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0xb6a32d0a731ac4dcec2df075e0fac7c21ce01809eb742177866839405073244b": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": false,
+              "internalType": "bool",
+              "name": "authenticityCheck",
+              "type": "bool"
+            },
+            {
+              "indexed": false,
+              "internalType": "address",
+              "name": "callerAddress",
+              "type": "address"
+            }
+          ],
+          "name": "SetAuthenticityCheckEvent",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0xf9d04dF40e416756cF34c50FbCE57E4Fef5d2B53",
+      "transactionHash": "0xda5199572e3fd3c72ef70e87da5370ecb93cc85dfdf8c86eaf45f4615535d395"
+    }
+  },
   "schemaVersion": "3.2.0",
-  "updatedAt": "2020-07-07T07:03:16.400Z",
+  "updatedAt": "2020-07-07T07:36:52.281Z",
+  "networkType": "ethereum",
   "devdoc": {
     "methods": {
       "owner()": {
