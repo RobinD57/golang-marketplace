@@ -16,6 +16,9 @@ export default {
       document.querySelectorAll('.modal').forEach((modal) => {
         modal.style.display = 'none';
       });
+      if (this.listingPosted) {
+        this.listingPosted = false;
+      }
     },
     injectCardInModal() {
       const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;

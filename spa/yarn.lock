@@ -3191,7 +3191,7 @@ core-js@^2.4.0:
   resolved "https://registry.yarnpkg.com/core-js/-/core-js-2.6.11.tgz#38831469f9922bded8ee21c9dc46985e0399308c"
   integrity sha512-5wjnpaT/3dV+XB4borEsnAYQchn00XSgTAWKDkEqv+K8KevjbzmofK6hfJ9TZIlpj2N0xQpazy7PiRQiWHqzWg==
 
-core-js@^3.6.5:
+core-js@^3.4.3, core-js@^3.6.5:
   version "3.6.5"
   resolved "https://registry.npm.taobao.org/core-js/download/core-js-3.6.5.tgz#7395dc273af37fb2e50e9bd3d9fe841285231d1a"
   integrity sha1-c5XcJzrzf7LlDpvT2f6EEoUjHRo=
@@ -6366,6 +6366,14 @@ jsprim@^1.2.2:
     extsprintf "1.3.0"
     json-schema "0.2.3"
     verror "1.10.0"
+
+k-progress@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/k-progress/-/k-progress-1.5.0.tgz#ac61c4a855fd30583d4a86ec99f0af47a0b32173"
+  integrity sha512-vuXVFBo4EFKmcUh0Ox0f19nXupTD7L1ro3ftMuS4doyIcxeXEh7P0i6tjK+yXFUcy8EwozKRSgpXVCmM9J5pcA==
+  dependencies:
+    core-js "^3.4.3"
+    vue "^2.6.10"
 
 keccak@^2.0.0:
   version "2.1.0"
@@ -11323,6 +11331,13 @@ vue-loader@^15.9.2:
     vue-hot-reload-api "^2.3.0"
     vue-style-loader "^4.1.0"
 
+vue-progress-bar@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/vue-progress-bar/-/vue-progress-bar-1.0.1.tgz#7bd2482b7d56e5ff25be1e8534b90ecbf5c16f2d"
+  integrity sha1-e9JIK31W5f8lvh6FNLkOy/XBby0=
+  dependencies:
+    vue "^2.4.1"
+
 vue-router@^3.3.4:
   version "3.3.4"
   resolved "https://registry.yarnpkg.com/vue-router/-/vue-router-3.3.4.tgz#4e38abc34a11c41b6c3d8244449a2e363ba6250b"
@@ -11354,7 +11369,7 @@ vue@2.6.10:
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha512-ImThpeNU9HbdZL3utgMCq0oiMzAkt1mcgy3/E6zWC/G6AaQoeuFdsl9nDhTDU3X1R6FK7nsIUuRACVcjI+A2GQ==
 
-vue@^2.6.11:
+vue@^2.4.1, vue@^2.6.10, vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
   integrity sha1-dllNh31LEiNEBuhONSdcbVFBJcU=

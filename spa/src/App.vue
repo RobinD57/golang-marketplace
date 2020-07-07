@@ -7,7 +7,7 @@
     <main>
       <aside class="sidebar">
         <div class="">
-          <h3>Listings: {{listings.length}}</h3>
+          <h3 v-if='this.listings'>Listings: {{listings.length}}</h3>
         </div>
         <div @click='toggleCollapse' class="collapse">
           <font-awesome-icon :icon="['fas', 'chevron-left']"/>
@@ -44,7 +44,7 @@ export default {
   mixins: [ModalMixin],
   components: {
     HeaderNav,
-    MainCard
+    MainCard,
   },
   data() {
     return {
@@ -84,7 +84,8 @@ export default {
   mounted() {
     this.$root.$on('fetchListings', message => {
       this.fetchListings();
-      return console.log(message);
+      //have to return and perform operation for above to run
+      return message * 2;
     })
   }
 }
