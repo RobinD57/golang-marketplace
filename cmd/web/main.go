@@ -7,7 +7,7 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/RobinD57/golang-marketplace/chat"
+	"github.com/RobinD57/golang-marketplace/pkg/chat"
 	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/gorilla/websocket"
