@@ -13,11 +13,13 @@ export default {
     removeOverlay() {
       this.modalOpen = false;
       document.querySelector('.modal-overlay').style.display = 'none';
-      this.$refs.modal.style.display = "none";
+      document.querySelectorAll('.modal').forEach((modal) => {
+        modal.style.display = 'none';
+      });
     },
     injectCardInModal() {
       const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;
       this.$refs.cWrap.innerHTML = cardHTML;
     }
   }
-};
+}

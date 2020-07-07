@@ -5,7 +5,7 @@
     <div class="blur">
       <div class="card-details">
         <span>
-          {{ this.name.length > 15 ? this.name.slice(0,15) + "..." : this.name }}
+          {{ this.name.length > 25 ? this.name.slice(0,25) + "..." : this.name }}
         </span>
         <span>${{this.price}}</span>
       </div>

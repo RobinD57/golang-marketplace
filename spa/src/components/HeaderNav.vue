@@ -5,10 +5,14 @@
         <img src="http://acmelogos.com/images/logo-1.svg" alt="">
         <div class="main-right">
           <div class="right-links">
-            <NewListingButton />
+            <NewListingButton :newListingAddress='currentAddress' />
           </div>
           <div class="metamask">
-            <Metamask class="alignment"></Metamask>
+            <Metamask
+              class="alignment"
+              :metaAddress='currentAddress'
+              >
+            </Metamask>
           </div>
         </div>
       </div>
@@ -17,16 +21,28 @@
 </template>
 
 <script>
-
 import Metamask from './Metamask';
+import MetamaskMixin from '../mixins/MetamaskMixin';
 import NewListingButton from './NewListingButton';
+import Web3 from 'web3';
 
 export default {
   name: 'header-nav',
+  mixins: [MetamaskMixin],
   components: {
     Metamask,
     NewListingButton
   },
+  data() {
+    return {
+      currentAddress: null
+    }
+  },
+  created() {
+    if (window.ethereum) {
+      this.currentAddress = new Web3(window.ethereum).givenProvider.selectedAddress;
+    }
+  }
 }
 </script>
 

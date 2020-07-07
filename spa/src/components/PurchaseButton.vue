@@ -134,8 +134,8 @@ export default {
     transform: translate(-50%, -50%);
     z-index: 2;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 1000px;
+    width: 80%;
+    max-width: 700px;
     height: 600px;
     background-color: #FFF;
     border-radius: 16px;

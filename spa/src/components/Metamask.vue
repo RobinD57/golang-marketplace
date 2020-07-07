@@ -22,46 +22,17 @@
 </template>
 
 <script>
-  import Web3 from 'web3';
+import MetamaskMixin from '../mixins/MetamaskMixin';
   export default {
+    props: ['metaAddress'],
     name: "Metamask",
+    mixins: [MetamaskMixin],
     data() {
       return {
-        currentAddress: null,
+        currentAddress: this.metaAddress,
         hover: false
       }
     },
-    methods: {
-      async loadWeb3() {
-        // Modern dapp browsers...
-          if (window.ethereum) {
-            window.web3 = new Web3(window.ethereum);
-            await window.ethereum.enable()
-            this.loadBlockchainData();
-          }
-            // Legacy dapp browsers...
-          else if (window.web3) {
-            window.web3 = new Web3(window.web3.currentProvider);
-          }
-          // Non-dapp browsers...
-          else {
-            window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!');
-          }
-        },
-      async loadBlockchainData() {
-        const web3 = window.web3
-        const accounts = await web3.eth.getAccounts()
-        this.currentAddress = accounts[0]
-      },
-      loginAndSetAddress() {
-        this.loadWeb3();
-      }
-    },
-    created() {
-      if (window.ethereum) {
-        this.currentAddress = new Web3(window.ethereum).givenProvider.selectedAddress;
-      }
-    }
   }
 </script>
 
@@ -79,6 +50,7 @@
         border: none;
         box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.18);
         cursor: pointer;
+        outline: none;
     }
     p {
       margin-right: 4rem;

@@ -7,9 +7,17 @@ import Metamask from './components/Metamask.vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import VueFormulate from '@braid/vue-formulate'
+import VueFormulate from '@braid/vue-formulate';
+import Cloudinary from 'cloudinary-vue';
 
 Vue.use(VueFormulate)
+
+
+Vue.use(Cloudinary, {
+  configuration: {
+    cloudName: "duueqba0z"
+  }
+});
 
 library.add(fas)
 Vue.component('font-awesome-icon', FontAwesomeIcon)
