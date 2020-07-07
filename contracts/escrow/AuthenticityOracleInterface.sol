@@ -1,5 +1,5 @@
 pragma solidity ^0.6.0;
 
-contract AuthenticityOracleInterface {
-  function authenticityCheck() public returns (uint256);
+interface AuthenticityOracleInterface {
+  function authenticityCheck() external returns (uint256);
 }

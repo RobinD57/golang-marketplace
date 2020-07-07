@@ -1,0 +1,302 @@
+{
+  "contractName": "EscrowContractInterface",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "bool",
+          "name": "_authenticityCheck",
+          "type": "bool"
+        },
+        {
+          "internalType": "uint256",
+          "name": "id",
+          "type": "uint256"
+        }
+      ],
+      "name": "callback",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.6.10+commit.00c0fcaf\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"bool\",\"name\":\"_authenticityCheck\",\"type\":\"bool\"},{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"}],\"name\":\"callback\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/bloodace/code/RobinD57/golang-marketplace/contracts/oracle/EscrowContractInterface.sol\":\"EscrowContractInterface\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/bloodace/code/RobinD57/golang-marketplace/contracts/oracle/EscrowContractInterface.sol\":{\"keccak256\":\"0xacd724debb500d45d87f0bb1485d650b48ce4ee5702f517fc1ddd5e440b409a0\",\"urls\":[\"bzz-raw://787d6a8702e13f48a858d6b9d6cd1c01c3b7553eff21fa5a4cfc780ae9bb575c\",\"dweb:/ipfs/QmadG7BQSQwdPfL4HCRyGN4mKxvkSxgQNn6SCNaymZgogy\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "pragma solidity ^0.6.0;\n\ninterface EscrowContractInterface {\n  function callback(bool _authenticityCheck, uint256 id) external;\n}\n",
+  "sourcePath": "/home/bloodace/code/RobinD57/golang-marketplace/contracts/oracle/EscrowContractInterface.sol",
+  "ast": {
+    "absolutePath": "/home/bloodace/code/RobinD57/golang-marketplace/contracts/oracle/EscrowContractInterface.sol",
+    "exportedSymbols": {
+      "EscrowContractInterface": [
+        1006
+      ]
+    },
+    "id": 1007,
+    "license": null,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 998,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:10"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 1006,
+        "linearizedBaseContracts": [
+          1006
+        ],
+        "name": "EscrowContractInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "af8f0f2d",
+            "id": 1005,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callback",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 1003,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1000,
+                  "mutability": "mutable",
+                  "name": "_authenticityCheck",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1005,
+                  "src": "81:23:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 999,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "81:4:10",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1002,
+                  "mutability": "mutable",
+                  "name": "id",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1005,
+                  "src": "106:10:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1001,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "106:7:10",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "80:37:10"
+            },
+            "returnParameters": {
+              "id": 1004,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "126:0:10"
+            },
+            "scope": 1006,
+            "src": "63:64:10",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 1007,
+        "src": "25:104:10"
+      }
+    ],
+    "src": "0:130:10"
+  },
+  "legacyAST": {
+    "absolutePath": "/home/bloodace/code/RobinD57/golang-marketplace/contracts/oracle/EscrowContractInterface.sol",
+    "exportedSymbols": {
+      "EscrowContractInterface": [
+        1006
+      ]
+    },
+    "id": 1007,
+    "license": null,
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 998,
+        "literals": [
+          "solidity",
+          "^",
+          "0.6",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "0:23:10"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": null,
+        "fullyImplemented": false,
+        "id": 1006,
+        "linearizedBaseContracts": [
+          1006
+        ],
+        "name": "EscrowContractInterface",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "body": null,
+            "documentation": null,
+            "functionSelector": "af8f0f2d",
+            "id": 1005,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "callback",
+            "nodeType": "FunctionDefinition",
+            "overrides": null,
+            "parameters": {
+              "id": 1003,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1000,
+                  "mutability": "mutable",
+                  "name": "_authenticityCheck",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1005,
+                  "src": "81:23:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 999,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "81:4:10",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 1002,
+                  "mutability": "mutable",
+                  "name": "id",
+                  "nodeType": "VariableDeclaration",
+                  "overrides": null,
+                  "scope": 1005,
+                  "src": "106:10:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1001,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "106:7:10",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "value": null,
+                  "visibility": "internal"
+                }
+              ],
+              "src": "80:37:10"
+            },
+            "returnParameters": {
+              "id": 1004,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "126:0:10"
+            },
+            "scope": 1006,
+            "src": "63:64:10",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 1007,
+        "src": "25:104:10"
+      }
+    ],
+    "src": "0:130:10"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.6.10+commit.00c0fcaf.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.2.0",
+  "updatedAt": "2020-07-07T07:03:16.401Z",
+  "devdoc": {
+    "methods": {}
+  },
+  "userdoc": {
+    "methods": {}
+  }
+}

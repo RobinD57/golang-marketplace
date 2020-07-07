@@ -22,6 +22,6 @@ contract AuthenticityOracle is Ownable {
         EscrowContractInterface escrowContractInstance;
         escrowContractInstance = EscrowContractInterface(_callerAddress);
         escrowContractInstance.callback(_authenticityCheck, _id);
-        emit SetAuthenticityCheckEvent(_authenticityCheck, _authenticityCheck);
+        emit SetAuthenticityCheckEvent(_authenticityCheck, _callerAddress);
   }
 }
