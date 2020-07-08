@@ -89,6 +89,8 @@ module.exports = {
   },
 
   // Configure your compilers
+  contracts_directory: './escrow_contracts/contracts/',
+  contracts_build_directory: './escrow_contracts/build',
   compilers: {
     solc: {
       version: ">=0.5.1 <0.7.0",    // Fetch exact version from solc-bin (default: truffle's version)

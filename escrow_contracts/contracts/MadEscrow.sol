@@ -1,10 +1,10 @@
 pragma solidity ^0.6.0;
 
 import "./AuthenticityOracleInterface.sol";
-import "../installed_contracts/zeppelin/contracts/payment/Escrow.sol";
+import "./installed_contracts/zeppelin/contracts/payment/Escrow.sol";
 
 contract MadEscrow is Escrow {
-    string public name = "MadEscrow Solidity contract";
+    string public name = "Solidity MAD escrow contract";
     AuthenticityOracleInterface private oracleInstance;
     address private oracleAddress;
     bool private authenticityCheck;

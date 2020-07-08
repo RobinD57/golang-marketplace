@@ -17,7 +17,7 @@ contract("MadEscrow", (accounts) => {
     describe("MadEscrow deployment works properly", async () => {
         it("contract has a name", async() => {
             const name = await madEscrow.name()
-            assert.equal(name, "MadEscrow Solidity contract")
+            assert.equal(name, "Solidity MAD escrow contract")
         })
     })
 });

@@ -8,7 +8,7 @@
   "scripts": {
     "ganache": "ganache-cli --networkId $npm_package_config_ganache_networkId --allowUnlimitedContractSize --gasLimit $npm_package_config_ganache_gasLimit --gasPrice $npm_package_config_ganache_gasPrice --mnemonic \"$MNEMONIC\"",
     "start": "concurrently \"npm run ganache\" \"npm run migrate\"",
-    "migrate": "rm -rf build && truffle migrate --reset --compile-all --network development"
+    "migrate": "rm -rf escrow_contracts/build && truffle migrate --reset --compile-all --network development"
   },
   "config": {
     "ganache": {
