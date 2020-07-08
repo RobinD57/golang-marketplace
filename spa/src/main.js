@@ -8,12 +8,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueFormulate from '@braid/vue-formulate';
 import Cloudinary from 'cloudinary-vue';
-import KProgress from 'k-progress';
+import { store } from './store.js'
 
-Vue.component('k-progress', KProgress);
-
-Vue.use(VueFormulate)
-
+Vue.use(VueFormulate);
 
 Vue.use(Cloudinary, {
   configuration: {
@@ -48,4 +45,5 @@ new Vue({
   el: '#app',
   render: (h) => h(App),
   router,
+  store
 });

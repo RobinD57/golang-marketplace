@@ -6,7 +6,7 @@
       type="button"
       name="button"
     >
-      post listing
+      sell
     </button>
         <!-- listing posted notice -->
     <transition>
@@ -29,6 +29,14 @@
           <div class="meta-logo">
             <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fclipartix.com%2Fwp-content%2Fuploads%2F2016%2F05%2FCheck-mark-checkmark-clip-art-at-vector-clip-art-clipartcow-2.png&f=1&nofb=1" alt="">
           </div>
+          <button
+            class="purchase-button"
+            @click="removeOverlay"
+            type="button"
+            name="button"
+          >
+            ok
+          </button>
       </div>
 
       <!-- signed in and able to post listing -->
@@ -137,7 +145,6 @@ export default {
     return {
       listingPosted: false,
       next: false,
-      modalOpen: false,
       currentAddress: this.newListingAddress,
       listingEndpoint: 'http://localhost:8080/listing',
       cloudinaryEndpoint: 'https://api.cloudinary.com/v1_1/duueqba0z/upload',
@@ -148,6 +155,11 @@ export default {
         photos: {},
         seller: this.newListingAddress
       },
+    }
+  },
+  computed: {
+    modalOpen () {
+      return this.$store.state.modalOpen;
     }
   },
   methods: {
@@ -166,7 +178,7 @@ export default {
         method: 'POST',
         body: JSON.stringify(this.newListing)
       })
-      this.$root.$emit('fetchListings', "listing added successfully");
+      this.$store.commit('incrementListingCount');
     },
      async uploadPhotos() {
       const urlArray = [];
@@ -213,7 +225,6 @@ export default {
     align-items: center;
     width: 75px;
     height: 25px;
-    font-family: 'Crimson Text', serif;
     font-size: 12px;
     font-weight: bold;
     opacity: .7;
@@ -236,7 +247,6 @@ export default {
     align-items: center;
     width: 25px;
     height: 25px;
-    font-family: 'Crimson Text', serif;
     font-size: 12px;
     font-weight: bold;
     opacity: .7;
