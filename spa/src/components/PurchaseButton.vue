@@ -7,12 +7,12 @@
       <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
-          @click="removeOverlay"
+          @click="removeOverlay(['proceed','modalOpen'])"
           type="button"
           name="button">
           x
         </button>
-        <div class="purchase-main">
+        <div v-if='!proceed' class="purchase-main">
           <div class="buying">
             <h2 class="shadowed">Requesting to buy:</h2>
             <div class="product-card">
@@ -39,11 +39,14 @@
                </h2>
              </div>
           </div>
+          <button class="purchase-button" @click="purchaseStep2" type="button" name="button">
+            proceed
+          </button>
         </div>
-        <button class="purchase-button" @click="purchaseStep2" type="button" name="button">
-          proceed
-        </button>
+        <div v-else-if='proceed'>
+        </div>
       </div>
+
     </transition>
   </div>
 </template>
@@ -57,7 +60,8 @@ export default {
   mixins: [ModalMixin],
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
+      proceed: false
     }
   },
   methods: {
@@ -84,7 +88,7 @@ export default {
 
   .buying {
     width: 50%;
-    padding-left: 8rem;
+    padding-left: 5rem;
   }
 
   .buying span {

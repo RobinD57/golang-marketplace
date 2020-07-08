@@ -5,14 +5,14 @@
     class='newlisting-button'
     type="button"
     name="button">
-    post ad</button>
+    post listing</button>
         <!-- listing posted notice -->
     <transition>
       <template>
         <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
-          @click="removeOverlay"
+          @click="removeOverlay([this.listingPosted])"
           type="button"
           name="button">
           x
