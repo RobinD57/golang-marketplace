@@ -2,7 +2,7 @@
   <div id="app">
     <header-nav></header-nav>
     <transition id='overlay' appear>
-      <div class='modal-overlay' @click="removeOverlay"></div>
+      <div class='modal-overlay'></div>
     </transition>
     <main>
       <aside class="sidebar">

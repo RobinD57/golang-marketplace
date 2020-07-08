@@ -7,12 +7,12 @@
       <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
-          @click="removeOverlay(['proceed','modalOpen'])"
+          @click="removeOverlay('proceed')"
           type="button"
           name="button">
           x
         </button>
-        <div v-if='!proceed' class="purchase-main">
+        <div v-if='!next' class="purchase-main">
           <div class="buying">
             <h2 class="shadowed">Requesting to buy:</h2>
             <div class="product-card">
@@ -39,14 +39,17 @@
                </h2>
              </div>
           </div>
-          <button class="purchase-button" @click="purchaseStep2" type="button" name="button">
-            proceed
+        </div>
+        <div v-else-if='next' class='redirect-metamask'>
+          <h3>please complete transaction with metamask -></h3>
+          <button class="purchase-button" @click="removeOverlay" type="button" name="button">
+            ok
           </button>
         </div>
-        <div v-else-if='proceed'>
-        </div>
+        <button v-if="!next" class="purchase-button" @click="next = true" type="button" name="button">
+          proceed
+        </button>
       </div>
-
     </transition>
   </div>
 </template>
@@ -61,14 +64,9 @@ export default {
   data() {
     return {
       modalOpen: false,
-      proceed: false
+      next: false,
     }
   },
-  methods: {
-    purchaseStep2() {
-        this.$refs.modal.innerHTML = ""
-    },
-  }
 }
 </script>
 
@@ -125,6 +123,14 @@ export default {
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
     margin-top: 6rem;
+  }
+
+  .redirect-metamask {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
   }
 
   .purchase-button:hover {

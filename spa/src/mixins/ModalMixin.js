@@ -10,17 +10,13 @@ export default {
         }
       }
     },
-    removeOverlay(attrs) {
+    removeOverlay() {
       this.modalOpen = false;
       document.querySelector('.modal-overlay').style.display = 'none';
       document.querySelectorAll('.modal').forEach((modal) => {
         modal.style.display = 'none';
       });
-      attrs.forEach((attr) => {
-        this[attr] = false;
-        attr;
-      });
-
+        this.next = false;
     },
     injectCardInModal() {
       const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;

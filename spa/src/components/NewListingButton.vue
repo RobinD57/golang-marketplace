@@ -12,7 +12,7 @@
         <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
         <button
           class="close-button"
-          @click="removeOverlay([this.listingPosted])"
+          @click="removeOverlay"
           type="button"
           name="button">
           x
@@ -79,7 +79,7 @@
           type="submit"
           label="post"
           @click='finalSubmit'
-          :disabled='working'
+          :disabled='next'
         />
       </div>
       <!-- if not signed in -->
@@ -115,7 +115,7 @@ export default {
   data() {
     return {
       listingPosted: false,
-      working: false,
+      next: false,
       modalOpen: false,
       currentAddress: this.newListingAddress,
       listingEndpoint: 'http://localhost:8080/listing',
@@ -131,7 +131,7 @@ export default {
   },
   methods: {
     async finalSubmit() {
-      this.working = true;
+      this.next = true;
       const urls = await this.uploadPhotos();
       this.postData(urls);
       this.listingPosted = true;
@@ -172,7 +172,7 @@ export default {
         photos: {},
         seller: this.newListingAddress
       }
-      this.working = false;
+      this.next = false;
     },
   },
   watch: {
