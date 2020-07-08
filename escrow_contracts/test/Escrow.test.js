@@ -6,7 +6,7 @@ require("chai")
     .use(require("chai-as-promised"))
     .should()
 
-contract("MadEscrow", (accounts) => {
+contract("MadEscrow", () => {
     let oracle, madEscrow
 
     before(async () => {
@@ -20,4 +20,4 @@ contract("MadEscrow", (accounts) => {
             assert.equal(name, "Solidity MAD escrow contract")
         })
     })
-});
+})
