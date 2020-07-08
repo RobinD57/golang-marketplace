@@ -15,7 +15,12 @@
 
 <script>
 export default {
-  props: ['id', 'name', 'price', 'photos'],
+  props: {
+    id: String,
+    name: String,
+    price: Number,
+    photos: Array
+  }
 }
 </script>
 

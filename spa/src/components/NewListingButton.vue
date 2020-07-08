@@ -109,7 +109,9 @@ import '../assets/scss/main.scss';
 
 
 export default {
-  props: ['user', 'newListingAddress'],
+  props: {
+    newListingAddress: String
+  },
   name:'NewListingButton',
   mixins: [ModalMixin, MetamaskMixin],
   data() {

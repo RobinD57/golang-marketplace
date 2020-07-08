@@ -24,7 +24,9 @@
 <script>
 import MetamaskMixin from '../mixins/MetamaskMixin';
   export default {
-    props: ['metaAddress'],
+    props: {
+      metaAddress: String
+    },
     name: "Metamask",
     mixins: [MetamaskMixin],
     data() {

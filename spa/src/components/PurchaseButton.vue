@@ -58,7 +58,9 @@
 import ModalMixin from '../mixins/ModalMixin';
 
 export default {
-  props: ['listing'],
+  props: {
+    listing: Object
+  },
   name:'PurchaseButton',
   mixins: [ModalMixin],
   data() {

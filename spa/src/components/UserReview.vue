@@ -12,7 +12,11 @@
 <script>
 
 export default {
-  props: ['reviewer', 'rating', 'content'],
+  props: {
+    reviewer: String,
+    rating: Number,
+    content: String
+  },
   name: 'UserReview'
 }
 

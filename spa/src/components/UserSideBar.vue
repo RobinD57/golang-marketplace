@@ -24,7 +24,10 @@
 import UserReview from './UserReview'
 
 export default {
-  props: ['seller', 'postingDate'],
+  props: {
+    seller: String,
+    postingDate: String
+  },
   name: 'UserSideBar',
   components: {
     UserReview

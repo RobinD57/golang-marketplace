@@ -63,7 +63,9 @@ import UserSideBar from './UserSideBar';
 import PurchaseButton from './PurchaseButton';
 
 export default {
-  props: ['id'],
+  props: {
+    id: String
+  },
   components: {
     UserSideBar,
     PurchaseButton
