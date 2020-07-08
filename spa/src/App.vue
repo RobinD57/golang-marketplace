@@ -2,7 +2,11 @@
   <div id="app">
     <header-nav></header-nav>
     <transition id='overlay' appear>
-      <div class='modal-overlay'></div>
+      <div
+        class='modal-overlay'
+        @click='removeOverlay'
+      >
+      </div>
     </transition>
     <main>
       <aside class="sidebar">
@@ -58,8 +62,12 @@ export default {
   computed: {
     listingCount () {
       return this.$store.state.listingCount
+    },
+    modalOpen () {
+      return this.$store.state.modalOpen;
     }
   },
+
   created() {
     this.fetchListings();
   },

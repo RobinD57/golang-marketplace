@@ -16,7 +16,7 @@
       >
         <button
           class="close-button"
-          @click="removeOverlay('proceed')"
+          @click='removeOverlay'
           type="button"
           name="button">
           x
@@ -85,10 +85,14 @@ export default {
   mixins: [ModalMixin],
   data() {
     return {
-      modalOpen: false,
       next: false,
     }
   },
+  computed: {
+    modalOpen () {
+      return this.$store.state.modalOpen;
+    }
+  }
 }
 </script>
 
