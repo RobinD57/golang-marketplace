@@ -4,6 +4,7 @@ import "./AuthenticityOracleInterface.sol";
 import "../installed_contracts/zeppelin/contracts/payment/Escrow.sol";
 
 contract MadEscrow is Escrow {
+    string public name = "MadEscrow Solidity contract";
     AuthenticityOracleInterface private oracleInstance;
     address private oracleAddress;
     bool private authenticityCheck;
