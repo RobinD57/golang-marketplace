@@ -6,7 +6,7 @@
       type="button"
       name="button"
     >
-      post listing
+      sell
     </button>
         <!-- listing posted notice -->
     <transition>
@@ -213,7 +213,6 @@ export default {
     align-items: center;
     width: 75px;
     height: 25px;
-    font-family: 'Crimson Text', serif;
     font-size: 12px;
     font-weight: bold;
     opacity: .7;
@@ -236,7 +235,6 @@ export default {
     align-items: center;
     width: 25px;
     height: 25px;
-    font-family: 'Crimson Text', serif;
     font-size: 12px;
     font-weight: bold;
     opacity: .7;

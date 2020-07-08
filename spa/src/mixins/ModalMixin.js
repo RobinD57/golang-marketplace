@@ -1,6 +1,7 @@
 export default {
   methods: {
     showModal() {
+      console.log(this.$store);
       this.modalOpen = true;
       if (this.modalOpen) {
         document.querySelector('.modal-overlay').style.display = "block";

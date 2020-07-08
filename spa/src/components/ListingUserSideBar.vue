@@ -99,7 +99,6 @@ export default {
   margin-top: 3rem;
   margin-bottom: 3rem;
   width: 150px;
-  font-family: 'Crimson Text', serif;
   opacity: .7;
   border: none;
   padding: .4rem;
