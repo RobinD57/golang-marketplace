@@ -6,7 +6,7 @@ export default {
         document.querySelector('.modal-overlay').style.display = "block";
         this.$refs.modal.style.display = "";
         if (this.$options.name == 'PurchaseButton') {
-          this.injectCardInModal();
+          injectCardInModal(this.$refs.cWrap, this.listing._id)
         }
       }
     },
@@ -18,9 +18,10 @@ export default {
       });
         this.next = false;
     },
-    injectCardInModal() {
-      const cardHTML = document.querySelector(`[data-id="${this.listing._id}"]`).innerHTML;
-      this.$refs.cWrap.innerHTML = cardHTML;
-    }
   }
+}
+
+const injectCardInModal = (target, id) => {
+  const cardHTML = document.querySelector(`[data-id="${id}"]`).innerHTML;
+  target.innerHTML = cardHTML;
 }
