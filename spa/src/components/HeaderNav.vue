@@ -5,12 +5,12 @@
         <img src="http://acmelogos.com/images/logo-1.svg" alt="">
         <div class="main-right">
           <div class="right-links">
-            <new-listing-button :newListingAddress='currentAddress'> </new-listing-button>
+            <new-listing-button :new-listing-address='currentAddress'> </new-listing-button>
           </div>
           <div class="metamask">
             <metamask
               class="alignment"
-              :metaAddress='currentAddress'
+              :meta-address='currentAddress'
               >
             </metamask>
           </div>

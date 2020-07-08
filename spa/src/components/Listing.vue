@@ -51,7 +51,7 @@
       <div class="user-sidebar" >
         <user-side-bar
         :seller='listing.seller'
-        :postingDate='listing.createdAt.slice(0,10)'
+        :posting-date='listing.createdAt.slice(0,10)'
         >
         </user-side-bar>
       </div>
