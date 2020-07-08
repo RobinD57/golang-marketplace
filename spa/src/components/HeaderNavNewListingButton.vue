@@ -166,7 +166,7 @@ export default {
         method: 'POST',
         body: JSON.stringify(this.newListing)
       })
-      this.$root.$emit('fetchListings', "listing added successfully");
+      this.$store.commit('incrementListingCount');
     },
      async uploadPhotos() {
       const urlArray = [];

@@ -7,7 +7,7 @@
     <main>
       <aside class="sidebar">
         <div class="">
-          <h3 class='count' v-if='this.listings'>Listings: {{listings.length}}</h3>
+          <h3 class='count' v-if='this.listings'>Listings: {{this.listingCount}}</h3>
         </div>
         <div @click='toggleCollapse' class="collapse">
           <font-awesome-icon :icon="['fas', 'chevron-left']"/>
@@ -53,7 +53,12 @@ export default {
       listings: [],
       asideShrunk: false,
       endpoint: 'http://localhost:8080/listings'
-    };
+    }
+  },
+  computed: {
+    listingCount () {
+      return this.$store.state.listingCount
+    }
   },
   created() {
     this.fetchListings();
@@ -66,6 +71,7 @@ export default {
     },
     setResults (results) {
       this.listings = results;
+      this.$store.state.listingCount = results.length;
     },
     toggleCollapse() {
       if (!this.asideShrunk) {
@@ -87,12 +93,10 @@ export default {
       }
     }
   },
-  mounted() {
-    this.$root.$on('fetchListings', message => {
+  watch: {
+    listingCount () {
       this.fetchListings();
-      //have to return and perform operation for above to run
-      console.log(message);
-    })
+    }
   }
 }
 </script>
