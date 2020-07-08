@@ -1,35 +1,49 @@
 <template lang="html">
   <div class="">
     <button
-    @click='showModal'
-    class='newlisting-button'
-    type="button"
-    name="button">
-    post listing</button>
+      @click='showModal'
+      class='newlisting-button'
+      type="button"
+      name="button"
+    >
+      post listing
+    </button>
         <!-- listing posted notice -->
     <transition>
       <template>
-        <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
-        <button
-          class="close-button"
-          @click="removeOverlay"
-          type="button"
-          name="button">
-          x
-        </button>
-        <h1>Listing successfully posted!</h1>
-        <div class="meta-logo">
-          <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fclipartix.com%2Fwp-content%2Fuploads%2F2016%2F05%2FCheck-mark-checkmark-clip-art-at-vector-clip-art-clipartcow-2.png&f=1&nofb=1" alt="">
-        </div>
+        <div
+          class="modal"
+          v-if='listingPosted'
+          v-bind:style='{display: "none"}'
+          ref='modal'
+        >
+          <button
+            class="close-button"
+            @click="removeOverlay"
+            type="button"
+            name="button"
+          >
+            x
+          </button>
+          <h1>Listing successfully posted!</h1>
+          <div class="meta-logo">
+            <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fclipartix.com%2Fwp-content%2Fuploads%2F2016%2F05%2FCheck-mark-checkmark-clip-art-at-vector-clip-art-clipartcow-2.png&f=1&nofb=1" alt="">
+          </div>
       </div>
 
       <!-- signed in and able to post listing -->
-      <div class="modal" v-else-if='currentAddress' v-bind:style='{display: "none"}' ref='modal'>
+      <div
+        class="modal"
+        v-else-if='currentAddress'
+        v-bind:style='{display: "none"}'
+        ref='modal'
+      >
         <button
           class="close-button"
           @click="removeOverlay"
           type="button"
-          name="button">
+          name="button"
+        >
           x
         </button>
         <h1>post listing</h1>
@@ -83,7 +97,12 @@
         />
       </div>
       <!-- if not signed in -->
-      <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
+      <div
+        class="modal"
+        v-if='!currentAddress'
+        v-bind:style='{display: "none"}'
+        ref='modal'
+      >
         <button
           class="close-button"
           @click="removeOverlay"

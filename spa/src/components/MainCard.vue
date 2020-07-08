@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="aside-card-wrapper" v-bind:data-id='this.id'>
-    <div class="main-card" v-bind:style= "{ backgroundImage: `url(${this.photos[0]}` }">
+    <div
+      class="main-card"
+      v-bind:style= "{ backgroundImage: `url(${this.photos[0]}` }"
+    >
     </div>
     <div class="blur">
       <div class="card-details">

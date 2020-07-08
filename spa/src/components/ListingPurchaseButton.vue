@@ -1,10 +1,19 @@
 <template lang="html">
   <div class="">
-    <button @click='showModal' class="purchase-button" type="button" name="button">
+    <button
+      @click='showModal'
+      class="purchase-button"
+      type="button"
+      name="button"
+    >
       request to purchase
     </button>
     <transition name="slide" appear>
-      <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
+      <div
+        class="modal"
+        v-bind:style='{display: "none"}'
+        ref='modal'
+      >
         <button
           class="close-button"
           @click="removeOverlay('proceed')"
@@ -42,11 +51,22 @@
         </div>
         <div v-else-if='next' class='redirect-metamask'>
           <h3>please complete transaction with metamask -></h3>
-          <button class="purchase-button" @click="removeOverlay" type="button" name="button">
+          <button
+            class="purchase-button"
+            @click="removeOverlay"
+            type="button"
+            name="button"
+          >
             ok
           </button>
         </div>
-        <button v-if="!next" class="purchase-button" @click="next = true" type="button" name="button">
+        <button
+          v-if="!next"
+          class="purchase-button"
+          @click="next = true"
+          type="button"
+          name="button"
+        >
           proceed
         </button>
       </div>

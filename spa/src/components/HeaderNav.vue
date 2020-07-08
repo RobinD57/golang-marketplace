@@ -2,16 +2,17 @@
   <div id="app">
     <header>
       <div class="header-contents">
-        <img src="http://acmelogos.com/images/logo-1.svg" alt="">
+        <img src="http://acmelogos.com/images/logo-1.svg">
         <div class="main-right">
           <div class="right-links">
-            <new-listing-button :new-listing-address='currentAddress'> </new-listing-button>
+            <new-listing-button :new-listing-address='currentAddress'>
+            </new-listing-button>
           </div>
           <div class="metamask">
             <metamask
               class="alignment"
               :meta-address='currentAddress'
-              >
+            >
             </metamask>
           </div>
         </div>

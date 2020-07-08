@@ -3,20 +3,31 @@
     <div class="" v-if="!currentAddress">
       <div id="connect">
         <span>login</span>
-        <button type="button" class="Login-button" id="Login-mm" @click="loginAndSetAddress">
-          <img src="https://cdn.freebiesupply.com/logos/thumbs/1x/metamask-logo.png" alt="">
+        <button type="button"
+          class="Login-button"
+          id="Login-mm"
+          @click="loginAndSetAddress"
+        >
+          <img src="https://cdn.freebiesupply.com/logos/thumbs/1x/metamask-logo.png">
         </button>
       </div>
     </div>
-    <div class="address"
+    <div
+      class="address"
       v-if="currentAddress"
       @mouseover="hover = true"
-      @mouseleave="hover = false">
+      @mouseleave="hover = false"
+    >
       <div class="short-address">
-      <span>{{currentAddress.slice(0,3)}}<span v-if="!hover">...</span>
-      <span v-if="!hover">{{currentAddress.slice(39)}} </span> </span>
-    </div>
-    <span class="full-address" v-if="hover">{{currentAddress.slice(4)}}</span>
+        <span>{{currentAddress.slice(0,3)}}<span v-if="!hover">...</span>
+        <span v-if="!hover">{{currentAddress.slice(39)}} </span> </span>
+      </div>
+    <span
+    class="full-address"
+    v-if="hover"
+    >
+      {{currentAddress.slice(4)}}
+    </span>
     </div>
   </div>
 </template>

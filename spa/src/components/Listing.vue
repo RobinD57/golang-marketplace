@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="listing" v-if="listing">
-      <div class="image-container" ref="gallery">
-        <img
+    <div class="image-container" ref="gallery">
+      <img
         v-for='photo in listing.photos'
         :src='photo'
         alt=""
@@ -14,33 +14,8 @@
           ]"
         @click="resetImagesAndGrow"
         v-bind:key='photo'
-        >
-
-        <!-- <img draggable="false" v-bind:class="{ 'secondary-image': true, 'main-image': true,  } "
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5/9b2e37e8-78f3-42bb-b31d-b0cf629c9627/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/ef03abcb-b457-4d0c-81ef-74ddd36bf82b/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/7d2b8bee-a73a-4021-b839-5191ad7709e4/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a18ffc7e-f172-47f2-87eb-1b4de4163b10/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img draggable="false"  v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/a74cd00d-7272-4bd5-a898-dd03f233623c/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt="">
-        <img draggable="false" v-bind:class="{ 'main-image': false, 'secondary-image': true }"
-        @click="resetImagesAndGrow"
-        src="https://static.nike.com/a/images/t_PDP_864_v1/f_auto,b_rgb:f5f5f5,q_80/3e8834aa-2f0a-47d2-a7f6-b283447639c8/react-infinity-run-flyknit-mens-running-shoe-zX42Nc.jpg"
-        alt=""> -->
-      </div>
+      >
+    </div>
     <div class="listing-details">
       <div class="listing-product">
         <h1 class="listing_name">{{ listing.name }}</h1>
@@ -50,8 +25,8 @@
       </div>
       <div class="user-sidebar" >
         <user-side-bar
-        :seller='listing.seller'
-        :posting-date='listing.createdAt.slice(0,10)'
+          :seller='listing.seller'
+          :posting-date='listing.createdAt.slice(0,10)'
         >
         </user-side-bar>
       </div>
