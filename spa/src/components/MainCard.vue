@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="aside-card-wrapper" v-bind:data-id='this.id'>
-    <div class="main-card" v-bind:style= "{ backgroundImage: `url(${this.photos[0]}` }">
+    <div
+      class="main-card"
+      v-bind:style= "{ backgroundImage: `url(${this.photos[0]}` }"
+    >
     </div>
     <div class="blur">
       <div class="card-details">
@@ -15,7 +18,12 @@
 
 <script>
 export default {
-  props: ['id', 'name', 'price', 'photos'],
+  props: {
+    id: String,
+    name: String,
+    price: Number,
+    photos: Array
+  }
 }
 </script>
 
@@ -30,7 +38,7 @@ export default {
     display: flex;
     background-size: cover;
     height: 200px;
-    width: 90%;
+    width: 80%;
     margin-top: 30px;
     border-radius: 5px;
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
@@ -39,7 +47,7 @@ export default {
   .blur {
     background: rgba(245, 245, 245, 0.9);
     height: 50px;
-    width: 90%;
+    width: 80%;
     margin-top: -4px;
     padding: 2px;
     border-radius: 5px;

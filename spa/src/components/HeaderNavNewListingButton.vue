@@ -1,35 +1,49 @@
 <template lang="html">
   <div class="">
     <button
-    @click='showModal'
-    class='newlisting-button'
-    type="button"
-    name="button">
-    post ad</button>
+      @click='showModal'
+      class='newlisting-button'
+      type="button"
+      name="button"
+    >
+      post listing
+    </button>
         <!-- listing posted notice -->
     <transition>
       <template>
-        <div class="modal" v-if='listingPosted' v-bind:style='{display: "none"}' ref='modal'>
-        <button
-          class="close-button"
-          @click="removeOverlay"
-          type="button"
-          name="button">
-          x
-        </button>
-        <h1>Listing successfully posted!</h1>
-        <div class="meta-logo">
-          <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fclipartix.com%2Fwp-content%2Fuploads%2F2016%2F05%2FCheck-mark-checkmark-clip-art-at-vector-clip-art-clipartcow-2.png&f=1&nofb=1" alt="">
-        </div>
+        <div
+          class="modal"
+          v-if='listingPosted'
+          v-bind:style='{display: "none"}'
+          ref='modal'
+        >
+          <button
+            class="close-button"
+            @click="removeOverlay"
+            type="button"
+            name="button"
+          >
+            x
+          </button>
+          <h1>Listing successfully posted!</h1>
+          <div class="meta-logo">
+            <img src="https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fclipartix.com%2Fwp-content%2Fuploads%2F2016%2F05%2FCheck-mark-checkmark-clip-art-at-vector-clip-art-clipartcow-2.png&f=1&nofb=1" alt="">
+          </div>
       </div>
 
       <!-- signed in and able to post listing -->
-      <div class="modal" v-else-if='currentAddress' v-bind:style='{display: "none"}' ref='modal'>
+      <div
+        class="modal"
+        v-else-if='currentAddress'
+        v-bind:style='{display: "none"}'
+        ref='modal'
+      >
         <button
           class="close-button"
           @click="removeOverlay"
           type="button"
-          name="button">
+          name="button"
+        >
           x
         </button>
         <h1>post listing</h1>
@@ -79,11 +93,16 @@
           type="submit"
           label="post"
           @click='finalSubmit'
-          :disabled='working'
+          :disabled='next'
         />
       </div>
       <!-- if not signed in -->
-      <div class="modal" v-if='!currentAddress' v-bind:style='{display: "none"}' ref='modal'>
+      <div
+        class="modal"
+        v-if='!currentAddress'
+        v-bind:style='{display: "none"}'
+        ref='modal'
+      >
         <button
           class="close-button"
           @click="removeOverlay"
@@ -109,13 +128,15 @@ import '../assets/scss/main.scss';
 
 
 export default {
-  props: ['user', 'newListingAddress'],
+  props: {
+    newListingAddress: String
+  },
   name:'NewListingButton',
   mixins: [ModalMixin, MetamaskMixin],
   data() {
     return {
       listingPosted: false,
-      working: false,
+      next: false,
       modalOpen: false,
       currentAddress: this.newListingAddress,
       listingEndpoint: 'http://localhost:8080/listing',
@@ -131,7 +152,7 @@ export default {
   },
   methods: {
     async finalSubmit() {
-      this.working = true;
+      this.next = true;
       const urls = await this.uploadPhotos();
       this.postData(urls);
       this.listingPosted = true;
@@ -172,7 +193,7 @@ export default {
         photos: {},
         seller: this.newListingAddress
       }
-      this.working = false;
+      this.next = false;
     },
   },
   watch: {

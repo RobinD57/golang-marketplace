@@ -2,12 +2,12 @@
   <div id="app">
     <header-nav></header-nav>
     <transition id='overlay' appear>
-      <div class='modal-overlay' @click="removeOverlay"></div>
+      <div class='modal-overlay'></div>
     </transition>
     <main>
       <aside class="sidebar">
         <div class="">
-          <h3 v-if='this.listings'>Listings: {{listings.length}}</h3>
+          <h3 class='count' v-if='this.listings'>Listings: {{listings.length}}</h3>
         </div>
         <div @click='toggleCollapse' class="collapse">
           <font-awesome-icon :icon="['fas', 'chevron-left']"/>
@@ -18,11 +18,13 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <MainCard
+            <main-card
               :id='listing.id'
               :name='listing.name'
               :price='listing.price'
-              :photos='listing.photos'/>
+              :photos='listing.photos'
+              >
+            </main-card>
           </router-link>
         </div>
       </aside>
@@ -69,14 +71,18 @@ export default {
       if (!this.asideShrunk) {
          document.querySelector('aside').style.flex = '0 1 3%';
          document.querySelector('.collapse').style.transform = 'rotate(180deg)';
+         document.querySelector('.collapse').style.left = '45%';
          document.querySelector('.listing').style.marginLeft = '10rem'
          document.querySelector('.listing-product').style.flex = '0 1 59%'
+         document.querySelector('.count').style.display = 'none';
          this.asideShrunk = true;
     } else {
         document.querySelector('aside').style.flex = '';
         document.querySelector('.collapse').style.transform = '';
+        document.querySelector('.collapse').style.left = '85%';
         document.querySelector('.listing').style.marginLeft = '';
         document.querySelector('.listing-product').style.flex = '0 1 70%'
+        document.querySelector('.count').style.display = '';
         this.asideShrunk = false;
       }
     }
@@ -85,15 +91,14 @@ export default {
     this.$root.$on('fetchListings', message => {
       this.fetchListings();
       //have to return and perform operation for above to run
-      return message * 2;
+      console.log(message);
     })
   }
 }
 </script>
 
 <style lang='scss'>
-  @import url('https://fonts.googleapis.com/css2?family=Crimson+Text&family=Mukta:wght@200;400&family=Noto+Sans&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
   .modal-overlay {
     display: none;
     position: absolute;
@@ -112,7 +117,7 @@ export default {
     text-shadow: 1px 1px 1px rgba(0,0,0,0.2);
   }
   #app {
-    font-family: 'Crimson Text', serif;
+    font-family: 'Lato', sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     color: #2c3e50;
@@ -152,7 +157,7 @@ export default {
     flex-direction: column;
     justify-content: center;
     h3 {
-      margin-bottom: 0;
+      margin: 0;
     }
   }
   .collapse {
@@ -164,10 +169,11 @@ export default {
     display: flex;
     justify-content: center;
     top: 50%;
-    left: 109%;
+    left: 85%;
     opacity: .5;
     cursor: pointer;
     padding: 2px;
+    z-index: auto;
   }
 
   .content {
@@ -192,7 +198,7 @@ export default {
     align-items: center;
     width: 25px;
     height: 25px;
-    font-family: 'Crimson Text', serif;
+    font-family: 'Lato', sans-serif;
     font-size: 12px;
     font-weight: bold;
     opacity: .7;

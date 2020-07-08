@@ -1,18 +1,27 @@
 <template lang="html">
   <div class="">
-    <button @click='showModal' class="purchase-button" type="button" name="button">
+    <button
+      @click='showModal'
+      class="purchase-button"
+      type="button"
+      name="button"
+    >
       request to purchase
     </button>
     <transition name="slide" appear>
-      <div class="modal" v-bind:style='{display: "none"}' ref='modal'>
+      <div
+        class="modal"
+        v-bind:style='{display: "none"}'
+        ref='modal'
+      >
         <button
           class="close-button"
-          @click="removeOverlay"
+          @click="removeOverlay('proceed')"
           type="button"
           name="button">
           x
         </button>
-        <div class="purchase-main">
+        <div v-if='!next' class="purchase-main">
           <div class="buying">
             <h2 class="shadowed">Requesting to buy:</h2>
             <div class="product-card">
@@ -40,7 +49,24 @@
              </div>
           </div>
         </div>
-        <button class="purchase-button" @click="purchaseStep2" type="button" name="button">
+        <div v-else-if='next' class='redirect-metamask'>
+          <h3>please complete transaction with metamask -></h3>
+          <button
+            class="purchase-button"
+            @click="removeOverlay"
+            type="button"
+            name="button"
+          >
+            ok
+          </button>
+        </div>
+        <button
+          v-if="!next"
+          class="purchase-button"
+          @click="next = true"
+          type="button"
+          name="button"
+        >
           proceed
         </button>
       </div>
@@ -52,19 +78,17 @@
 import ModalMixin from '../mixins/ModalMixin';
 
 export default {
-  props: ['listing'],
+  props: {
+    listing: Object
+  },
   name:'PurchaseButton',
   mixins: [ModalMixin],
   data() {
     return {
-      modalOpen: false
+      modalOpen: false,
+      next: false,
     }
   },
-  methods: {
-    purchaseStep2() {
-        this.$refs.modal.innerHTML = ""
-    },
-  }
 }
 </script>
 
@@ -84,7 +108,7 @@ export default {
 
   .buying {
     width: 50%;
-    padding-left: 8rem;
+    padding-left: 5rem;
   }
 
   .buying span {
@@ -121,6 +145,14 @@ export default {
     box-shadow: 0.5px 0.5px rgba(0, 0, 0, 0.1);
     outline: none;
     margin-top: 6rem;
+  }
+
+  .redirect-metamask {
+    display: flex;
+    flex-direction: column;
+    height: 80%;
+    align-items: center;
+    justify-content: center;
   }
 
   .purchase-button:hover {

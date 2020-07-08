@@ -8,23 +8,28 @@
       </div>
     </div>
     <div class="reviews-container">
-      <UserReview
-      :rating='review.rating'
-      :content='review.content'
-      :reviewer='review.reviewer'
-      v-for='review in reviews'
-      :key='review.id'/>
+      <user-review
+        :rating='review.rating'
+        :content='review.content'
+        :reviewer='review.reviewer'
+        v-for='review in reviews'
+        :key='review.id'
+      >
+      </user-review>
     </div>
-    <button class="msg-button" type="button" name="button">message</button>
+    <button class="msg-button">message</button>
   </div>
 </template>
 
 <script>
 
-import UserReview from './UserReview'
+import UserReview from './ListingUserSideBarUserReview'
 
 export default {
-  props: ['seller', 'postingDate'],
+  props: {
+    seller: String,
+    postingDate: String
+  },
   name: 'UserSideBar',
   components: {
     UserReview
