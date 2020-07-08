@@ -1,6 +1,6 @@
 pragma solidity ^0.6.0;
 
-import "../installed_contracts/zeppelin/contracts/access/Ownable.sol";
+import "./installed_contracts/zeppelin/contracts/access/Ownable.sol";
 import "./EscrowContractInterface.sol";
 
 contract AuthenticityOracle is Ownable {

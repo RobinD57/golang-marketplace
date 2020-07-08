@@ -1,7 +1,7 @@
 const common = require('./utils/common.js')
 const SLEEP_INTERVAL = process.env.SLEEP_INTERVAL || 2000
 const PRIVATE_KEY_FILE_NAME = process.env.PRIVATE_KEY_FILE || './escrow_private_key'
-const CallerJSON = require('../escrow/MadEscrow.sol')
+const CallerJSON = require('./MadEscrow.sol')
 const OracleJSON = require('./Authenticity.json')
 
 async function getCallerContract (web3js) {

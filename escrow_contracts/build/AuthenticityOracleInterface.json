@@ -15,27 +15,27 @@
       "type": "function"
     }
   ],
-  "metadata": "{\"compiler\":{\"version\":\"0.6.10+commit.00c0fcaf\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"authenticityCheck\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"/home/bloodace/code/RobinD57/golang-marketplace/contracts/escrow/AuthenticityOracleInterface.sol\":\"AuthenticityOracleInterface\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/bloodace/code/RobinD57/golang-marketplace/contracts/escrow/AuthenticityOracleInterface.sol\":{\"keccak256\":\"0x982397ef6656cb194ee2c34d2af467a4f158c031ad3d212f92605698a25f3ef9\",\"urls\":[\"bzz-raw://274a73d4d3dd4f1ddec4afe16658f973df4e2ddaaa7d2a553befef5548b68e16\",\"dweb:/ipfs/QmZuX2YxdWtufYSpw1LV1Ln57AJjUnKH8ijDtYFSLTVC8P\"]}},\"version\":1}",
+  "metadata": "{\"compiler\":{\"version\":\"0.6.11+commit.5ef660b1\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"authenticityCheck\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/bloodace/code/RobinD57/golang-marketplace/escrow_contracts/contracts/AuthenticityOracleInterface.sol\":\"AuthenticityOracleInterface\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"/home/bloodace/code/RobinD57/golang-marketplace/escrow_contracts/contracts/AuthenticityOracleInterface.sol\":{\"keccak256\":\"0x982397ef6656cb194ee2c34d2af467a4f158c031ad3d212f92605698a25f3ef9\",\"urls\":[\"bzz-raw://274a73d4d3dd4f1ddec4afe16658f973df4e2ddaaa7d2a553befef5548b68e16\",\"dweb:/ipfs/QmZuX2YxdWtufYSpw1LV1Ln57AJjUnKH8ijDtYFSLTVC8P\"]}},\"version\":1}",
   "bytecode": "0x",
   "deployedBytecode": "0x",
   "immutableReferences": {},
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "pragma solidity ^0.6.0;\n\ninterface AuthenticityOracleInterface {\n  function authenticityCheck() external returns (uint256);\n}\n",
-  "sourcePath": "/home/bloodace/code/RobinD57/golang-marketplace/contracts/escrow/AuthenticityOracleInterface.sol",
+  "sourcePath": "/home/bloodace/code/RobinD57/golang-marketplace/escrow_contracts/contracts/AuthenticityOracleInterface.sol",
   "ast": {
-    "absolutePath": "/home/bloodace/code/RobinD57/golang-marketplace/contracts/escrow/AuthenticityOracleInterface.sol",
+    "absolutePath": "/home/bloodace/code/RobinD57/golang-marketplace/escrow_contracts/contracts/AuthenticityOracleInterface.sol",
     "exportedSymbols": {
       "AuthenticityOracleInterface": [
-        44
+        121
       ]
     },
-    "id": 45,
+    "id": 122,
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 38,
+        "id": 115,
         "literals": [
           "solidity",
           "^",
@@ -52,9 +52,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 44,
+        "id": 121,
         "linearizedBaseContracts": [
-          44
+          121
         ],
         "name": "AuthenticityOracleInterface",
         "nodeType": "ContractDefinition",
@@ -63,7 +63,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "bae91c1d",
-            "id": 43,
+            "id": 120,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -71,23 +71,23 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 39,
+              "id": 116,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "93:2:1"
             },
             "returnParameters": {
-              "id": 42,
+              "id": 119,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 41,
+                  "id": 118,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 43,
+                  "scope": 120,
                   "src": "114:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -96,7 +96,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 40,
+                    "id": 117,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "114:7:1",
@@ -111,32 +111,32 @@
               ],
               "src": "113:9:1"
             },
-            "scope": 44,
+            "scope": 121,
             "src": "67:56:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 45,
+        "scope": 122,
         "src": "25:100:1"
       }
     ],
     "src": "0:126:1"
   },
   "legacyAST": {
-    "absolutePath": "/home/bloodace/code/RobinD57/golang-marketplace/contracts/escrow/AuthenticityOracleInterface.sol",
+    "absolutePath": "/home/bloodace/code/RobinD57/golang-marketplace/escrow_contracts/contracts/AuthenticityOracleInterface.sol",
     "exportedSymbols": {
       "AuthenticityOracleInterface": [
-        44
+        121
       ]
     },
-    "id": 45,
+    "id": 122,
     "license": null,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 38,
+        "id": 115,
         "literals": [
           "solidity",
           "^",
@@ -153,9 +153,9 @@
         "contractKind": "interface",
         "documentation": null,
         "fullyImplemented": false,
-        "id": 44,
+        "id": 121,
         "linearizedBaseContracts": [
-          44
+          121
         ],
         "name": "AuthenticityOracleInterface",
         "nodeType": "ContractDefinition",
@@ -164,7 +164,7 @@
             "body": null,
             "documentation": null,
             "functionSelector": "bae91c1d",
-            "id": 43,
+            "id": 120,
             "implemented": false,
             "kind": "function",
             "modifiers": [],
@@ -172,23 +172,23 @@
             "nodeType": "FunctionDefinition",
             "overrides": null,
             "parameters": {
-              "id": 39,
+              "id": 116,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "93:2:1"
             },
             "returnParameters": {
-              "id": 42,
+              "id": 119,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 41,
+                  "id": 118,
                   "mutability": "mutable",
                   "name": "",
                   "nodeType": "VariableDeclaration",
                   "overrides": null,
-                  "scope": 43,
+                  "scope": 120,
                   "src": "114:7:1",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -197,7 +197,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 40,
+                    "id": 117,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "114:7:1",
@@ -212,14 +212,14 @@
               ],
               "src": "113:9:1"
             },
-            "scope": 44,
+            "scope": 121,
             "src": "67:56:1",
             "stateMutability": "nonpayable",
             "virtual": false,
             "visibility": "external"
           }
         ],
-        "scope": 45,
+        "scope": 122,
         "src": "25:100:1"
       }
     ],
@@ -227,15 +227,19 @@
   },
   "compiler": {
     "name": "solc",
-    "version": "0.6.10+commit.00c0fcaf.Emscripten.clang"
+    "version": "0.6.11+commit.5ef660b1.Emscripten.clang"
   },
   "networks": {},
   "schemaVersion": "3.2.0",
-  "updatedAt": "2020-07-07T07:23:45.908Z",
+  "updatedAt": "2020-07-08T10:48:02.744Z",
   "devdoc": {
-    "methods": {}
+    "kind": "dev",
+    "methods": {},
+    "version": 1
   },
   "userdoc": {
-    "methods": {}
+    "kind": "user",
+    "methods": {},
+    "version": 1
   }
 }
