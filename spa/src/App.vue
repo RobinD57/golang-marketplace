@@ -18,11 +18,13 @@
             v-for="listing in listings"
             class="link"
             :to="{ name: 'listing', params: { id: listing.id } }">
-            <MainCard
+            <main-card
               :id='listing.id'
               :name='listing.name'
               :price='listing.price'
-              :photos='listing.photos'/>
+              :photos='listing.photos'
+              >
+            </main-card>
           </router-link>
         </div>
       </aside>

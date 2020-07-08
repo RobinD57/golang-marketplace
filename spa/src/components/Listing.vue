@@ -49,9 +49,11 @@
         <PurchaseButton :listing='this.listing' />
       </div>
       <div class="user-sidebar" >
-        <UserSideBar
+        <user-side-bar
         :seller='listing.seller'
-        :postingDate='listing.createdAt.slice(0,10)'/>
+        :postingDate='listing.createdAt.slice(0,10)'
+        >
+        </user-side-bar>
       </div>
     </div>
   </div>
@@ -59,8 +61,8 @@
 
 <script>
 
-import UserSideBar from './UserSideBar';
-import PurchaseButton from './PurchaseButton';
+import UserSideBar from './ListingUserSideBar';
+import PurchaseButton from './ListingPurchaseButton';
 
 export default {
   props: {

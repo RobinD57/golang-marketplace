@@ -5,14 +5,14 @@
         <img src="http://acmelogos.com/images/logo-1.svg" alt="">
         <div class="main-right">
           <div class="right-links">
-            <NewListingButton :newListingAddress='currentAddress' />
+            <new-listing-button :newListingAddress='currentAddress'> </new-listing-button>
           </div>
           <div class="metamask">
-            <Metamask
+            <metamask
               class="alignment"
               :metaAddress='currentAddress'
               >
-            </Metamask>
+            </metamask>
           </div>
         </div>
       </div>
@@ -21,9 +21,9 @@
 </template>
 
 <script>
-import Metamask from './Metamask';
+import Metamask from './HeaderNavMetamask';
 import MetamaskMixin from '../mixins/MetamaskMixin';
-import NewListingButton from './NewListingButton';
+import NewListingButton from './HeaderNavNewListingButton';
 import Web3 from 'web3';
 
 export default {
