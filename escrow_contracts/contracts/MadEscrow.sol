@@ -85,6 +85,33 @@ contract MadEscrow is Escrow {
     }
 
 
+    function initEscrow(address _buyer, address _seller, uint _purchaseAmount) public {
+        require(_seller != address(0));
+        require(_buyer != address(0));
+        require(_buyer != _seller);
+
+        // require the contract creator to be either _buyer or _seller - Check whether that's the best approach!
+        require(msg.sender == _seller || msg.sender == _buyer);
+        require(_purchaseAmount > 0);
+
+        escrowFullyFunded = false;
+        buyer = _buyer;
+        seller = _seller;
+        initiated = true;
+
+        buyerRequiredEscrow = _purchaseAmount * 2;
+        sellerRequiredEscrow = _purchaseAmount;
+        totalEscrowAmount = _purchaseAmount * 3;
+        purchaseAmount = _purchaseAmount;
+
+        // require that the required total is a sum of the parts
+        require(totalEscrowAmount == (buyerRequiredEscrow + sellerRequiredEscrow));
+
+        // event emission
+        emit Initiated(msg.sender, buyer, seller, _purchaseAmount);
+        emit Terms(purchaseAmount, totalEscrowAmount, buyerRequiredEscrow, sellerRequiredEscrow);
+    }
+
 //    function withdrawalAllowed(address payee) public view virtual returns (bool);
 //
 //    function withdraw(address payable payee) public virtual override {
