@@ -69,8 +69,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -165,7 +164,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 114,
-        "sourceUnit": 432,
+        "sourceUnit": 507,
         "src": "25:69:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -191,10 +190,10 @@
               "id": 4,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 431,
+              "referencedDeclaration": 506,
               "src": "167:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$431",
+                "typeIdentifier": "t_contract$_Ownable_$506",
                 "typeString": "contract Ownable"
               }
             },
@@ -204,8 +203,8 @@
           }
         ],
         "contractDependencies": [
-          322,
-          431
+          397,
+          506
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -213,8 +212,8 @@
         "id": 113,
         "linearizedBaseContracts": [
           113,
-          431,
-          322
+          506,
+          397
         ],
         "name": "AuthenticityOracle",
         "nodeType": "ContractDefinition",
@@ -1533,7 +1532,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 380,
+                  "referencedDeclaration": 455,
                   "src": "836:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -1686,7 +1685,7 @@
         "id": 2,
         "nodeType": "ImportDirective",
         "scope": 114,
-        "sourceUnit": 432,
+        "sourceUnit": 507,
         "src": "25:69:0",
         "symbolAliases": [],
         "unitAlias": ""
@@ -1712,10 +1711,10 @@
               "id": 4,
               "name": "Ownable",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 431,
+              "referencedDeclaration": 506,
               "src": "167:7:0",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_Ownable_$431",
+                "typeIdentifier": "t_contract$_Ownable_$506",
                 "typeString": "contract Ownable"
               }
             },
@@ -1725,8 +1724,8 @@
           }
         ],
         "contractDependencies": [
-          322,
-          431
+          397,
+          506
         ],
         "contractKind": "contract",
         "documentation": null,
@@ -1734,8 +1733,8 @@
         "id": 113,
         "linearizedBaseContracts": [
           113,
-          431,
-          322
+          506,
+          397
         ],
         "name": "AuthenticityOracle",
         "nodeType": "ContractDefinition",
@@ -3054,7 +3053,7 @@
                   "name": "onlyOwner",
                   "nodeType": "Identifier",
                   "overloadedDeclarations": [],
-                  "referencedDeclaration": 380,
+                  "referencedDeclaration": 455,
                   "src": "836:9:0",
                   "typeDescriptions": {
                     "typeIdentifier": "t_modifier$__$",
@@ -3250,8 +3249,7 @@
     }
   },
   "schemaVersion": "3.2.0",
-  "updatedAt": "2020-07-08T10:54:14.971Z",
-  "networkType": "ethereum",
+  "updatedAt": "2020-07-09T10:06:09.589Z",
   "devdoc": {
     "kind": "dev",
     "methods": {
