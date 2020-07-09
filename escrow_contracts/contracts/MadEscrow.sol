@@ -112,6 +112,83 @@ contract MadEscrow is Escrow {
         emit Terms(purchaseAmount, totalEscrowAmount, buyerRequiredEscrow, sellerRequiredEscrow);
     }
 
+    function() external payable {
+        address _funder = msg.sender;
+        uint _amount = msg.value;
+        fundContract(_funder, _amount);
+        emit FundsReceived(_funder, _amount);
+    }
+
+    function fundContract(address _funder, uint _amount) public {
+        if (_funder == buyer && buyerEscrowedFunds <= buyerRequiredEscrow) {
+          uint buyerCurrentFunds = buyerEscrowedFunds;
+          buyerEscrowedFunds = buyerCurrentFunds + _amount;
+        }
+        if (_funder == seller && sellerEscrowedFunds <= sellerRequiredEscrow) {
+          uint sellerCurrentFunds = sellerEscrowedFunds;
+          sellerEscrowedFunds = sellerCurrentFunds + _amount;
+        }
+        checkFundingStatus();
+    }
+
+    function checkFundingStatus() internal {
+        if (buyerEscrowedFunds >= buyerRequiredEscrow) {
+          buyerHasFunded = true;
+        }
+        if (sellerEscrowedFunds >= sellerRequiredEscrow) {
+          sellerHasFunded = true;
+        }
+        if (sellerHasFunded == true && buyerHasFunded == true) {
+          escrowFullyFunded = true;
+        } else {
+          escrowFullyFunded = false;
+        }
+    }
+
+    function buyerFinalize() public {
+        require(msg.sender == buyer);
+        buyerfinalized = true;
+        emit PartyFinalized(msg.sender);
+
+        if (sellerfinalized == true) {
+          return finalizeTrade();
+        }
+    }
+
+    function sellerFinalize() public {
+        require(msg.sender == seller);
+        sellerfinalized = true;
+        emit PartyFinalized(msg.sender);
+
+        if (buyerfinalized == true) {
+          finalizeTrade();
+        }
+    }
+
+    function finalizeTrade() internal {
+        require(sellerHasFunded == true);
+        require(buyerHasFunded == true);
+        require(buyerfinalized == true);
+        require(sellerfinalized == true);
+
+        require(finalized == false);
+
+        // Seller receives the purchaseAmount and their escrowed funds
+        uint256 forSeller = purchaseAmount + sellerEscrowedFunds;
+
+        // Buyer receives their escrowed funds minus the purchaseAmount
+        uint256 forBuyer = buyerEscrowedFunds - purchaseAmount;
+
+        emit EscrowComplete(finalized, forBuyer, forSeller);
+
+        seller.transfer(forSeller);
+        buyer.transfer(forBuyer);
+        finalized = true;
+
+        // destroy escrow contract to preserve anonymity and reduce chainwaste
+        selfdestruct(seller);
+    }
+
 //    function withdrawalAllowed(address payee) public view virtual returns (bool);
 //
 //    function withdraw(address payable payee) public virtual override {
