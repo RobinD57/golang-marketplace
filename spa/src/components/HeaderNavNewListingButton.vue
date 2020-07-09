@@ -159,7 +159,7 @@ export default {
   },
   computed: {
     modalOpen () {
-      return this.$store.state.modalOpen;
+      return this.$store.getters['modalOpen'];
     }
   },
   methods: {

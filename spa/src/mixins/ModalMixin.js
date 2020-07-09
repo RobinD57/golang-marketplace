@@ -1,7 +1,7 @@
 export default {
   methods: {
     showModal() {
-      this.$store.state.modalOpen = true;
+      this.$store.commit('setModalOpen', true);
       if (this.modalOpen) {
         document.querySelector('.modal-overlay').style.display = "block";
         this.$refs.modal.style.display = "";
@@ -11,7 +11,8 @@ export default {
       }
     },
     removeOverlay() {
-      this.$store.state.modalOpen = false;
+      this.$store.commit('setModalOpen', false);
+      this.working = false;
       document.querySelector('.modal-overlay').style.display = 'none';
       document.querySelectorAll('.modal').forEach((modal) => {
         modal.style.display = 'none';

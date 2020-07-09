@@ -8,7 +8,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import VueFormulate from '@braid/vue-formulate';
 import Cloudinary from 'cloudinary-vue';
-import { store } from './store.js'
+import { store } from './state/store.js'
 
 Vue.use(VueFormulate);
 
