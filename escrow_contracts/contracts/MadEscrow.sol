@@ -189,6 +189,10 @@ contract MadEscrow is Escrow {
         selfdestruct(seller);
     }
 
+    // STILL NEED TO CHECK WHETHER IT'S BETTER TO MAKE THE ABOVE CODE WORK TOGETHER WITH THE ZEPPELING ESCROW
+    // OR WHETHER IT'S BEST TO USE A STANDALONE ESCROW. Probably the former due to security and audits of Zeppelin
+
+
 //    function withdrawalAllowed(address payee) public view virtual returns (bool);
 //
 //    function withdraw(address payable payee) public virtual override {
