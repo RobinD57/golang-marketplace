@@ -5,13 +5,56 @@ import "./installed_contracts/zeppelin/contracts/payment/Escrow.sol";
 
 contract MadEscrow is Escrow {
     string public name = "Solidity MAD escrow contract";
+
+    // Oracle parameters
     AuthenticityOracleInterface private oracleInstance;
     address private oracleAddress;
     bool private authenticityCheck;
     mapping(uint256=>bool) myRequests;
+
+    // Oracle events
     event newOracleAddressEvent(address oracleAddress);
     event ReceivedNewRequestIdEvent(uint256 id);
     event AuthenticityCheckCompletedEvent(bool authenticityCheck, uint256 id);
+
+    // Escrow parameters
+    address public buyer;
+    address public seller;
+    uint public purchaseAmount = 0; //Total paid by BUYER
+
+    // Buyer required escrow funding (2x purchaseAmount)
+    uint public buyerRequiredEscrow = 0;
+    // Seller required escrow funding (1x purchaseAmount)
+    uint public sellerRequiredEscrow = 0;
+    // TOTAL required escrow funding (3x purchaseAmount)
+    uint public totalEscrowAmount = 0;
+
+    // Buyer escrow funding received
+    uint public buyerEscrowedFunds = 0;
+    // Seller escrow funding received
+    uint public sellerEscrowedFunds = 0;
+
+    // This will be true when the buyer has sent 2x the purchaseAmount
+    // and when buyerEscrowedFunds >= buyerRequiredEscrow
+    bool public buyerHasFunded = false;
+    // This will be true when the seller has sent 1x the purchaseAmount
+    // True when sellerEscrowedFunds >= sellerRequiredEscrow
+    bool public sellerHasFunded = false;
+
+    // True when both buyerHasFunded = true AND sellerHasFunded = true
+    bool public escrowFullyFunded = false;
+
+
+    // Once FullyFunded, both parties must finalize the trade/sale
+    bool public buyerfinalized = false;
+    bool public sellerfinalized = false;
+
+    // escrow events
+    event Terms(uint purchaseAmount, uint totalEscrowAmount, uint BuyerRequiredFunding, uint SellerRequiredFunding);
+    event Initiated(address initiator, address buyer, address seller, uint tradeFundsforXfer);
+    event FundsReceived(address sender, uint amount);
+    event PartyFinalized(address party);
+    event EscrowComplete(bool completed, uint buyerReceives, uint sellerReceives);
 
     function setOracleAddress(address _oracleAddress) public onlyOwner {
             oracleAddress = _oracleAddress;
@@ -40,6 +83,7 @@ contract MadEscrow is Escrow {
      require(msg.sender == oracleAddress, "You are not authorized to call this function.");
       _;
     }
+
 
 //    function withdrawalAllowed(address payee) public view virtual returns (bool);
 //
