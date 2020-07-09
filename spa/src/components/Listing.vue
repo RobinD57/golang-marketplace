@@ -31,6 +31,9 @@
         </user-side-bar>
       </div>
     </div>
+    <the-date>
+      {{ new Date }}
+    </the-date>
   </div>
 </template>
 
@@ -38,6 +41,7 @@
 
 import UserSideBar from './ListingUserSideBar';
 import PurchaseButton from './ListingPurchaseButton';
+import TheDate from './TheDate';
 
 export default {
   props: {
@@ -45,7 +49,8 @@ export default {
   },
   components: {
     UserSideBar,
-    PurchaseButton
+    PurchaseButton,
+    TheDate
   },
   data() {
     return {
