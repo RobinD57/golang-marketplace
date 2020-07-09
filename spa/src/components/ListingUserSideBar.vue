@@ -9,12 +9,29 @@
     </div>
     <div class="reviews-container">
       <user-review
-        :rating='review.rating'
-        :content='review.content'
-        :reviewer='review.reviewer'
         v-for='review in reviews'
         :key='review.id'
       >
+        <template
+          v-slot:reviewer
+        >
+          <h3>
+            {{review.reviewer.slice(0,3)}}...{{review.reviewer.slice(39)}}
+          </h3>
+        </template>
+
+        <template
+          v-slot:content
+        >
+          <p>{{review.content}}</p>
+        </template>
+
+        <template
+          v-slot:rating
+        >
+          <p>{{review.rating}}/5</p>
+        </template>
+
       </user-review>
     </div>
     <button class="msg-button">message</button>

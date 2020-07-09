@@ -2,9 +2,9 @@
   <div class="review-container">
     <div class="left-border"></div>
     <div class="review-details">
-      <h3>{{reviewer.slice(0,3)}}...{{reviewer.slice(39)}}</h3>
-      <p>{{content}}</p>
-      <p class="rating">{{rating}}/5</p>
+      <slot name="reviewer"></slot>
+      <slot name="content"></slot>
+      <slot name="rating"></slot>
     </div>
   </div>
 </template>
@@ -12,11 +12,6 @@
 <script>
 
 export default {
-  props: {
-    reviewer: String,
-    rating: Number,
-    content: String
-  },
   name: 'UserReview'
 }
 
