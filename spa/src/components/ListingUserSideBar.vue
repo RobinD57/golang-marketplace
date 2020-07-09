@@ -13,7 +13,7 @@
         :key='review.id'
       >
         <template
-          v-slot:reviewer
+          #reviewer
         >
           <h3>
             {{review.reviewer.slice(0,3)}}...{{review.reviewer.slice(39)}}
@@ -21,13 +21,13 @@
         </template>
 
         <template
-          v-slot:content
+          #content
         >
           <p>{{review.content}}</p>
         </template>
 
         <template
-          v-slot:rating
+          #rating
         >
           <p>{{review.rating}}/5</p>
         </template>
