@@ -46,7 +46,9 @@ import ModalMixin from '../src/mixins/ModalMixin';
 
 export default {
   name: 'app',
-  props: ['id'],
+  props: {
+    id: String
+  },
   mixins: [ModalMixin],
   components: {
     HeaderNav,
@@ -61,7 +63,7 @@ export default {
   },
   computed: {
     listingCount () {
-      return this.$store.state.listingCount
+      return this.$store.getters['listingCount'];
     },
     modalOpen () {
       return this.$store.state.modalOpen;
@@ -79,7 +81,7 @@ export default {
     },
     setResults (results) {
       this.listings = results;
-      this.$store.state.listingCount = results.length;
+      this.$store.commit('setListingCount', results.length);
     },
     toggleCollapse() {
       if (!this.asideShrunk) {

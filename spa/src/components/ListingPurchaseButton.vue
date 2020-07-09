@@ -90,13 +90,13 @@ export default {
   },
   computed: {
     modalOpen () {
-      return this.$store.state.modalOpen;
+      return this.$store.getters['modalOpen'];
     }
   }
 }
 </script>
 
-<style scoped>
+<style >
 
 
   .selling {
